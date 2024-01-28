@@ -1,10 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookSwap.Models;
 
-[PrimaryKey("PostId")]
 public class BookPost
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid PostId { get; set; }
     public string Title { get; set; }
     public string Author { get; set; }
@@ -13,7 +16,6 @@ public class BookPost
     public int PageCount { get; set; }
     public string CoverImage { get; set; } 
     public string Language { get; set; } 
-
-    public string OwnerId { get; set; }
-    public ApplicationUser Owner { get; set; } 
+    public string UserId { get; set; }
+    public UserDetails? UserDetails { get; set; } 
 }

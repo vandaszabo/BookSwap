@@ -109,7 +109,7 @@ public class Program
 //Add DbContext
         void AddDbContext()
         {
-            builder.Services.AddDbContext<BookDbContext>(options =>
+            builder.Services.AddDbContext<BookSwapDbContext>(options =>
             {
                 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing")
                 {
@@ -119,11 +119,6 @@ public class Program
                 {
                     options.UseNpgsql(connectionString);
                 }
-            });
-
-            builder.Services.AddDbContext<UserDbContext>(options =>
-            { 
-                options.UseNpgsql(connectionString);
             });
         }
 
@@ -155,7 +150,7 @@ public class Program
         {
             // User requirements
             builder.Services
-                .AddIdentityCore<ApplicationUser>(options =>
+                .AddIdentityCore<IdentityUser>(options =>
                 {
                     // Configure identity options for ApplicationUser
                     options.SignIn.RequireConfirmedAccount = false;
@@ -163,7 +158,7 @@ public class Program
                     // ... other options
                 })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<UserDbContext>();
+                .AddEntityFrameworkStores<BookSwapDbContext>();
         }
 
 //Add roles
@@ -204,12 +199,12 @@ public class Program
         async Task CreateAdminIfNotExists()
         {
             using var scope = app.Services.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var adminInDb = await userManager.FindByEmailAsync("admin@admin.com");
 
             if (adminInDb == null)
             {
-                var admin = new ApplicationUser()
+                var admin = new IdentityUser
                 {
                     UserName = "someAdmin",
                     Email = "admin@admin.com",
