@@ -5,6 +5,7 @@ namespace BookSwap.Repositories;
 public interface IIdentityUserRepository
 {
     Task<IEnumerable<IdentityUser>> GetAll();
+    Task<IdentityUser?> GetById(string userId);
     Task UpdateUserEmail(string userId, string newEmail);
     Task UpdateUserName(string userId,string newUsername);
     Task<string?> DeleteUser(string userName);
