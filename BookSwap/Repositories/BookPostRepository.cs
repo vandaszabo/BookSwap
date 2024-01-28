@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookSwap.Repositories;
 
-public class PostRepository : IPostRepository
+public class BookPostRepository : IBookPostRepository
 {
     private readonly BookSwapDbContext _dbContext;
 
-    public PostRepository(BookSwapDbContext dbContext)
+    public BookPostRepository(BookSwapDbContext dbContext)
     {
         _dbContext = dbContext;
     }

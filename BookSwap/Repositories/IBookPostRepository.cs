@@ -2,7 +2,7 @@ using BookSwap.Models;
 
 namespace BookSwap.Repositories;
 
-public interface IPostRepository
+public interface IBookPostRepository
 {
     Task<IEnumerable<BookPost?>> GetAll();
     Task<BookPost?> GetById(Guid postId);
