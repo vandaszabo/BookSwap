@@ -1,6 +1,7 @@
 using System.Text;
 using BookSwap.Data;
 using BookSwap.Models;
+using BookSwap.Repositories;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -63,9 +64,10 @@ public class Program
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // builder.Services.AddScoped<IBookRepository, BookRepository>();
-            // builder.Services.AddScoped<IBookService, BookService>();
-            // builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
+            builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
+            builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
             
             // builder.Services.AddScoped<IDataProvider, GoogleBooksApi>();
             // builder.Services.AddScoped<IBookJsonProcessor, BookJsonProcessor>();
