@@ -1,3 +1,3 @@
 namespace BookSwap.Contracts;
 
-public record LoginResponse(string Email, string Username, string Token);
+public record LoginResponse(string Id, string Email, string Username, string Token);

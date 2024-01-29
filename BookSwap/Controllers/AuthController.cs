@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
+        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Id, result.Email, result.UserName));
     }
 
     private void AddErrors(AuthResult result)
@@ -59,6 +59,6 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return Ok(new LoginResponse(result.Email, result.UserName, result.Token));
+        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.Token));
     }
 }

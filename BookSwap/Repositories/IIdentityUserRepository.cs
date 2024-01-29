@@ -6,6 +6,7 @@ public interface IIdentityUserRepository
 {
     Task<IEnumerable<IdentityUser>> GetAll();
     Task<IdentityUser?> GetById(string userId);
+    Task<IdentityUser?> GetByUsername(string username);
     Task UpdateUserEmail(string userId, string newEmail);
     Task UpdateUserName(string userId,string newUsername);
     Task<string?> DeleteUser(string userName);

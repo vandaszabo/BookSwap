@@ -23,6 +23,12 @@ public class IdentityUserRepository : IIdentityUserRepository
         var user = await _userManager.FindByIdAsync(userId);
         return user;
     }
+    
+    public async Task<IdentityUser?> GetByUsername(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+        return user;
+    }
 
     public async Task UpdateUserEmail(string userId, string newEmail)
     {

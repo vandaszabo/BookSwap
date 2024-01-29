@@ -2,6 +2,7 @@ namespace BookSwap.Services.Authentication;
 
 public record AuthResult(
     bool Success,
+    string Id,
     string Email,
     string UserName,
     string Token)

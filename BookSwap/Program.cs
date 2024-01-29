@@ -157,7 +157,6 @@ public class Program
                     // Configure identity options for ApplicationUser
                     options.SignIn.RequireConfirmedAccount = false;
                     options.User.RequireUniqueEmail = true;
-                    // ... other options
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BookSwapDbContext>();
