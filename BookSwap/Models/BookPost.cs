@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookSwap.Models;
@@ -16,6 +17,12 @@ public class BookPost
     public int PageCount { get; set; }
     public string CoverImage { get; set; } 
     public string Language { get; set; } 
+    
+    [ForeignKey("UserId")]
     public string UserId { get; set; }
-    public UserDetails? UserDetails { get; set; } 
+    public IdentityUser User { get; set; }
+    
+    [ForeignKey("UserDetailsId")]
+    public Guid? UserDetailsId { get; set; }
+    public UserDetails? UserDetails { get; set; }
 }

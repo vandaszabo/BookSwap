@@ -7,7 +7,6 @@ namespace BookSwap.Data;
 
 public class BookSwapDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
-    public DbSet<IdentityUser> Users { get; set; }
     public DbSet<UserDetails> UserDetails { get; set; }
     public DbSet<BookPost> BookPosts { get; set; }
 
@@ -19,13 +18,16 @@ public class BookSwapDbContext : IdentityDbContext<IdentityUser, IdentityRole, s
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        modelBuilder.Entity<UserDetails>()
-            .HasMany(e => e.BookPosts)
-            .WithOne(e => e.UserDetails)
+
+        modelBuilder.Entity<BookPost>()
+            .HasOne(e => e.User)
+            .WithMany()
             .HasForeignKey(e => e.UserId)
             .IsRequired();
-        
-    }
 
+        modelBuilder.Entity<BookPost>()
+            .HasOne(e => e.UserDetails)
+            .WithMany(e => e.BookPosts)
+            .HasForeignKey(e => e.UserDetailsId);
+    }
 }

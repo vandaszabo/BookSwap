@@ -1,6 +1,7 @@
 using System.Text;
 using BookSwap.Data;
 using BookSwap.Models;
+using BookSwap.Repositories;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -63,15 +64,14 @@ public class Program
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // builder.Services.AddScoped<IBookRepository, BookRepository>();
-            // builder.Services.AddScoped<IBookService, BookService>();
-            // builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
+            builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IUserService, UserService>();
             
-            // builder.Services.AddScoped<IDataProvider, GoogleBooksApi>();
-            // builder.Services.AddScoped<IBookJsonProcessor, BookJsonProcessor>();
-
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+
         }
 
 //Configure Swagger
@@ -155,7 +155,6 @@ public class Program
                     // Configure identity options for ApplicationUser
                     options.SignIn.RequireConfirmedAccount = false;
                     options.User.RequireUniqueEmail = true;
-                    // ... other options
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BookSwapDbContext>();
