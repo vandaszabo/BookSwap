@@ -21,6 +21,11 @@ public class BookService : IBookService
     {
         var user = await _userService.GetUserById(request.UserId);
         var userDetails = await _userDetailsRepository.GetByUserId(request.UserId);
+
+        if (user == null)
+        {
+            return null;
+        }
         
         var newPost = new BookPost
         {
@@ -33,6 +38,7 @@ public class BookService : IBookService
             CoverImage = request.CoverImage,
             UserId = request.UserId,
             User = user,
+            UserDetailsId = userDetails.Id,
             UserDetails = userDetails
         };
 

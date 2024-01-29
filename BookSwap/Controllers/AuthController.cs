@@ -2,6 +2,7 @@ using BookSwap.Contracts;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookSwap.Controllers;
 
@@ -44,6 +45,8 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("Login")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
     {
         if (!ModelState.IsValid)
@@ -55,10 +58,10 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            AddErrors(result);
-            return BadRequest(ModelState);
+            return BadRequest("Authentication failed");
         }
 
         return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.Token));
     }
+
 }

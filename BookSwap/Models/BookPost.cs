@@ -20,7 +20,7 @@ public class BookPost
     
     [ForeignKey("UserId")]
     public string UserId { get; set; }
-    public IdentityUser? User { get; set; }
+    public IdentityUser User { get; set; }
     
     [ForeignKey("UserDetailsId")]
     public Guid? UserDetailsId { get; set; }

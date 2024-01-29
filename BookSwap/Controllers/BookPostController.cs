@@ -17,7 +17,9 @@ public class BookPostController : ControllerBase
     }
     
     [HttpPost("Create")]
-    public async Task<ActionResult<BookPost>> CreatePost([FromBody] BookPostRequest request)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+    public async Task<ActionResult<Guid>> CreatePost([FromBody] BookPostRequest request)
     {
         {
             if (!ModelState.IsValid)
@@ -32,7 +34,7 @@ public class BookPostController : ControllerBase
                 return BadRequest("Error creating post.");
             }
             
-            return Ok(createdBookPost);
+            return CreatedAtAction(nameof(CreatePost), new { id = createdBookPost.PostId }, createdBookPost.PostId);
 
         }
     }
