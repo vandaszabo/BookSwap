@@ -23,11 +23,11 @@ public class BookPostRepository : IBookPostRepository
         return await _dbContext.BookPosts.FirstOrDefaultAsync(bp => bp.PostId == postId);
     }
 
-    public async Task Create(BookPost bookPost)
+    public async Task<BookPost> Create(BookPost bookPost)
     {
         _dbContext.BookPosts.Add(bookPost);
         await _dbContext.SaveChangesAsync();
-        
+        return bookPost;
     }
 
     public async Task Update(BookPost bookPost)

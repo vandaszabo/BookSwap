@@ -65,15 +65,13 @@ public class Program
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
-            builder.Services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
             builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IUserService, UserService>();
             
-            // builder.Services.AddScoped<IDataProvider, GoogleBooksApi>();
-            // builder.Services.AddScoped<IBookJsonProcessor, BookJsonProcessor>();
-
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+
         }
 
 //Configure Swagger
