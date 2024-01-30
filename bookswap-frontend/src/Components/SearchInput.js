@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { TextField, Stack, Autocomplete } from '@mui/material';
 
 
-function SearchInput({ bookTitles, onSearch }) {
+function SearchInput({ books, onSearch }) {
 
     const [value, setValue] = useState(null);
 
     const defaultProps = {
-        options: bookTitles,
+        options: books,
         getOptionLabel: (option) => option.title,
-        getOptionKey: (option) => option.id
+        getOptionKey: (option) => option.postId
     };
 
     const handleChange = (event, newValue) => {

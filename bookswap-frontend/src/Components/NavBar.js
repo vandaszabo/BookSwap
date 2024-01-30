@@ -1,28 +1,78 @@
-import {React, useState} from 'react';
+import { React, useEffect, useState } from 'react';
 import { Typography, AppBar, Button, Card, IconButton, CardActions, CardContent, CardMedia, Grid, Toolbar, Container } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';
 import SearchInput from './SearchInput';
-import SearchIcon from '@mui/icons-material/Search'; 
+import SearchIcon from '@mui/icons-material/Search';
 
 function NavBar() {
     const [searchValue, setSearchValue] = useState('');
-
-    const bookTitles = [
-        { title: 'Emma', id: 1 },
-        { title: 'Love Story', id: 2 },
-        { title: 'The Cats', id: 3 },
-        { title: 'Normal People', id: 4 },
-        { title: 'The Notebook', id: 5 }
-    ]
+    const [books, setBooks] = useState([]);
+    const [post, setPost] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSearch = (value) => {
         console.log("Selected:", value);
         setSearchValue(value)
     };
 
-    const fetchBook = async()=>{
-        console.log(`fetching this book: ${searchValue.title}`)
-    }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:5029/api/BookPost/List", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    setErrorMessage(`Error getting books, status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data !== null) {
+                    setBooks(data);
+                }
+            } catch (error) {
+                console.error(`Error in fetchBook: ${error.message}`);
+                setErrorMessage(error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+    const fetchBook = async () => {
+        console.log(`fetching this bookPost: ${searchValue.title, searchValue.postId}`)
+        try {
+            const response = await fetch(`http://localhost:5029/api/BookPost/${searchValue.postId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                setErrorMessage(`Error getting bookPost, status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data !== null) {
+                setPost(data);
+                console.log(data);
+                return data;
+            }
+        } catch (error) {
+            console.error(`Error in fetchBook: ${error.message}`);
+            setErrorMessage(error.message);
+        }
+    };
+
 
     return (
         <>
@@ -32,8 +82,12 @@ function NavBar() {
                         <AutoStories />
                         <Typography variant="h6" style={{ marginLeft: '10px' }}>BookSwap</Typography>
                     </div>
-                    <SearchInput onSearch={handleSearch} bookTitles={bookTitles} />
-                    <Button onClick={fetchBook} color='inherit'> <SearchIcon/>Search</Button>
+
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <SearchInput onSearch={handleSearch} books={books} />
+                        <Button onClick={fetchBook} color='inherit'> <SearchIcon />Search</Button>
+                    </div>
+
                     <Button color="inherit" align="end">Login</Button>
                 </Toolbar>
             </AppBar>
