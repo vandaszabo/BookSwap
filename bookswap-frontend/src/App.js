@@ -1,13 +1,16 @@
 import React from 'react';
 import { CssBaseline } from '@mui/material';
 import NavBar from './Components/NavBar';
+import { AuthProvider } from './Components/AuthContext';
 
 function App() {
   return (
-    <>
-    <CssBaseline />  {/*Default Styling for my UI application*/}
+
+    <AuthProvider>
+      <CssBaseline />  {/*Default Styling for my UI application*/}
       <NavBar />
-    </>
+    </AuthProvider>
+
   );
 }
 
