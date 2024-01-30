@@ -44,4 +44,14 @@ public class BookService : IBookService
 
         return await _bookPostRepository.Create(newPost);
     }
+
+    public async Task<IEnumerable<BookPost?>> GetAll()
+    {
+       return await _bookPostRepository.GetAll();
+    }
+
+    public async Task<BookPost?> GetByPostId(Guid postId)
+    {
+        return await _bookPostRepository.GetById(postId);
+    }
 }
