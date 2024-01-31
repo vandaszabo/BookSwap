@@ -5,6 +5,7 @@ import { useAuth } from './Components/AuthContext';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import { createTheme } from '@mui/material/styles';
+import CreatePost from './Components/CreatePost';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -40,7 +41,7 @@ function App() {
         ) : showRegistration ? (
           <SignUp myTheme={myTheme}/>
         ) : (
-          <h6>Dashboard</h6>
+          <CreatePost  myTheme={myTheme}/>
         )}
     </div>
   );

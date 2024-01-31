@@ -73,13 +73,13 @@ function NavBar({ myTheme }) {
 
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <SearchInput onSearch={handleSearch} books={books} theme={myTheme}/>
-                            <Button onClick={displayPost} color='inherit'> <SearchIcon /><Typography variant="button" style={{ marginLeft: '10px' }}>Search</Typography></Button>
+                            <Button onClick={displayPost} color='inherit' style={{ backgroundColor: myTheme.palette.secondary.light, height: '100%'}}> <SearchIcon/></Button>
                         </div>
 
                         {!isLoggedIn ? (
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Button onClick={logIn} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Login</Typography></Button>
-                                <Button onClick={register} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Register</Typography></Button></div>) : (
+                                <Button onClick={logIn} color="inherit" align="end"><Typography variant="button" style={{ color: '' }}>Sign In</Typography></Button> /
+                                <Button onClick={register} color="inherit" align="end"><Typography variant="button" style={{ color: '#999999' }}>Sign Up</Typography></Button></div>) : (
                             <Button onClick={logOut} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Logout</Typography></Button>
                         )}
 

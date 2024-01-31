@@ -21,8 +21,13 @@ function SearchInput({ books, onSearch, theme }) {
 
     return (
         <div>
-            <Stack spacing={1} sx={{ width: 250 }}>
+            <Stack spacing={1} sx={{ width: 250}}>
                 <Autocomplete
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        padding: '0'
+                    }
+                }}
                     {...defaultProps}
                     id="clear-on-escape"
                     clearOnEscape
@@ -32,15 +37,11 @@ function SearchInput({ books, onSearch, theme }) {
                         <TextField {...params} label="Book Title" color='primary'
                         InputLabelProps={{
                             style: {
-                                color: 'myTheme.palette.primary.main',
-                                paddingLeft: '2px'
+                                color: '#999999',
+                                paddingLeft: '2px',
+                                fontSize: 'small'
                             },
                         }}
-                            sx={{
-                                '& .MuiInputBase-input': {
-                                    color: 'myTheme.palette.secondary.main'
-                                }
-                            }}
                         />
                     )}
                 />
