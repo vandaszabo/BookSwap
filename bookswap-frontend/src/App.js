@@ -12,16 +12,26 @@ function App() {
   const myTheme = createTheme({
     palette: {
       primary: {
-        main: '#1abc9c',
+        main: '#EEC824',
+        light: '#F2DC99'
       },
       secondary: {
-        main: '#34495e',
+        main: '#6A961F',
+        light: '#92B473'
       },
+      info: {
+        main: '#A0DFDF'
+      }
     },
   });
 
+  const containerStyle = {
+    backgroundColor: myTheme.palette.info.main,
+    minHeight: '100vh'
+  };
+
   return (
-    <>
+    <div style={containerStyle}>
         <CssBaseline />
         <NavBar myTheme={myTheme}/>
 
@@ -32,7 +42,7 @@ function App() {
         ) : (
           <h6>Dashboard</h6>
         )}
-    </>
+    </div>
   );
 }
 

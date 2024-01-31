@@ -82,7 +82,15 @@ export default function SignUp({myTheme}) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              color="primary"
+              sx={{
+                mt: 3,
+                mb: 2,
+                backgroundColor: (theme) => theme.palette.primary.main,
+                '&:hover': {
+                  backgroundColor: (theme) => theme.palette.secondary.light,
+                },
+              }}
             >
               Sign Up
             </Button>
