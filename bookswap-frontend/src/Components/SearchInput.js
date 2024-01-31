@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TextField, Stack, Autocomplete } from '@mui/material';
 
 
-function SearchInput({ books, onSearch }) {
+function SearchInput({ books, onSearch, theme }) {
 
     const [value, setValue] = useState(null);
 
@@ -20,24 +20,32 @@ function SearchInput({ books, onSearch }) {
     };
 
     return (
-        <Stack spacing={1} sx={{ width: 300 }}>
-            <Autocomplete
-                {...defaultProps}
-                id="clear-on-escape"
-                clearOnEscape
-                value={null}
-                onChange={handleChange}
-                renderInput={(params) => (
-                    <TextField {...params} label="Book Title" color='secondary' variant="standard"
-                        sx={{
-                            '& .MuiInputBase-input': {
-                                color: '#FFFFFF'
-                            }
+        <div>
+            <Stack spacing={1} sx={{ width: 250 }}>
+                <Autocomplete
+                    {...defaultProps}
+                    id="clear-on-escape"
+                    clearOnEscape
+                    value={null}
+                    onChange={handleChange}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Book Title" color='primary'
+                        InputLabelProps={{
+                            style: {
+                                color: 'myTheme.palette.primary.main',
+                                paddingLeft: '2px'
+                            },
                         }}
-                    />
-                )}
-            />
-        </Stack>
+                            sx={{
+                                '& .MuiInputBase-input': {
+                                    color: 'myTheme.palette.secondary.main'
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </Stack>
+        </div>
     )
 }
 export default SearchInput;

@@ -1,15 +1,16 @@
 import { React, useEffect, useState } from 'react';
-import { Typography, AppBar, Button, Card, IconButton, CardActions, CardContent, CardMedia, Grid, Toolbar, Container } from '@mui/material';
+import { Typography, AppBar, Button, Card, IconButton, CardActions, CardContent, CardMedia, Grid, Toolbar, Container, CssBaseline } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';
 import SearchInput from './SearchInput';
 import SearchIcon from '@mui/icons-material/Search';
-import {useAuth} from './AuthContext';
+import { useAuth } from './AuthContext';
+import { ThemeProvider } from '@mui/material/styles';
 
-function NavBar() {
+function NavBar({ myTheme }) {
     const [searchValue, setSearchValue] = useState('');
     const [books, setBooks] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
-    const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
+
+    const { isLoggedIn, setIsLoggedIn, setShowLogin, showLogin, showRegistration, setShowRegistration } = useAuth();
 
     const handleSearch = (value) => {
         console.log("Selected:", value);
@@ -27,7 +28,6 @@ function NavBar() {
                 });
 
                 if (!response.ok) {
-                    setErrorMessage(`Error getting books, status: ${response.status}`);
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
@@ -38,34 +38,54 @@ function NavBar() {
                 }
             } catch (error) {
                 console.error(`Error in fetchBook: ${error.message}`);
-                setErrorMessage(error.message);
             }
         };
 
         fetchData();
     }, []);
 
-    const displayPost =()=>{
+    const displayPost = () => {
         console.log('Display this:', searchValue);
+    }
+
+    const logIn = () => {
+        setShowLogin(true);
+        setShowRegistration(false);
+    }
+    const logOut = () => {
+        setIsLoggedIn(false);
+    }
+    const register = () => {
+        setShowRegistration(true);
+        setShowLogin(false);
     }
 
     return (
         <>
-            <AppBar position="relative" color='secondary'>  {/*Navigation bar*/}
-                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}> {/*blue line (inside we have icons of tools we want to add)*/}
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <AutoStories />
-                        <Typography variant="h6" style={{ marginLeft: '10px' }}>BookSwap</Typography>
-                    </div>
+            <ThemeProvider theme={myTheme}>
+                <CssBaseline />
+                <AppBar position="relative" color='primary' sx={{ backgroundColor: myTheme.palette.primary.main }}>
+                    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <AutoStories />
+                            <Typography variant="h6" style={{ marginLeft: '10px' }}>BookSwap</Typography>
+                        </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <SearchInput onSearch={handleSearch} books={books} />
-                        <Button onClick={displayPost} color='inherit'> <SearchIcon />Search</Button>
-                    </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <SearchInput onSearch={handleSearch} books={books} theme={myTheme}/>
+                            <Button onClick={displayPost} color='inherit'> <SearchIcon /><Typography variant="button" style={{ marginLeft: '10px' }}>Search</Typography></Button>
+                        </div>
 
-                    <Button color="inherit" align="end">{!isLoggedIn ? 'Login' : 'Logout'}</Button>
-                </Toolbar>
-            </AppBar>
+                        {!isLoggedIn ? (
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Button onClick={logIn} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Login</Typography></Button>
+                                <Button onClick={register} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Register</Typography></Button></div>) : (
+                            <Button onClick={logOut} color="inherit" align="end"><Typography variant="button" style={{ marginLeft: '10px' }}>Logout</Typography></Button>
+                        )}
+
+                    </Toolbar>
+                </AppBar>
+            </ThemeProvider>
         </>
     )
 }
