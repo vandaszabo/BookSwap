@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
             return BadRequest("Authentication failed");
         }
 
-        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.Token));
+        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.PhoneNumber, result.Token));
     }
 
 }

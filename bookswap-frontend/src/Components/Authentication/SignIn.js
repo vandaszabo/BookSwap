@@ -1,11 +1,10 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -17,16 +16,14 @@ export default function SignIn({ myTheme }) {
   const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
   const [error, setError] = useState('');
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
       username: event.target.username.value,
       password: event.target.password.value,
     };
-
     try {
-      await sendUserData(formData);
+      await getUserData(formData);
     } catch (error) {
       console.error(`Error in handleSubmit: ${error.message}`);
       setError(error.message);
@@ -34,7 +31,24 @@ export default function SignIn({ myTheme }) {
   };
 
 
-  const sendUserData = async (data) => {
+  useEffect(() => {
+    if (authUser !== null) {
+      console.log("authuser:", authUser);
+      localStorage.setItem('authUser', JSON.stringify(authUser));
+
+      fetch(`http://localhost:5029/api/User/${authUser.id}`)
+        .then(response => response.json())
+        .then(details => {
+          if (details !== null) {
+            console.log("userDetails:", details);
+            setAuthUser({ ...authUser, ...details });
+          }
+        })
+    }
+  }, [authUser, setAuthUser]);
+
+
+  const getUserData = async (data) => {
     try {
       const response = await fetch("http://localhost:5029/api/Auth/Login", {
         method: 'POST',
@@ -52,10 +66,15 @@ export default function SignIn({ myTheme }) {
       const responseData = await response.json();
 
       if (responseData !== null) {
-        setAuthUser(responseData);
+        setAuthUser({
+          id: responseData.id,
+          username: responseData.username,
+          email: responseData.email,
+          phoneNumber: responseData.phoneNumber
+        });
         setIsLoggedIn(true);
         setShowLogin(false);
-        console.log(responseData)
+        console.log("response data: ", responseData)
       }
     } catch (error) {
       console.error(`Error in sendUserData: ${error.message}`);
@@ -121,6 +140,7 @@ export default function SignIn({ myTheme }) {
             </Button>
           </Box>
         </Box>
+        {error &&  <Alert severity="error">{error}</Alert>}
       </Container>
     </ThemeProvider>
   );

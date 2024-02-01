@@ -1,11 +1,11 @@
 import React from 'react';
 import { CssBaseline } from '@mui/material';
-import NavBar from './Components/NavBar';
-import { useAuth } from './Components/AuthContext';
-import SignIn from './Components/SignIn';
-import SignUp from './Components/SignUp';
+import { useAuth } from './Components/Authentication/AuthContext';
+import SignIn from './Components/Authentication/SignIn';
+import SignUp from './Components/Authentication/SignUp';
 import { createTheme } from '@mui/material/styles';
 import CreatePost from './Components/CreatePost';
+import ResponsiveNavbar from './Components/ResponsiveNavbar';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -34,7 +34,7 @@ function App() {
   return (
     <div style={containerStyle}>
         <CssBaseline />
-        <NavBar myTheme={myTheme}/>
+        <ResponsiveNavbar myTheme={myTheme}/>
 
         {showLogin ? (
           <SignIn myTheme={myTheme}/>
