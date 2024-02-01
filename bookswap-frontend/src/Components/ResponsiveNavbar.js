@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, AppBar, Button, Toolbar, CssBaseline, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
+import { Typography, AppBar, Button, CssBaseline, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchInput from './SearchInput';
+import { useMediaQuery } from '@mui/material';
 
 
 function ResponsiveNavbar({ myTheme }) {
@@ -14,6 +15,7 @@ function ResponsiveNavbar({ myTheme }) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, setShowLogin, setShowRegistration } = useAuth();
+    const isSmallScreen = useMediaQuery(myTheme.breakpoints.down('sm'));
 
     const handleSearch = (value) => {
         console.log("Selected:", value);
@@ -69,7 +71,7 @@ function ResponsiveNavbar({ myTheme }) {
     };
 
     const showProfile = () => {
-        console.log("profile")
+        console.log("profile", authUser)
     };
 
     const handleOpenUserMenu = (event) => {
@@ -92,10 +94,9 @@ function ResponsiveNavbar({ myTheme }) {
         <>
             <ThemeProvider theme={myTheme}>
                 <CssBaseline />
-                <AppBar position="relative" color='primary' sx={{ backgroundColor: myTheme.palette.primary.main }}>
-                    <Container maxWidth="xl">
-                        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
+                <AppBar position="static" color='primary' sx={{ backgroundColor: myTheme.palette.primary.main}}>
+                    <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
                                 <IconButton
                                     size="large"
                                     aria-label="account of current user"
@@ -106,8 +107,8 @@ function ResponsiveNavbar({ myTheme }) {
                                 >
                                     <MenuIcon />
                                 </IconButton>
-                                </Box>
-                                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
+                            </Box>
+                            <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
                                 <Menu
                                     id="main-menu"
                                     anchorEl={anchorElBooks}
@@ -123,49 +124,56 @@ function ResponsiveNavbar({ myTheme }) {
                                     open={Boolean(anchorElBooks)}
                                     onClose={handleCloseMainMenu}
                                     sx={{
-                                        display: { xs: 'block', md: 'flex' },
+                                        display: 'flex',
                                     }}
                                 >
-                                    <MenuItem onClick={()=>console.log("books")}>Books</MenuItem>
-                                    <MenuItem onClick={()=>console.log("users")}>Users</MenuItem>
+                                    <MenuItem onClick={() => console.log("books")}>Books</MenuItem>
+                                    <MenuItem onClick={() => console.log("users")}>Users</MenuItem>
                                 </Menu>
                             </Box>
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="a"
-                                href="#app-bar-with-responsive-menu"
-                                sx={{
-                                    mr: 2,
-                                    display: { xs: 'none', md: 'flex' },
-                                    fontFamily: 'monospace',
-                                    fontWeight: 700,
-                                    letterSpacing: '.3rem',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                }}
-                            >
-                                <AutoStories />
-                                BookSwap
-                            </Typography>
-
-                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                <SearchInput onSearch={handleSearch} books={books} theme={myTheme} />
-                                <Button
-                                    onClick={displayPost}
-                                    color='inherit'
-                                    style={{ backgroundColor: myTheme.palette.secondary.light, height: '100%' }}
-                                >
-                                    <SearchIcon />
-                                </Button>
+                            <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                                {isSmallScreen ? null : (
+                                    <Typography
+                                        variant="h6"
+                                        noWrap
+                                        component="a"
+                                        href="#app-bar-with-responsive-menu"
+                                        sx={{
+                                            mr: 2,
+                                            display: 'flex',
+                                            fontFamily: 'monospace',
+                                            fontWeight: 700,
+                                            letterSpacing: '.3rem',
+                                            color: 'inherit',
+                                            textDecoration: 'none',
+                                        }}
+                                    >
+                                        <AutoStories />
+                                        BookSwap
+                                    </Typography>
+                                )}
                             </Box>
 
-                            <Box sx={{ flexGrow: 0 }}>
+                            <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                                {isSmallScreen ? null : (
+                                    <>
+                                        <SearchInput onSearch={handleSearch} books={books} theme={myTheme} />
+                                        <Button
+                                            onClick={displayPost}
+                                            color='inherit'
+                                            style={{ backgroundColor: myTheme.palette.secondary.light, height: '100%' }}
+                                        >
+                                            <SearchIcon />
+                                        </Button>
+                                    </>
+                                )}
+                            </Box>
+                            <Box sx={{ flexGrow: 0, display: 'inline-flex' }}>
                                 {!isLoggedIn ? (
                                     <>
                                         <Button onClick={logIn} color="inherit" align="end">
                                             <Typography variant="button" style={{ color: '' }}>Sign In</Typography>
-                                        </Button> /
+                                        </Button> <Typography sx={{alignSelf: 'center'}}>/</Typography>
                                         <Button onClick={register} color="inherit" align="end">
                                             <Typography variant="button" style={{ color: '#999999' }}>Sign Up</Typography>
                                         </Button>
@@ -182,31 +190,27 @@ function ResponsiveNavbar({ myTheme }) {
                                                 />
                                             </IconButton>
                                         </Tooltip>
-                                        <Menu
-                                            sx={{
-                                                display: { xs: 'block', md: 'flex' },
-                                            }}
-                                            id="menu-user"
-                                            anchorEl={anchorElUser}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={Boolean(anchorElUser)}
-                                            onClose={handleCloseUserMenu}
-                                        >
-                                            <MenuItem onClick={showProfile}>Profile</MenuItem>
-                                            <MenuItem onClick={logOut}>Logout</MenuItem>
-                                        </Menu>
                                     </>
                                 )}
                             </Box>
-                        </Toolbar>
+                            <Menu
+                                id="menu-user"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                <MenuItem onClick={showProfile}>Profile</MenuItem>
+                                <MenuItem onClick={logOut}>Logout</MenuItem>
+                            </Menu>
                     </Container>
                 </AppBar>
             </ThemeProvider>
