@@ -16,6 +16,10 @@ export default function SignIn({ myTheme }) {
   const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
   const [error, setError] = useState('');
 
+  useEffect(()=>{
+    console.log("Useeffect authuser:", authUser);
+  },[authUser])
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
@@ -30,23 +34,17 @@ export default function SignIn({ myTheme }) {
     }
   };
 
-
-  useEffect(() => {
-    if (authUser !== null) {
-      console.log("authuser:", authUser);
-      localStorage.setItem('authUser', JSON.stringify(authUser));
-
-      fetch(`http://localhost:5029/api/User/${authUser.id}`)
-        .then(response => response.json())
-        .then(details => {
-          if (details !== null) {
-            console.log("userDetails:", details);
-            setAuthUser({ ...authUser, ...details });
-          }
-        })
-    }
-  }, [authUser, setAuthUser]);
-
+  const getUserDetails = async (userId)=>{
+    await fetch(`http://localhost:5029/api/User/Details/${userId}`)
+    .then(response => response.json())
+    .then(details => {
+      if (details !== null) {
+        console.log("userDetails:", details);
+        setAuthUser(prevAuthUser => ({ ...prevAuthUser, ...details }));
+        localStorage.setItem('details', JSON.stringify(details));
+      }
+    })
+  };
 
   const getUserData = async (data) => {
     try {
@@ -66,15 +64,19 @@ export default function SignIn({ myTheme }) {
       const responseData = await response.json();
 
       if (responseData !== null) {
-        setAuthUser({
+        const newUserObj={
           id: responseData.id,
           username: responseData.username,
           email: responseData.email,
           phoneNumber: responseData.phoneNumber
-        });
+        }
+        setAuthUser(newUserObj);
+        localStorage.setItem('authUser', JSON.stringify(newUserObj));
+        await getUserDetails(newUserObj.id);
         setIsLoggedIn(true);
         setShowLogin(false);
         console.log("response data: ", responseData)
+        console.log('authuser', authUser);
       }
     } catch (error) {
       console.error(`Error in sendUserData: ${error.message}`);

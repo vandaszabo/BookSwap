@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Typography,
-    AppBar,
-    Button,
-    Toolbar,
-    CssBaseline,
-    Avatar,
-    IconButton,
-    Menu,
-    MenuItem,
-    Tooltip,
-    Container,
-    Box,
-} from '@mui/material';
+import { Typography, AppBar, Button, Toolbar, CssBaseline, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';
-import SearchInput from './SearchInput';
-import SearchIcon from '@mui/icons-material/Search';
-import { useAuth } from './Authentication/AuthContext';
 import { ThemeProvider } from '@mui/material/styles';
+import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import SearchInput from './SearchInput';
 
 
 function ResponsiveNavbar({ myTheme }) {
     const [searchValue, setSearchValue] = useState('');
     const [books, setBooks] = useState([]);
-
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElBooks, setAnchorElBooks] = React.useState(null);
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, setShowLogin, setShowRegistration } = useAuth();
 
     const handleSearch = (value) => {
@@ -61,28 +49,28 @@ function ResponsiveNavbar({ myTheme }) {
 
     const displayPost = () => {
         console.log('Display this:', searchValue);
-    }
+    };
 
     const logIn = () => {
         setShowLogin(true);
         setShowRegistration(false);
-    }
+    };
 
     const logOut = () => {
         setIsLoggedIn(false);
         setAuthUser(null);
         localStorage.removeItem('authUser');
-    }
+        localStorage.removeItem('details');
+    };
 
     const register = () => {
         setShowRegistration(true);
         setShowLogin(false);
-    }
-    const showProfile = () => {
-        <div>{authUser.username}</div>
-    }
+    };
 
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const showProfile = () => {
+        console.log("profile")
+    };
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -92,28 +80,37 @@ function ResponsiveNavbar({ myTheme }) {
         setAnchorElUser(null);
     };
 
+    const handleOpenMainMenu = (event) => {
+        setAnchorElBooks(event.currentTarget);
+    };
+
+    const handleCloseMainMenu = () => {
+        setAnchorElBooks(null);
+    };
+
     return (
         <>
-                <ThemeProvider theme={myTheme}>
+            <ThemeProvider theme={myTheme}>
                 <CssBaseline />
                 <AppBar position="relative" color='primary' sx={{ backgroundColor: myTheme.palette.primary.main }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex'} }}>
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
                                 <IconButton
                                     size="large"
                                     aria-label="account of current user"
                                     aria-controls="menu-appbar"
                                     aria-haspopup="true"
-                                    onClick={handleOpenUserMenu}
+                                    onClick={handleOpenMainMenu}
                                     color="inherit"
                                 >
                                     <MenuIcon />
                                 </IconButton>
-
+                                </Box>
+                                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
                                 <Menu
-                                    id="menu-appbar"
-                                    anchorEl={anchorElUser}
+                                    id="main-menu"
+                                    anchorEl={anchorElBooks}
                                     anchorOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'left',
@@ -123,18 +120,14 @@ function ResponsiveNavbar({ myTheme }) {
                                         vertical: 'top',
                                         horizontal: 'left',
                                     }}
-                                    open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
+                                    open={Boolean(anchorElBooks)}
+                                    onClose={handleCloseMainMenu}
                                     sx={{
                                         display: { xs: 'block', md: 'flex' },
                                     }}
                                 >
-                                    <MenuItem onClick={showProfile}>
-                                        <Typography textAlign="center">Books</Typography>
-                                    </MenuItem>
-                                    <MenuItem onClick={logOut}>
-                                        <Typography textAlign="center">Users</Typography>
-                                    </MenuItem>
+                                    <MenuItem onClick={()=>console.log("books")}>Books</MenuItem>
+                                    <MenuItem onClick={()=>console.log("users")}>Users</MenuItem>
                                 </Menu>
                             </Box>
                             <Typography
@@ -190,8 +183,10 @@ function ResponsiveNavbar({ myTheme }) {
                                             </IconButton>
                                         </Tooltip>
                                         <Menu
-                                            sx={{ mt: '45px' }}
-                                            id="menu-appbar"
+                                            sx={{
+                                                display: { xs: 'block', md: 'flex' },
+                                            }}
+                                            id="menu-user"
                                             anchorEl={anchorElUser}
                                             anchorOrigin={{
                                                 vertical: 'top',
@@ -205,12 +200,8 @@ function ResponsiveNavbar({ myTheme }) {
                                             open={Boolean(anchorElUser)}
                                             onClose={handleCloseUserMenu}
                                         >
-                                            <MenuItem onClick={showProfile}>
-                                                <Typography textAlign="center">Profile</Typography>
-                                            </MenuItem>
-                                            <MenuItem onClick={logOut}>
-                                                <Typography textAlign="center">Logout</Typography>
-                                            </MenuItem>
+                                            <MenuItem onClick={showProfile}>Profile</MenuItem>
+                                            <MenuItem onClick={logOut}>Logout</MenuItem>
                                         </Menu>
                                     </>
                                 )}
