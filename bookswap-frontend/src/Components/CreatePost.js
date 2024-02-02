@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,32 +13,86 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PostForm from './Forms/PostForm';
 import { ThemeProvider } from '@mui/material/styles';
+import { useAuth } from './Authentication/AuthContext';
 
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
-function getStepContent(step) {
+function getStepContent(step, bookPostData) {
   switch (step) {
     case 0:
       return <PostForm />;
     case 1:
       return <div>Picture upload form will be here</div>;
     case 2:
-      return <div>Post review will be here</div>;
+      return <div>{bookPostData.title} {bookPostData.author}</div>;
     default:
       throw new Error('Unknown step');
   }
 }
 
-export default function CreatePost({myTheme}) {
+export default function CreatePost({myTheme, setShowCreatePost}) {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [bookPostData, setBookPostData] = useState({});
+  const [error, setError] = useState("");
+  const [coverImage, setCoverImage] = useState("url");
+  const {authUser} = useAuth();
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if (activeStep === 0) {
+      const postData = PostForm.getData();
+      setBookPostData(postData);
+    }
+    if (activeStep === 1) {
+      console.log("review: ", bookPostData)
+    }
+    if(activeStep === 2){
+      setShowCreatePost(false);
+      handleCreatePost(bookPostData, coverImage, authUser.id)
+      console.log("post created", bookPostData, coverImage, authUser.id);
+    }
+    setActiveStep((activeStep) => activeStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    setActiveStep((activeStep) => activeStep - 1);
+  };
+
+  async function handleCreatePost(data, image, userId) {
+    try {
+      const response = await fetch("http://localhost:5029/api/BookPost/Create", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: data.title,
+          author: data.author,
+          description: data.description,
+          category: data.category,
+          language: data.language,
+          pageCount: data.pageCount,
+          coverImage: image,
+          userId: userId
+        }),
+      });
+
+      if (!response.ok) {
+        setError("Invalid post data")
+        throw new Error('Bookpost creation failed.');
+      }
+
+      const responseData = await response.json();
+
+      if (responseData !== null) {
+        console.log("new post: ", responseData);
+        setShowCreatePost(false);
+      }
+    } catch (error) {
+      console.error(`Error in createPost: ${error.message}`);
+      setError(error.message);
+      throw error;
+    }
   };
 
   return (
@@ -67,7 +122,7 @@ export default function CreatePost({myTheme}) {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              {getStepContent(activeStep)}
+              {getStepContent(activeStep, bookPostData)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
                   <Button onClick={handleBack} sx={{ mt: 3, ml: 1}}>
@@ -86,7 +141,7 @@ export default function CreatePost({myTheme}) {
                     },
                   }}
                 >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                  {activeStep === steps.length - 1 ? 'Create' : 'Next'}
                 </Button>
               </Box>
             </React.Fragment>

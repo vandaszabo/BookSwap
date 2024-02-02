@@ -42,7 +42,7 @@ function App() {
         ) : showRegistration ? (
           <SignUp myTheme={myTheme}/>
         ) : showCreatePost ? (
-          <CreatePost  myTheme={myTheme}/>
+          <CreatePost  myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
         ): <div>Home page</div>}
     </div>
   );

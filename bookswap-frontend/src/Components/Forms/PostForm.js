@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 export default function PostForm() {
-
     const [formData, setFormData] = useState({
         title: '',
         author: '',
@@ -13,7 +12,9 @@ export default function PostForm() {
         pageCount: '',
         language: '',
     });
-
+    
+    PostForm.getData = () => formData;
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
