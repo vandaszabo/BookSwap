@@ -41,13 +41,13 @@ public class AuthService : IAuthService
         return authResult;
     }
 
-    public async Task<AuthResult> LoginAsync(string username, string password)
+    public async Task<AuthResult> LoginAsync(string email, string password)
     {
-        var managedUser = await _userManager.FindByNameAsync(username);
+        var managedUser = await _userManager.FindByEmailAsync(email);
 
         if (managedUser == null)
         {
-            return InvalidUsername(username);
+            return InvalidEmail(email);
         }
 
         var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, password);
@@ -69,6 +69,12 @@ public class AuthService : IAuthService
         return result;
     }
 
+    private static AuthResult InvalidEmail(string email)
+    {
+        var result = new AuthResult(false,"", email,"", "", "");
+        result.ErrorMessages.Add("Bad credentials", "Invalid email");
+        return result;
+    }
     private static AuthResult InvalidPassword(string email, string userName)
     {
         var result = new AuthResult(false, "", email, userName, "", "");

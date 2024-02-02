@@ -10,7 +10,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import PostForm from './PostForm';
+import PostForm from './Forms/PostForm';
 import { ThemeProvider } from '@mui/material/styles';
 
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {React, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,23 +7,63 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
+import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
+import { useAuth } from './AuthContext';
 
 export default function SignUp({myTheme}) {
 
-  const handleSubmit = (event) => {
+const {setShowRegistration, setShowLogin } = useAuth();
+const [error, setError] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = {
+      email: event.target.email.value,
+      username: event.target.username.value,
+      password: event.target.password.value,
+    };
+    try {
+      await createUser(formData);
+    } catch (error) {
+      console.error(`Error in handleSubmit: ${error.message}`);
+      setError(error.message);
+    }
   };
 
+
+  const createUser = async (data) => {
+    try {
+      const response = await fetch("http://localhost:5029/api/Auth/Register", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        setError("Invalid registration data")
+        throw new Error('Registration failed.');
+      }
+
+      const responseData = await response.json();
+
+      if (responseData !== null) {
+        setShowLogin(true);
+        setShowRegistration(false);
+        console.log("registered user data: ", responseData)
+      }
+    } catch (error) {
+      console.error(`Error in createUser: ${error.message}`);
+      setError(error.message);
+      throw error;
+    }
+  };
   return (
     <ThemeProvider theme={myTheme}>
       <Container component="main" maxWidth="xs">
@@ -48,20 +88,20 @@ export default function SignUp({myTheme}) {
                 <TextField
                   required
                   fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -96,6 +136,7 @@ export default function SignUp({myTheme}) {
             </Button>
           </Box>
         </Box>
+        {error &&  <Alert severity="error">{error}</Alert>}
       </Container>
     </ThemeProvider>
   );

@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import SearchInput from './SearchInput';
+import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
 
 

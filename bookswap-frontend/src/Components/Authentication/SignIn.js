@@ -16,14 +16,14 @@ export default function SignIn({ myTheme }) {
   const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
   const [error, setError] = useState('');
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("Useeffect authuser:", authUser);
-  },[authUser])
+  }, [authUser])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      username: event.target.username.value,
+      email: event.target.email.value,
       password: event.target.password.value,
     };
     try {
@@ -34,16 +34,24 @@ export default function SignIn({ myTheme }) {
     }
   };
 
-  const getUserDetails = async (userId)=>{
-    await fetch(`http://localhost:5029/api/User/Details/${userId}`)
-    .then(response => response.json())
-    .then(details => {
-      if (details !== null) {
-        console.log("userDetails:", details);
-        setAuthUser(prevAuthUser => ({ ...prevAuthUser, ...details }));
-        localStorage.setItem('details', JSON.stringify(details));
+  const getUserDetails = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
+
+      if (response.ok) {
+        const details = await response.json();
+
+        if (details !== null) {
+          console.log("userDetails:", details);
+          setAuthUser((prevAuthUser) => ({ ...prevAuthUser, ...details }));
+          localStorage.setItem('details', JSON.stringify(details));
+        }
+      } else {
+        console.error('Error fetching user details:', response.statusText);
       }
-    })
+    } catch (error) {
+      console.warn(`User doesn't have details yet.(userDetails = null) ${error.message}`);
+    }
   };
 
   const getUserData = async (data) => {
@@ -64,7 +72,7 @@ export default function SignIn({ myTheme }) {
       const responseData = await response.json();
 
       if (responseData !== null) {
-        const newUserObj={
+        const newUserObj = {
           id: responseData.id,
           username: responseData.username,
           email: responseData.email,
@@ -72,7 +80,11 @@ export default function SignIn({ myTheme }) {
         }
         setAuthUser(newUserObj);
         localStorage.setItem('authUser', JSON.stringify(newUserObj));
-        await getUserDetails(newUserObj.id);
+        try {
+          await getUserDetails(newUserObj.id);
+        } catch (error) {
+          console.warn(`User doesn't have details yet.(userDetails = null) ${error.message}`);
+        }
         setIsLoggedIn(true);
         setShowLogin(false);
         console.log("response data: ", responseData)
@@ -108,10 +120,10 @@ export default function SignIn({ myTheme }) {
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField
@@ -142,7 +154,7 @@ export default function SignIn({ myTheme }) {
             </Button>
           </Box>
         </Box>
-        {error &&  <Alert severity="error">{error}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
       </Container>
     </ThemeProvider>
   );
