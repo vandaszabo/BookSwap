@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import { CssBaseline } from '@mui/material';
 import { useAuth } from './Components/Authentication/AuthContext';
 import SignIn from './Components/Authentication/SignIn';
@@ -9,6 +9,7 @@ import ResponsiveNavbar from './Components/ResponsiveNavbar';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
+  const [showCreatePost, setShowCreatePost] = useState(false);
 
   const myTheme = createTheme({
     palette: {
@@ -34,15 +35,15 @@ function App() {
   return (
     <div style={containerStyle}>
         <CssBaseline />
-        <ResponsiveNavbar myTheme={myTheme}/>
+        <ResponsiveNavbar myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
 
         {showLogin ? (
           <SignIn myTheme={myTheme}/>
         ) : showRegistration ? (
           <SignUp myTheme={myTheme}/>
-        ) : (
+        ) : showCreatePost ? (
           <CreatePost  myTheme={myTheme}/>
-        )}
+        ): <div>Home page</div>}
     </div>
   );
 }
