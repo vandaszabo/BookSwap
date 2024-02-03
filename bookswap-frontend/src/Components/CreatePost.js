@@ -39,6 +39,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
   const [error, setError] = useState("");
   const [coverImage, setCoverImage] = useState("url");
   const { authUser } = useAuth();
+  console.log(authUser);
 
   const handleNext = () => {
     if (activeStep === 0) {

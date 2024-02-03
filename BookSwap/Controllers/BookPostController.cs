@@ -98,4 +98,26 @@ public class BookPostController : ControllerBase
             return StatusCode(500, "Internal Server Error");
         }
     }
+    
+    [HttpGet("User/{userId}")]
+    public async Task<ActionResult<IEnumerable<BookPost>>> GetUserPosts(string userId)
+    {
+        try
+        {
+            var postList = await _bookService.GetUserPosts(userId);
+        
+            if (postList == null)
+            {
+                return NotFound("Cannot find user's posts.");
+            }
+
+            return Ok(postList);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetUserPosts: {ex.Message}");
+        
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
 }

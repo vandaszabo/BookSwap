@@ -7,11 +7,13 @@ import { createTheme } from '@mui/material/styles';
 import CreatePost from './Components/CreatePost';
 import ResponsiveNavbar from './Components/ResponsiveNavbar';
 import Album from './Components/Album';
+import Profile from './Components/Profile';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [bookList, setBookList] = useState(false);
+  const [showProfilePage, setShowProfilePage] = useState(false);
 
   const myTheme = createTheme({
     palette: {
@@ -39,7 +41,7 @@ function App() {
   return (
     <div style={containerStyle}>
         <CssBaseline />
-        <ResponsiveNavbar myTheme={myTheme} setShowCreatePost={setShowCreatePost} setBookList={setBookList}/>
+        <ResponsiveNavbar myTheme={myTheme} setShowCreatePost={setShowCreatePost} setBookList={setBookList} setShowProfilePage={setShowProfilePage}/>
 
         {showLogin ? (
           <SignIn myTheme={myTheme}/>
@@ -47,7 +49,11 @@ function App() {
           <SignUp myTheme={myTheme}/>
         ) : showCreatePost ? (
           <CreatePost  myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
-        ): <Album theme={myTheme} books={bookList}/>}
+        ): showProfilePage? (
+          <Profile />
+        ) : (
+        <Album theme={myTheme} books={bookList}/>
+        )}
         {/* <div>Home page</div>} */}
     </div>
   );

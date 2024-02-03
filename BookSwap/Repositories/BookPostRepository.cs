@@ -63,5 +63,21 @@ public class BookPostRepository : IBookPostRepository
             return null;
         }
     }
+
+    public async Task<IEnumerable<BookPost?>?> GetAllFromUser(string userId)
+    {
+        try
+        {
+            var posts = await _dbContext.BookPosts
+                .Where(bp => bp.UserId == userId)
+                .ToListAsync();
+
+            return posts;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
     
 }

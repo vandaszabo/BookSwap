@@ -9,4 +9,5 @@ public interface IBookService
     Task<IEnumerable<BookPost?>> GetAll();
     Task<BookPost?> GetByPostId(Guid postId);
     Task<BookPost?> DeletePost(Guid postId);
+    Task<IEnumerable<BookPost?>?> GetUserPosts(string userId);
 }

@@ -7,9 +7,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
+import Profile from './Profile';
 
 
-function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList }) {
+function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProfilePage }) {
     const [searchValue, setSearchValue] = useState('');
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -74,7 +75,9 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList }) {
 
     const showProfile = () => {
         setAnchorElUser(null);
-        console.log("profile", authUser)
+        console.log("profile", authUser);
+        setShowProfilePage(true);
+        setShowCreatePost(false);
     };
 
     const showBooks = () => {
