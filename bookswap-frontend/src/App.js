@@ -6,6 +6,7 @@ import SignUp from './Components/Authentication/SignUp';
 import { createTheme } from '@mui/material/styles';
 import CreatePost from './Components/CreatePost';
 import ResponsiveNavbar from './Components/ResponsiveNavbar';
+import Album from './Components/Album';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -14,21 +15,23 @@ function App() {
   const myTheme = createTheme({
     palette: {
       primary: {
-        main: '#EEC824',
-        light: '#F2DC99'
+        //main: '#FFA500',
+        //main: '#567C57',
+        main: '#03490C',
+        light: '#A9B388'
       },
       secondary: {
-        main: '#6A961F',
-        light: '#92B473'
+        main: '#f4f4f4',
+        light: '#BAD162'
       },
       info: {
-        main: '#A0DFDF'
+        main: '#805BA5'
       }
     },
   });
 
   const containerStyle = {
-    backgroundColor: myTheme.palette.info.main,
+    backgroundColor: myTheme.palette.secondary.main,
     minHeight: '100vh'
   };
 
@@ -43,7 +46,8 @@ function App() {
           <SignUp myTheme={myTheme}/>
         ) : showCreatePost ? (
           <CreatePost  myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
-        ): <div>Home page</div>}
+        ): <Album theme={myTheme}/>}
+        {/* <div>Home page</div>} */}
     </div>
   );
 }

@@ -109,7 +109,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
         <>
             <ThemeProvider theme={myTheme}>
                 <CssBaseline />
-                <AppBar position="static" color='primary' sx={{ backgroundColor: myTheme.palette.primary.main, padding: '3px' }}>
+                <AppBar position="static" color='primary' sx={{ background: myTheme.palette.primary.main, padding: '3px' }}>
                     <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
                             <Tooltip title="Menu">
@@ -182,7 +182,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
                                         <Button
                                             onClick={displayPost}
                                             color='inherit'
-                                            style={{ backgroundColor: myTheme.palette.secondary.light, height: '100%' }}
+                                            style={{ border: '1px', borderBlockColor: myTheme.palette.primary.main, height: '100%'}}
                                         >
                                             <SearchIcon />
                                         </Button>

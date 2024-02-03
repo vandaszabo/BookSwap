@@ -5,7 +5,13 @@ import { Input } from '@mui/material';
 
 export default function FileUpload() {
     return (
-        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{
+            mt: 3,
+            ml: 1,
+            '&:hover': {
+              backgroundColor: (theme) => theme.palette.secondary.light,
+            },
+          }}>
             Upload picture
             <Input type="file" sx={{
                 clip: 'rect(0 0 0 0)',
