@@ -9,7 +9,7 @@ import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
 
 
-function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
+function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList }) {
     const [searchValue, setSearchValue] = useState('');
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -40,6 +40,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
 
                 if (data !== null) {
                     setBooks(data);
+                    setBookList(data);
                 }
             } catch (error) {
                 console.error(`Error in fetchBook: ${error.message}`);
@@ -47,7 +48,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
         };
 
         fetchData();
-    }, []);
+    }, [setBooks, setBookList]);
 
     const displayPost = () => {
         console.log('Display this:', searchValue);

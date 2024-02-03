@@ -11,6 +11,7 @@ import Album from './Components/Album';
 function App() {
   const { showLogin, showRegistration } = useAuth();
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [bookList, setBookList] = useState(false);
 
   const myTheme = createTheme({
     palette: {
@@ -38,7 +39,7 @@ function App() {
   return (
     <div style={containerStyle}>
         <CssBaseline />
-        <ResponsiveNavbar myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
+        <ResponsiveNavbar myTheme={myTheme} setShowCreatePost={setShowCreatePost} setBookList={setBookList}/>
 
         {showLogin ? (
           <SignIn myTheme={myTheme}/>
@@ -46,7 +47,7 @@ function App() {
           <SignUp myTheme={myTheme}/>
         ) : showCreatePost ? (
           <CreatePost  myTheme={myTheme} setShowCreatePost={setShowCreatePost}/>
-        ): <Album theme={myTheme}/>}
+        ): <Album theme={myTheme} books={bookList}/>}
         {/* <div>Home page</div>} */}
     </div>
   );

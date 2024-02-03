@@ -8,4 +8,5 @@ public interface IBookService
     Task<BookPost?> CreateBookPost(BookPostRequest request);
     Task<IEnumerable<BookPost?>> GetAll();
     Task<BookPost?> GetByPostId(Guid postId);
+    Task<BookPost?> DeletePost(Guid postId);
 }

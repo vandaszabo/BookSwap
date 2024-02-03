@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -14,16 +15,43 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { FormControl } from '@mui/material';
+import { MenuItem } from '@mui/material';
+import { InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-export default function Album({ theme }) {
+export default function Album({ theme, books }) {
+
+    const [selectedGenre, setSelectedGenre] = useState("");
+    const [selectedLanguage, setSelectedLanguage] = useState("");
+    const [likes, setLikes] = useState({});
+
+    const handleChangeGenre = (event) => {
+        setSelectedGenre(event.target.value);
+    };
+
+    const handleChangeLanguage = (event) => {
+        setSelectedLanguage(event.target.value);
+    };
+
+    const handleLikeButtonClick = (bookId) => {
+        setLikes(prevLikes => {
+            const updatedLikes = { ...prevLikes };
+            updatedLikes[bookId] = !updatedLikes[bookId];
+            return updatedLikes;
+        });
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <main>
@@ -37,18 +65,16 @@ export default function Album({ theme }) {
                 >
                     <Container maxWidth="sm">
                         <Typography
-                            component="h1"
-                            variant="h2"
+                            component="h2"
+                            variant="h5"
                             align="center"
                             color="text.primary"
                             gutterBottom
                         >
-                            Album layout
+                            Find your new favourite book!
                         </Typography>
                         <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                            Something short and leading about the collection below—its contents,
-                            the creator, etc. Make it short and sweet, but not too short so folks
-                            don&apos;t simply skip over it entirely.
+                            Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                         </Typography>
                         <Stack
                             sx={{ pt: 4 }}
@@ -56,16 +82,54 @@ export default function Album({ theme }) {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <Button variant="contained">Main call to action</Button>
-                            <Button variant="outlined">Secondary action</Button>
+                            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                <InputLabel id="genre">Genre</InputLabel>
+                                <Select
+                                    labelId="genre"
+                                    id="demo-select-small"
+                                    value={selectedGenre}
+                                    label="Age"
+                                    onChange={handleChangeGenre}
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={"fantasy"}>Fantasy</MenuItem>
+                                    <MenuItem value={"scifi"}>Sci-fi</MenuItem>
+                                    <MenuItem value={"romantic"}>Romantic</MenuItem>
+                                    <MenuItem value={"adventure"}>Adventure</MenuItem>
+                                    <MenuItem value={"drama"}>Drama</MenuItem>
+                                    <MenuItem value={"crime"}>Crime</MenuItem>
+                                    <MenuItem value={"thriller"}>Thriller</MenuItem>
+                                    <MenuItem value={"biography"}>Biography</MenuItem>
+                                    <MenuItem value={"psychology"}>Psychology</MenuItem>
+                                    <MenuItem value={"children"}>Children's Literature</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                <InputLabel id="language">Language</InputLabel>
+                                <Select
+                                    labelId="language"
+                                    id="demo-select-small"
+                                    value={selectedLanguage}
+                                    label="Age"
+                                    onChange={handleChangeLanguage}
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={"en"}>English</MenuItem>
+                                    <MenuItem value={"hun"}>Hungarian</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Stack>
                     </Container>
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                        {books && books.map((book, index) => (
+                            <Grid item key={`${book.id}_${index}`} xs={12} sm={6} md={4}>
                                 <Card
                                     sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                                 >
@@ -74,22 +138,32 @@ export default function Album({ theme }) {
                                         sx={{
                                             // 16:9
                                             pt: '56.25%',
+                                            // width: '100%',
+                                            // height: '300px'
                                         }}
-                                        image="https://source.unsplash.com/random?wallpapers"
+                                        image={book.coverImage}
                                     />
                                     <CardContent sx={{ flexGrow: 1 }}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Heading
+                                            {book.title}
                                         </Typography>
                                         <Typography>
-                                            This is a media card. You can use this section to describe the
-                                            content.
+                                            {book.author}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">View</Button>
-                                        <Button size="small">Edit</Button>
-                                    </CardActions>
+                                    <Button size="small">View</Button>
+                                    <IconButton
+                                        aria-label="Add to favorites"
+                                        onClick={() => handleLikeButtonClick(book.id)}
+                                    >
+                                        {likes[book.id] ? (
+                                            <FavoriteIcon color="primary" />
+                                        ) : (
+                                            <FavoriteBorderIcon color="primary" />
+                                        )}
+                                    </IconButton>
+                                </CardActions>
                                 </Card>
                             </Grid>
                         ))}

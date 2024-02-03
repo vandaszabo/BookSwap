@@ -54,4 +54,9 @@ public class BookService : IBookService
     {
         return await _bookPostRepository.GetById(postId);
     }
+    
+    public async Task<BookPost?> DeletePost(Guid postId)
+    {
+        return await _bookPostRepository.Delete(postId);
+    }
 }
