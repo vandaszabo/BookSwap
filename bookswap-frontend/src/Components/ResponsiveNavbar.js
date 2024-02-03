@@ -230,8 +230,9 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost }) {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+                            {authUser && 
                             <Typography variant='h6' sx={{borderBottom: `2px solid ${myTheme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
-                                        }}>{authUser.username}</Typography>
+                                        }}>{authUser.username}</Typography>}
                             <MenuItem onClick={createPost}>Create new post</MenuItem>
                             <MenuItem onClick={showProfile}>Profile</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>

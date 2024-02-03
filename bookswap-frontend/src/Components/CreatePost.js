@@ -14,7 +14,8 @@ import Typography from '@mui/material/Typography';
 import PostForm from './Forms/PostForm';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
-
+import FileUpload from './Forms/FileUpload';
+import Review from './Forms/Review';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
@@ -23,9 +24,9 @@ function getStepContent(step, bookPostData) {
     case 0:
       return <PostForm />;
     case 1:
-      return <div>Picture upload form will be here</div>;
+      return <><h2>Please upload a cover image of your book</h2><FileUpload /></>;
     case 2:
-      return <div>{bookPostData.title} {bookPostData.author}</div>;
+      return <Review />;
     default:
       throw new Error('Unknown step');
   }
