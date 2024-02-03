@@ -1,3 +1,3 @@
 namespace BookSwap.Contracts;
 
-public record LoginRequest(string Username, string Password);
+public record LoginRequest(string Email, string Password);

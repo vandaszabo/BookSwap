@@ -67,4 +67,39 @@ public class UserController : ControllerBase
 
         return NotFound("User not found");
     }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserDetails>> GetUser(string id)
+    {
+        try
+        {
+            var user = await _userService.GetUserById(id);
+        
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetUser: {ex.Message}");
+        
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [HttpGet("Details/{userId}")]
+    public async Task<ActionResult<UserDetails?>> GetUserDetails(string userId)
+    {
+            var details = await _userService.GetDetailsById(userId);
+        
+            if (details == null)
+            {
+                return Ok(null);
+            }
+
+            return Ok(details);
+    }
 }

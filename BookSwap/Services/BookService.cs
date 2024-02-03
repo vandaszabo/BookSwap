@@ -38,7 +38,7 @@ public class BookService : IBookService
             CoverImage = request.CoverImage,
             UserId = request.UserId,
             User = user,
-            UserDetailsId = userDetails.Id,
+            UserDetailsId = userDetails?.Id,
             UserDetails = userDetails
         };
 

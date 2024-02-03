@@ -30,9 +30,8 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             AddErrors(result);
-            return BadRequest(ModelState);
+            return BadRequest(result);
         }
-
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Id, result.Email, result.UserName));
     }
 
@@ -54,14 +53,14 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var result = await _authenticationService.LoginAsync(request.Username, request.Password);
+        var result = await _authenticationService.LoginAsync(request.Email, request.Password);
 
         if (!result.Success)
         {
             return BadRequest("Authentication failed");
         }
 
-        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.Token));
+        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.PhoneNumber, result.Token));
     }
 
 }

@@ -136,4 +136,11 @@ public class UserService : IUserService
 
         return await _userDetailsRepository.Create(newUserDetails);
     }
+    
+    public async Task<UserDetails?> GetDetailsById(string id)
+    {
+        var userDetail = await _userDetailsRepository.GetByUserId(id);
+
+        return userDetail;
+    }
 }

@@ -15,4 +15,5 @@ public interface IUserService
     Task<string?> SetUserRole(string username, string role);
     Task<UserDetails?> AssignUserDetails(string userId, string city, string profileImage);
     Task<UserDetails?> CreateUserDetails(UserDetailsRequest request);
+    Task<UserDetails?> GetDetailsById(string id);
 }
