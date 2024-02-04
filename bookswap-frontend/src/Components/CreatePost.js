@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import {TextField} from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -22,25 +19,28 @@ import ImageForm from './Forms/ImageForm';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
+//*********-------Steps for creating BookPost-------*********//
 function getStepContent(step, bookPostData, coverImage, setCoverImage) {
   switch (step) {
     case 0:
       return <PostForm />;
     case 1:
       return <>
-      <h2>Please upload a cover image of your book</h2>
-      <FileUpload />
-      <h4>Or Paste link here</h4>
-      <ImageForm setCoverImage={setCoverImage}/>
+        <h2>Please upload a cover image of your book</h2>
+        <FileUpload />
+        <h4>Or Paste link here</h4>
+        <ImageForm setCoverImage={setCoverImage} />
       </>;
     case 2:
-      return <Review bookData={bookPostData} image={coverImage}/>;
+      return <Review bookData={bookPostData} image={coverImage} />;
     default:
       throw new Error('Unknown step');
   }
 }
 
+//*********-------Main function for post creation-------*********//
 export default function CreatePost({ myTheme, setShowCreatePost }) {
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
   const [error, setError] = useState("");
@@ -48,6 +48,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
   const { authUser } = useAuth();
   console.log(authUser);
 
+  //*********-------Next or Back button handling-------*********//
   const handleNext = () => {
     if (activeStep === 0) {
       const postData = PostForm.getData();
@@ -60,7 +61,6 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
       handleCreatePost(bookPostData, coverImage, authUser.id)
       console.log("post create", bookPostData, coverImage, authUser.id);
     }
-
     setActiveStep((activeStep) => activeStep + 1);
   };
 
@@ -68,6 +68,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
     setActiveStep((activeStep) => activeStep - 1);
   };
 
+//*********-------API call for creating BookPost-------*********//
   async function handleCreatePost(data, image, userId) {
     try {
       const response = await fetch("http://localhost:5029/api/BookPost/Create", {
@@ -93,7 +94,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
       const responseData = await response.json();
 
       if (responseData !== null) {
-        console.log("new post: ", responseData);
+        console.log("Id of new post: ", responseData);
       }
     } catch (error) {
       console.error(`Error in createPost: ${error.message}`);
@@ -166,13 +167,13 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
                 </React.Fragment>
               )
             ) : (
-            <>
-            <Typography variant='h6'>Creation failed.</Typography>
-              <Alert severity="error">{error}</Alert>
-              <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                        Back
-                      </Button>
-            </>
+              <>
+                <Typography variant='h6'>Creation failed.</Typography>
+                <Alert severity="error">{error}</Alert>
+                <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                  Back
+                </Button>
+              </>
             )}
 
           </Paper>

@@ -3,7 +3,9 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Input } from '@mui/material';
 
+//*********-------main function for Upload Image file-------*********//
 export default function FileUpload() {
+  
     return (
         <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{
             mt: 3,

@@ -3,7 +3,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
+//*********-------main function for BookPost data Form-------*********//
 export default function PostForm() {
+
     const [formData, setFormData] = useState({
         title: '',
         author: '',
@@ -12,9 +14,11 @@ export default function PostForm() {
         pageCount: '',
         language: '',
     });
-    
+
+    //*********-------Added getData method to the PostForm object to retrieve the current value of formData whenever it's called-------*********//
     PostForm.getData = () => formData;
-    
+
+    //*********-------Handle text changes in Form inputs-------*********//
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({

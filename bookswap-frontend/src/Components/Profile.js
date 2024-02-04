@@ -14,14 +14,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Container } from '@mui/material';
 
+//*********-------Main function for User profile-------*********//
 export default function Profile({ myTheme }) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
 
     useEffect(() => {
         console.log("Useeffect profile authuser:", authUser);
-      }, [authUser])
+    }, [authUser])
 
+    //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
@@ -98,8 +100,8 @@ export default function Profile({ myTheme }) {
                         </Grid>
                     </Container>
                     <Container sx={{ py: 8 }} maxWidth="md">
-                    <Typography variant="h6" gutterBottom>
-                            Books 
+                        <Typography variant="h6" gutterBottom>
+                            Books
                         </Typography>
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (

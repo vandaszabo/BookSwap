@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
+//*********-------Main function for Review data for Creating new Post-------*********//
 export default function Review({bookData, image}) {
   return (
     <React.Fragment>

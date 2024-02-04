@@ -3,9 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -15,11 +12,13 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './AuthContext';
 
+//*********-------main function for Registration-------*********//
 export default function SignUp({myTheme}) {
 
 const {setShowRegistration, setShowLogin } = useAuth();
 const [error, setError] = useState('');
 
+//*********-------Handle click on submit Sign Up-------*********//
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
@@ -35,7 +34,7 @@ const [error, setError] = useState('');
     }
   };
 
-
+//*********-------Add new user to our database-------*********//
   const createUser = async (data) => {
     try {
       const response = await fetch("http://localhost:5029/api/Auth/Register", {
@@ -64,6 +63,7 @@ const [error, setError] = useState('');
       throw error;
     }
   };
+  
   return (
     <ThemeProvider theme={myTheme}>
       <Container component="main" maxWidth="xs">

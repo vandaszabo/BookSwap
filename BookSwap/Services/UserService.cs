@@ -11,13 +11,15 @@ public class UserService : IUserService
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserDetailsRepository _userDetailsRepository;
+    private readonly IBookPostRepository _bookPostRepository;
     private readonly BookSwapDbContext _dbContext;
 
     public UserService(UserManager<IdentityUser> userManager, BookSwapDbContext dbContext,
-        IUserDetailsRepository userDetailsRepository)
+        IUserDetailsRepository userDetailsRepository, IBookPostRepository bookPostRepository)
     {
         _userManager = userManager;
         _userDetailsRepository = userDetailsRepository;
+        _bookPostRepository = bookPostRepository;
         _dbContext = dbContext;
     }
 
@@ -137,10 +139,19 @@ public class UserService : IUserService
         return await _userDetailsRepository.Create(newUserDetails);
     }
     
-    public async Task<UserDetails?> GetDetailsById(string id)
+    public async Task<UserDetails?> GetDetailsByUserId(string id)
     {
         var userDetail = await _userDetailsRepository.GetByUserId(id);
 
         return userDetail;
+    }
+
+    public async Task AddBookPost(string userId, Guid postId)
+    {
+        var bookPost = await _bookPostRepository.GetById(postId);
+        if (bookPost != null)
+        {
+            await _userDetailsRepository.AddBookPost(userId, bookPost);
+        }
     }
 }

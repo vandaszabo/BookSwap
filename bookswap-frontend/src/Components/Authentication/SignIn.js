@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './AuthContext';
 
+//*********-------main function for Login-------*********//
 export default function SignIn({ myTheme }) {
 
   const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
@@ -20,6 +21,7 @@ export default function SignIn({ myTheme }) {
     console.log("Useeffect signin authuser:", authUser);
   }, [authUser])
 
+  //*********-------Handle click on submit Sign In button-------*********//
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
@@ -34,6 +36,7 @@ export default function SignIn({ myTheme }) {
     }
   };
 
+  //*********-------Retrieve extra details about the User-------*********//
   const getUserDetails = async (userId) => {
     try {
       const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
@@ -63,6 +66,7 @@ export default function SignIn({ myTheme }) {
     }
   };
 
+  //*********-------Retrieve main data about the User-------*********//
   const getUserData = async (data) => {
     try {
       const response = await fetch("http://localhost:5029/api/Auth/Login", {

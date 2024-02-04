@@ -88,7 +88,7 @@ public class UserController : ControllerBase
     [HttpGet("Details/{userId}")]
     public async Task<ActionResult<UserDetails?>> GetUserDetails(string userId)
     {
-            var details = await _userService.GetDetailsById(userId);
+            var details = await _userService.GetDetailsByUserId(userId);
         
             if (details == null)
             {
@@ -96,5 +96,27 @@ public class UserController : ControllerBase
             }
 
             return Ok(details);
+    }
+    
+    [HttpPost("AddBookPost")]
+    public async Task<ActionResult<UserDetails>> AddBookPost([FromBody] AddBookPostRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+    
+        try
+        {
+            await _userService.AddBookPost(request.UserId, request.PostId);
+            
+            return Ok("Book post added successfully");
+            
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+        
     }
 }

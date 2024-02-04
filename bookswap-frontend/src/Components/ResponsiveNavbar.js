@@ -7,10 +7,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
-import Profile from './Profile';
 
-
+//*********-------Main function for Navbar-------*********//
 function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProfilePage }) {
+
     const [searchValue, setSearchValue] = useState('');
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -18,11 +18,13 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, setShowLogin, setShowRegistration } = useAuth();
     const isSmallScreen = useMediaQuery(myTheme.breakpoints.down('sm'));
 
+    //*********-------Handle input change in navbar Search field-------*********//
     const handleSearch = (value) => {
         console.log("Selected:", value);
         setSearchValue(value)
     };
 
+    //*********-------API call for getting all existing Posts-------*********//
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -51,15 +53,18 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
         fetchData();
     }, [setBooks, setBookList]);
 
+    //*********-------Display the selected book from search bar-------*********//
     const displayPost = () => {
         console.log('Display this:', searchValue);
     };
 
+    //*********-------Handle click on Navbar Sign In button-------*********//
     const logIn = () => {
         setShowLogin(true);
         setShowRegistration(false);
     };
 
+    //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {
         setIsLoggedIn(false);
         setAnchorElUser(null);
@@ -68,42 +73,53 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
         localStorage.removeItem('details');
     };
 
+    //*********-------Handle click on Navbar Sign Up button-------*********//
     const register = () => {
         setShowRegistration(true);
         setShowLogin(false);
     };
 
+    //*********-------Handle click on Navbar Profile menu option-------*********//
     const showProfile = () => {
         setAnchorElUser(null);
         setShowProfilePage(true);
         setShowCreatePost(false);
     };
 
+    //*********-------Handle click on Navbar Books menu option-------*********//
     const showBooks = () => {
         console.log("books");
         setAnchorElBooks(null);
-    }
+    };
 
+    //*********-------Handle click on Navbar Users menu option-------*********//
     const showUsers = () => {
         console.log("users");
         setAnchorElBooks(null);
-    }
+    };
+
+    //*********-------Handle click on Navbar Create new Post menu option-------*********//
     const createPost = () => {
         setAnchorElUser(null);
         setShowCreatePost(true);
-    }
+    };
+
+    //*********-------Open menu on Navbar Avatar icon button-------*********//
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
+    //*********-------Close menu on Navbar Avatar icon button-------*********//
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
+    //*********-------Open menu on Navbar Menu icon button-------*********//
     const handleOpenMainMenu = (event) => {
         setAnchorElBooks(event.currentTarget);
     };
 
+    //*********-------Close menu on Navbar Avatar icon button-------*********//
     const handleCloseMainMenu = () => {
         setAnchorElBooks(null);
     };
@@ -185,7 +201,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                                         <Button
                                             onClick={displayPost}
                                             color='inherit'
-                                            style={{ border: '1px', borderBlockColor: myTheme.palette.primary.main, height: '100%'}}
+                                            style={{ border: '1px', borderBlockColor: myTheme.palette.primary.main, height: '100%' }}
                                         >
                                             <SearchIcon />
                                         </Button>
@@ -233,9 +249,10 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {authUser && 
-                            <Typography variant='h6' sx={{borderBottom: `2px solid ${myTheme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
-                                        }}>{authUser.username}</Typography>}
+                            {authUser &&
+                                <Typography variant='h6' sx={{
+                                    borderBottom: `2px solid ${myTheme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
+                                }}>{authUser.username}</Typography>}
                             <MenuItem onClick={createPost}>Create new post</MenuItem>
                             <MenuItem onClick={showProfile}>Profile</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>
