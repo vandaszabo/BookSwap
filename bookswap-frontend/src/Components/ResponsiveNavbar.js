@@ -75,7 +75,6 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
 
     const showProfile = () => {
         setAnchorElUser(null);
-        console.log("profile", authUser);
         setShowProfilePage(true);
         setShowCreatePost(false);
     };

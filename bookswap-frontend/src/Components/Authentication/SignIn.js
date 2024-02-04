@@ -17,7 +17,7 @@ export default function SignIn({ myTheme }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log("Useeffect authuser:", authUser);
+    console.log("Useeffect signin authuser:", authUser);
   }, [authUser])
 
   const handleSubmit = async (event) => {
@@ -40,11 +40,20 @@ export default function SignIn({ myTheme }) {
 
       if (response.ok) {
         const details = await response.json();
+        console.log(details);
 
         if (details !== null) {
-          console.log("userDetails:", details);
-          setAuthUser((prevAuthUser) => ({ ...prevAuthUser, ...details }));
-          localStorage.setItem('details', JSON.stringify(details));
+          const detailsObj = {
+            detailsId: details.id,
+            city: details.city,
+            profileImage: details.profileImage,
+            bookPosts: details.bookPosts
+          }
+          setAuthUser((prevAuthUser) => ({
+            ...prevAuthUser,
+            ...detailsObj
+          }));
+          localStorage.setItem('details', JSON.stringify(detailsObj));
         }
       } else {
         console.error('Error fetching user details:', response.statusText);
@@ -87,8 +96,6 @@ export default function SignIn({ myTheme }) {
         }
         setIsLoggedIn(true);
         setShowLogin(false);
-        console.log("response data: ", responseData)
-        console.log('authuser', authUser);
       }
     } catch (error) {
       console.error(`Error in sendUserData: ${error.message}`);

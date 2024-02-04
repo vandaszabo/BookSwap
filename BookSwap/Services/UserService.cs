@@ -51,8 +51,8 @@ public class UserService : IUserService
         user.Email = newEmail;
         user.UserName = newUsername;
         user.PhoneNumber = newPhoneNumber;
-
-        await _userManager.UpdateAsync(user);
+        
+        await _dbContext.SaveChangesAsync();
         return user;
     }
 

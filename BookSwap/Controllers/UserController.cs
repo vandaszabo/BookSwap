@@ -53,11 +53,6 @@ public class UserController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        if (request.NewEmail == null && request.NewUsername == null && request.NewPhoneNumber == null)
-        {
-            return BadRequest("At least one of Email, Username or Phone number must be non-null!");
-        }
-
         var user = await _userService.UpdateUserData(request.UserId, request.NewEmail, request.NewUsername, request.NewPhoneNumber);
 
         if (user != null)
