@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import {TextField} from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
@@ -17,17 +18,23 @@ import { useAuth } from './Authentication/AuthContext';
 import FileUpload from './Forms/FileUpload';
 import Review from './Forms/Review';
 import { Alert } from '@mui/material';
+import ImageForm from './Forms/ImageForm';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
-function getStepContent(step, bookPostData) {
+function getStepContent(step, bookPostData, coverImage, setCoverImage) {
   switch (step) {
     case 0:
       return <PostForm />;
     case 1:
-      return <><h2>Please upload a cover image of your book</h2><FileUpload /></>;
+      return <>
+      <h2>Please upload a cover image of your book</h2>
+      <FileUpload />
+      <h4>Or Paste link here</h4>
+      <ImageForm setCoverImage={setCoverImage}/>
+      </>;
     case 2:
-      return <Review />;
+      return <Review bookData={bookPostData} image={coverImage}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -134,7 +141,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep, bookPostData)}
+                  {getStepContent(activeStep, bookPostData, coverImage, setCoverImage)}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
