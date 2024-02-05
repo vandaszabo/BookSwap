@@ -46,7 +46,6 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
   const [error, setError] = useState("");
   const [coverImage, setCoverImage] = useState("url");
   const { authUser } = useAuth();
-  console.log(authUser);
 
   //*********-------Next or Back button handling-------*********//
   const handleNext = () => {

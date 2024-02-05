@@ -28,6 +28,11 @@ public class UserService : IUserService
         var users = await _userManager.Users.ToListAsync();
         return users;
     }
+    
+    public async Task<IEnumerable<UserDetails?>> GetAllUserDetails()
+    {
+        return await _userDetailsRepository.GetAll();
+    }
 
     public async Task<IdentityUser?> GetUserById(string userId)
     {

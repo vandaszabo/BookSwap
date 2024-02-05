@@ -1,6 +1,7 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSwap.Controllers;
@@ -13,6 +14,38 @@ public class UserController : ControllerBase
     public UserController(IUserService userService)
     {
         _userService = userService;
+    }
+    
+    [HttpGet("User/List")]
+    public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAll()
+    {
+        try
+        {
+            var identityUsers = await _userService.GetAllUser();
+            return Ok(identityUsers);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAll: {ex.Message}");
+            
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [HttpGet("Details/List")]
+    public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAllDetails()
+    {
+        try
+        {
+            var userDetails = await _userService.GetAllUserDetails();
+            return Ok(userDetails);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAllDetails: {ex.Message}");
+            
+            return StatusCode(500, "Internal Server Error");
+        }
     }
     
     [HttpPost("AddDetails")]

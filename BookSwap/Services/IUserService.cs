@@ -17,4 +17,5 @@ public interface IUserService
     Task<UserDetails?> CreateUserDetails(UserDetailsRequest request);
     Task<UserDetails?> GetDetailsByUserId(string id);
     Task AddBookPost(string userId, Guid postId);
+    Task<IEnumerable<UserDetails?>> GetAllUserDetails();
 }

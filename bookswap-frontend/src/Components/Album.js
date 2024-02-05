@@ -14,11 +14,9 @@ import { FormControl } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { ThemeProvider } from '@mui/material/styles';
+import { useAuth } from './Authentication/AuthContext';
 
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
@@ -29,7 +27,8 @@ export default function Album({ theme, books }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
-    const [likes, setLikes] = useState({});
+    const [favorites, setFavorites] = useState([]);
+    const {authUser} = useAuth();
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);
@@ -39,13 +38,15 @@ export default function Album({ theme, books }) {
         setSelectedLanguage(event.target.value);
     };
 
-    const handleLikeButtonClick = (bookId) => {
-        setLikes(prevLikes => {
-            const updatedLikes = { ...prevLikes };
-            updatedLikes[bookId] = !updatedLikes[bookId];
-            return updatedLikes;
-        });
+    const handleLike = (bookId) => {
+        console.log("add to favorites: ", bookId);
+        setFavorites(prev => [...prev, bookId]);
     };
+
+    const handleView = (bookId) => {
+        console.log("view this with details: ", bookId);
+    };
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -59,15 +60,15 @@ export default function Album({ theme, books }) {
                 >
                     <Container maxWidth="sm">
                         <Typography
-                            component="h2"
-                            variant="h5"
+                            component="h5"
+                            variant="body1"
                             align="center"
                             color="text.primary"
                             gutterBottom
                         >
                             Find your new favourite book!
                         </Typography>
-                        <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                        <Typography variant="body2" align="center" color="text.secondary" paragraph>
                             Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                         </Typography>
                         <Stack
@@ -123,41 +124,32 @@ export default function Album({ theme, books }) {
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {books && books.map((book, index) => (
-                            <Grid item key={`${book.id}_${index}`} xs={12} sm={6} md={4}>
+                            <Grid item key={`${book.postId}_${index}`} xs={6} sm={4} md={3} lg={3}>
                                 <Card
-                                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                    sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                 >
                                     <CardMedia
                                         component="div"
                                         sx={{
                                             // 16:9
-                                            pt: '56.25%',
-                                            // width: '100%',
-                                            // height: '300px'
+                                            // pt: '56.25%',
+                                            width: '100%',
+                                            height: '200px'
                                         }}
                                         image={book.coverImage}
                                     />
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography gutterBottom variant="h5" component="h2">
+                                        <Typography variant="body1" component="div">
                                             {book.title}
                                         </Typography>
-                                        <Typography>
+                                        <Typography variant="body2" color="text.secondary">
                                             {book.author}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                    <Button size="small">View</Button>
-                                    <IconButton
-                                        aria-label="Add to favorites"
-                                        onClick={() => handleLikeButtonClick(book.id)}
-                                    >
-                                        {likes[book.id] ? (
-                                            <FavoriteIcon color="primary" />
-                                        ) : (
-                                            <FavoriteBorderIcon color="primary" />
-                                        )}
-                                    </IconButton>
-                                </CardActions>
+                                        <Button onClick={()=>handleView(book.postId)} size="small">View</Button>
+                                        <Button onClick={()=>handleLike(book.postId)} size="small">Like</Button>
+                                    </CardActions>
                                 </Card>
                             </Grid>
                         ))}

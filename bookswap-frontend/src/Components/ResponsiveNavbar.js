@@ -4,14 +4,13 @@ import { AutoStories } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
 
 //*********-------Main function for Navbar-------*********//
-function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProfilePage }) {
+function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProfilePage, setShowBooks, setSearchValue }) {
 
-    const [searchValue, setSearchValue] = useState('');
+
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
@@ -20,8 +19,11 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
 
     //*********-------Handle input change in navbar Search field-------*********//
     const handleSearch = (value) => {
-        console.log("Selected:", value);
-        setSearchValue(value)
+        setSearchValue(value);
+        setShowBooks(false);
+        setShowProfilePage(false);
+        setShowCreatePost(false);
+
     };
 
     //*********-------API call for getting all existing Posts-------*********//
@@ -53,11 +55,6 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
         fetchData();
     }, [setBooks, setBookList]);
 
-    //*********-------Display the selected book from search bar-------*********//
-    const displayPost = () => {
-        console.log('Display this:', searchValue);
-    };
-
     //*********-------Handle click on Navbar Sign In button-------*********//
     const logIn = () => {
         setShowLogin(true);
@@ -84,24 +81,23 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
         setAnchorElUser(null);
         setShowProfilePage(true);
         setShowCreatePost(false);
+        setShowBooks(false);
     };
 
     //*********-------Handle click on Navbar Books menu option-------*********//
     const showBooks = () => {
-        console.log("books");
         setAnchorElBooks(null);
-    };
-
-    //*********-------Handle click on Navbar Users menu option-------*********//
-    const showUsers = () => {
-        console.log("users");
-        setAnchorElBooks(null);
+        setShowBooks(true);
+        setShowProfilePage(false);
+        setShowCreatePost(false);
     };
 
     //*********-------Handle click on Navbar Create new Post menu option-------*********//
     const createPost = () => {
         setAnchorElUser(null);
         setShowCreatePost(true);
+        setShowBooks(false);
+        setShowProfilePage(false);
     };
 
     //*********-------Open menu on Navbar Avatar icon button-------*********//
@@ -164,7 +160,6 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                                 }}
                             >
                                 <MenuItem onClick={showBooks}>Books</MenuItem>
-                                <MenuItem onClick={showUsers}>Users</MenuItem>
                             </Menu>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
@@ -195,18 +190,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
 
                         <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
                             {isSmallScreen ? null : (
-                                <>
                                     <SearchInput onSearch={handleSearch} books={books} theme={myTheme} />
-                                    <Tooltip title="Search">
-                                        <Button
-                                            onClick={displayPost}
-                                            color='inherit'
-                                            style={{ border: '1px', borderBlockColor: myTheme.palette.primary.main, height: '100%' }}
-                                        >
-                                            <SearchIcon />
-                                        </Button>
-                                    </Tooltip>
-                                </>
                             )}
                         </Box>
                         <Box sx={{ flexGrow: 0, display: 'inline-flex' }}>
