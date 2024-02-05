@@ -8,5 +8,6 @@ public interface IBookPostRepository
     Task<BookPost?> GetById(Guid postId);
     Task<BookPost?> Create(BookPost bookPost);
     Task Update(BookPost bookPost);
-    Task Delete(Guid postId);
+    Task<BookPost?> Delete(Guid postId);
+    Task<IEnumerable<BookPost?>?> GetAllFromUser(string userId);
 }

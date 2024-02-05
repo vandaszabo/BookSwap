@@ -3,9 +3,17 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Input } from '@mui/material';
 
+//*********-------main function for Upload Image file-------*********//
 export default function FileUpload() {
+  
     return (
-        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{
+            mt: 3,
+            ml: 1,
+            '&:hover': {
+              backgroundColor: (theme) => theme.palette.secondary.light,
+            },
+          }}>
             Upload picture
             <Input type="file" sx={{
                 clip: 'rect(0 0 0 0)',

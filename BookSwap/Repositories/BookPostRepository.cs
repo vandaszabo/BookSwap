@@ -43,13 +43,41 @@ public class BookPostRepository : IBookPostRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task Delete(Guid postId)
+    public async Task<BookPost?> Delete(Guid postId)
     {
-        var postToDelete = await GetById(postId);
-        if (postToDelete != null)
+        try
         {
+            var postToDelete = await GetById(postId);
+
+            if (postToDelete == null)
+            {
+                return null;
+            }
+
             _dbContext.BookPosts.Remove(postToDelete);
             await _dbContext.SaveChangesAsync();
+            return postToDelete;
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
+
+    public async Task<IEnumerable<BookPost?>?> GetAllFromUser(string userId)
+    {
+        try
+        {
+            var posts = await _dbContext.BookPosts
+                .Where(bp => bp.UserId == userId)
+                .ToListAsync();
+
+            return posts;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    
 }

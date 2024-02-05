@@ -55,6 +55,28 @@ public class BookPostController : ControllerBase
         }
     }
     
+    [HttpDelete("Delete/{id}")]
+    public async Task<ActionResult<BookPost?>> DeletePost(Guid id)
+    {
+        try
+        {
+            var bookPost = await _bookService.DeletePost(id);
+        
+            if (bookPost == null)
+            {
+                return NotFound("Cannot find post to delete.");
+            }
+
+            return Ok(bookPost);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in DeletePost: {ex.Message}");
+        
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<BookPost>>> GetPostById(Guid id)
     {
@@ -72,6 +94,28 @@ public class BookPostController : ControllerBase
         catch (Exception ex)
         {
             Console.WriteLine($"Error in GetPostById: {ex.Message}");
+        
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [HttpGet("User/{userId}")]
+    public async Task<ActionResult<IEnumerable<BookPost>>> GetUserPosts(string userId)
+    {
+        try
+        {
+            var postList = await _bookService.GetUserPosts(userId);
+        
+            if (postList == null)
+            {
+                return NotFound("Cannot find user's posts.");
+            }
+
+            return Ok(postList);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetUserPosts: {ex.Message}");
         
             return StatusCode(500, "Internal Server Error");
         }

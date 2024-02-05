@@ -1,6 +1,7 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSwap.Controllers;
@@ -13,6 +14,38 @@ public class UserController : ControllerBase
     public UserController(IUserService userService)
     {
         _userService = userService;
+    }
+    
+    [HttpGet("User/List")]
+    public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAll()
+    {
+        try
+        {
+            var identityUsers = await _userService.GetAllUser();
+            return Ok(identityUsers);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAll: {ex.Message}");
+            
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [HttpGet("Details/List")]
+    public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAllDetails()
+    {
+        try
+        {
+            var userDetails = await _userService.GetAllUserDetails();
+            return Ok(userDetails);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAllDetails: {ex.Message}");
+            
+            return StatusCode(500, "Internal Server Error");
+        }
     }
     
     [HttpPost("AddDetails")]
@@ -53,11 +86,6 @@ public class UserController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        if (request.NewEmail == null && request.NewUsername == null && request.NewPhoneNumber == null)
-        {
-            return BadRequest("At least one of Email, Username or Phone number must be non-null!");
-        }
-
         var user = await _userService.UpdateUserData(request.UserId, request.NewEmail, request.NewUsername, request.NewPhoneNumber);
 
         if (user != null)
@@ -93,7 +121,7 @@ public class UserController : ControllerBase
     [HttpGet("Details/{userId}")]
     public async Task<ActionResult<UserDetails?>> GetUserDetails(string userId)
     {
-            var details = await _userService.GetDetailsById(userId);
+            var details = await _userService.GetDetailsByUserId(userId);
         
             if (details == null)
             {
@@ -101,5 +129,27 @@ public class UserController : ControllerBase
             }
 
             return Ok(details);
+    }
+    
+    [HttpPost("AddBookPost")]
+    public async Task<ActionResult<UserDetails>> AddBookPost([FromBody] AddBookPostRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+    
+        try
+        {
+            await _userService.AddBookPost(request.UserId, request.PostId);
+            
+            return Ok("Book post added successfully");
+            
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+        
     }
 }

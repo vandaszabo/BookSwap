@@ -11,15 +11,17 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './AuthContext';
 
+//*********-------main function for Login-------*********//
 export default function SignIn({ myTheme }) {
 
   const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
   const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log("Useeffect authuser:", authUser);
+    console.log("Useeffect signin authuser:", authUser);
   }, [authUser])
 
+  //*********-------Handle click on submit Sign In button-------*********//
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
@@ -34,17 +36,27 @@ export default function SignIn({ myTheme }) {
     }
   };
 
+  //*********-------Retrieve extra details about the User-------*********//
   const getUserDetails = async (userId) => {
     try {
       const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
 
       if (response.ok) {
         const details = await response.json();
+        console.log(details);
 
         if (details !== null) {
-          console.log("userDetails:", details);
-          setAuthUser((prevAuthUser) => ({ ...prevAuthUser, ...details }));
-          localStorage.setItem('details', JSON.stringify(details));
+          const detailsObj = {
+            detailsId: details.id,
+            city: details.city,
+            profileImage: details.profileImage,
+            bookPosts: details.bookPosts
+          }
+          setAuthUser((prevAuthUser) => ({
+            ...prevAuthUser,
+            ...detailsObj
+          }));
+          localStorage.setItem('details', JSON.stringify(detailsObj));
         }
       } else {
         console.error('Error fetching user details:', response.statusText);
@@ -54,6 +66,7 @@ export default function SignIn({ myTheme }) {
     }
   };
 
+  //*********-------Retrieve main data about the User-------*********//
   const getUserData = async (data) => {
     try {
       const response = await fetch("http://localhost:5029/api/Auth/Login", {
@@ -87,8 +100,6 @@ export default function SignIn({ myTheme }) {
         }
         setIsLoggedIn(true);
         setShowLogin(false);
-        console.log("response data: ", responseData)
-        console.log('authuser', authUser);
       }
     } catch (error) {
       console.error(`Error in sendUserData: ${error.message}`);

@@ -13,6 +13,11 @@ public class UserDetailsRepository : IUserDetailsRepository
         _dbContext = dbContext;
     }
 
+    public async Task<IEnumerable<UserDetails?>> GetAll()
+    {
+        return await _dbContext.UserDetails.ToListAsync();
+    }
+    
     public async Task<UserDetails?> Create(UserDetails userDetails)
     {
         _dbContext.UserDetails.Add(userDetails);
