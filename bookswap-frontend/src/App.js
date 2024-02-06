@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { CssBaseline } from '@mui/material';
 import { useAuth } from './Components/Authentication/AuthContext';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
@@ -9,6 +8,7 @@ import ResponsiveNavbar from './Components/ResponsiveNavbar';
 import Album from './Components/Album';
 import Profile from './Components/Profile';
 import SelectedPost from './Components/SelectedPost';
+import { ThemeProvider } from '@mui/material/styles';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -21,28 +21,26 @@ function App() {
   const myTheme = createTheme({
     palette: {
       primary: {
-        //main: '#FFA500',
-        //main: '#567C57',
-        main: '#03490C',
-        light: '#A9B388'
+        main: '#FFA500',
+        light: '#ffb52e',
       },
       secondary: {
-        main: '#f4f4f4',
-        light: '#BAD162'
+        main: '#FFFFFF',
+        light:'#f4f4f4',
       }
     },
   });
 
   const containerStyle = {
-    backgroundColor: myTheme.palette.secondary.main,
-    minHeight: '100vh'
+    backgroundColor: 'myTheme.palette.primary.main',
+    minHeight: '100vh',
+
   };
 
   return (
+    <ThemeProvider theme={myTheme}>
     <div style={containerStyle}>
-      <CssBaseline />
       <ResponsiveNavbar
-        myTheme={myTheme}
         setShowCreatePost={setShowCreatePost}
         setBookList={setBookList}
         setShowProfilePage={setShowProfilePage}
@@ -52,22 +50,18 @@ function App() {
 
       {showLogin ? (
         <SignIn
-          myTheme={myTheme}
         />
       ) : showRegistration ? (
         <SignUp
-          myTheme={myTheme}
         />
       ) : showCreatePost ? (
         <CreatePost
-          myTheme={myTheme}
           setShowCreatePost={setShowCreatePost}
         />
       ) : showProfilePage ? (
         <Profile />
       ) : showBooks ? (
         <Album
-          theme={myTheme}
           books={bookList}
         />
       ) : searchValue ? (
@@ -76,6 +70,7 @@ function App() {
         <h1>Home Page</h1>
       )}
     </div>
+    </ThemeProvider>
   );
 }
 

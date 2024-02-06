@@ -85,7 +85,7 @@ export default function Profile({ myTheme }) {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={8} sm={6} md={4} lg={4}>
                                 <Card>
                                     <CardMedia
                                         component="img"
@@ -99,31 +99,32 @@ export default function Profile({ myTheme }) {
                             </Grid>
                         </Grid>
                     </Container>
-                    <Container sx={{ py: 8 }} maxWidth="md">
+                    <Container sx={{ py: 8 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
                             Books
                         </Typography>
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (
-                                <Grid item key={`${post.id}_${index}`} xs={12} sm={6} md={4}>
+                                <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
                                     <Card
-                                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                        sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                     >
                                         <CardMedia
                                             component="div"
                                             sx={{
-                                                // 16:9
-                                                pt: '56.25%',
-                                                // width: '100%',
-                                                // height: '300px'
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                height: '200px',
+                                                width: '100%',
                                             }}
                                             image={post.coverImage}
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
-                                            <Typography gutterBottom variant="h5" component="h2">
+                                            <Typography variant="body1" component="div">
                                                 {post.title}
                                             </Typography>
-                                            <Typography>
+                                            <Typography variant="body2" color="text.secondary">
                                                 {post.author}
                                             </Typography>
                                         </CardContent>
