@@ -21,7 +21,7 @@ function topFunction() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-export default function Album({ books }) {
+export default function Album({ books, setSearchValue, setShowBooks }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -41,8 +41,9 @@ export default function Album({ books }) {
         setFavorites(prev => [...prev, bookId]);
     };
 
-    const handleView = (bookId) => {
-        console.log("view this with details: ", bookId);
+    const handleView = (book) => {
+        setSearchValue(book);
+        setShowBooks(false);
     };
 
 
@@ -147,7 +148,7 @@ export default function Album({ books }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button onClick={() => handleView(book.postId)} size="small">View</Button>
+                                        <Button onClick={() => handleView(book)} size="small">View</Button>
                                         <Button onClick={() => handleLike(book.postId)} size="small">Like</Button>
                                     </CardActions>
                                 </Card>

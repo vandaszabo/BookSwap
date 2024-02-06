@@ -9,6 +9,7 @@ import Album from './Components/Album';
 import Profile from './Components/Profile';
 import SelectedPost from './Components/SelectedPost';
 import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -26,7 +27,7 @@ function App() {
       },
       secondary: {
         main: '#FFFFFF',
-        light:'#f4f4f4',
+        light: '#f4f4f4',
       }
     },
   });
@@ -39,37 +40,40 @@ function App() {
 
   return (
     <ThemeProvider theme={myTheme}>
-    <div style={containerStyle}>
-      <ResponsiveNavbar
-        setShowCreatePost={setShowCreatePost}
-        setBookList={setBookList}
-        setShowProfilePage={setShowProfilePage}
-        setShowBooks={setShowBooks}
-        setSearchValue={setSearchValue}
-      />
-
-      {showLogin ? (
-        <SignIn
-        />
-      ) : showRegistration ? (
-        <SignUp
-        />
-      ) : showCreatePost ? (
-        <CreatePost
+      <div style={containerStyle}>
+        <CssBaseline />
+        <ResponsiveNavbar
           setShowCreatePost={setShowCreatePost}
+          setBookList={setBookList}
+          setShowProfilePage={setShowProfilePage}
+          setShowBooks={setShowBooks}
+          setSearchValue={setSearchValue}
         />
-      ) : showProfilePage ? (
-        <Profile />
-      ) : showBooks ? (
-        <Album
-          books={bookList}
-        />
-      ) : searchValue ? (
-        <SelectedPost book={searchValue}/>
-      ):(
-        <h1>Home Page</h1>
-      )}
-    </div>
+
+        {showLogin ? (
+          <SignIn
+          />
+        ) : showRegistration ? (
+          <SignUp
+          />
+        ) : showCreatePost ? (
+          <CreatePost
+            setShowCreatePost={setShowCreatePost}
+          />
+        ) : showProfilePage ? (
+          <Profile />
+        ) : showBooks ? (
+          <Album
+            books={bookList}
+            setSearchValue={setSearchValue}
+            setShowBooks={setShowBooks}
+          />
+        ) : searchValue ? (
+          <SelectedPost book={searchValue} />
+        ) : (
+          <h1>Home Page</h1>
+        )}
+      </div>
     </ThemeProvider>
   );
 }

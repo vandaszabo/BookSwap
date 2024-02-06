@@ -57,12 +57,27 @@ export default function Profile({ myTheme }) {
         <React.Fragment>
             {authUser &&
                 <>
-                    <Container>
-                        <Typography variant="h6" gutterBottom>
-                            Personal info
-                        </Typography>
-                        <Grid container spacing={2}>
+                    <Container maxWidth="lg" sx={{ mt: 4 }}>
+                        <Grid container spacing={2} sx={{ maxWidth: '50%' }}>
+                            <Grid item xs={12} sm={8} md={6} lg={6}>
+                                <Typography variant="h6" gutterBottom>
+                                    Profile Image
+                                </Typography>
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        alt={authUser.username}
+                                        //height="300"
+                                        image={authUser && authUser.profileImage
+                                            ? authUser.profileImage
+                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
+                                    />
+                                </Card>
+                            </Grid>
                             <Grid item xs={12} md={8}>
+                                <Typography variant="h6" gutterBottom>
+                                    Personal info
+                                </Typography>
                                 <Card>
                                     <CardContent>
                                         <List>
@@ -85,21 +100,10 @@ export default function Profile({ myTheme }) {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={8} sm={6} md={4} lg={4}>
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        alt={authUser.username}
-                                        //height="300"
-                                        image={authUser && authUser.profileImage
-                                            ? authUser.profileImage
-                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
-                                    />
-                                </Card>
-                            </Grid>
+
                         </Grid>
                     </Container>
-                    <Container sx={{ py: 8 }} maxWidth="lg">
+                    <Container sx={{ py: 4 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
                             Books
                         </Typography>
