@@ -11,7 +11,7 @@ export default function FileUpload() {
             mt: 3,
             ml: 1,
             '&:hover': {
-              backgroundColor: (theme) => theme.palette.secondary.light,
+              backgroundColor: (theme) => theme.palette.primary.light,
             },
           }}>
             Upload picture

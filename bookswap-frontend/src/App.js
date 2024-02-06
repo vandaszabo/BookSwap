@@ -1,5 +1,4 @@
 import { React, useState } from 'react';
-import { CssBaseline } from '@mui/material';
 import { useAuth } from './Components/Authentication/AuthContext';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
@@ -9,6 +8,8 @@ import ResponsiveNavbar from './Components/ResponsiveNavbar';
 import Album from './Components/Album';
 import Profile from './Components/Profile';
 import SelectedPost from './Components/SelectedPost';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 
 function App() {
   const { showLogin, showRegistration } = useAuth();
@@ -21,61 +22,59 @@ function App() {
   const myTheme = createTheme({
     palette: {
       primary: {
-        //main: '#FFA500',
-        //main: '#567C57',
-        main: '#03490C',
-        light: '#A9B388'
+        main: '#FFA500',
+        light: '#ffb52e',
       },
       secondary: {
-        main: '#f4f4f4',
-        light: '#BAD162'
+        main: '#FFFFFF',
+        light: '#f4f4f4',
       }
     },
   });
 
   const containerStyle = {
-    backgroundColor: myTheme.palette.secondary.main,
-    minHeight: '100vh'
+    backgroundColor: 'myTheme.palette.primary.main',
+    minHeight: '100vh',
+
   };
 
   return (
-    <div style={containerStyle}>
-      <CssBaseline />
-      <ResponsiveNavbar
-        myTheme={myTheme}
-        setShowCreatePost={setShowCreatePost}
-        setBookList={setBookList}
-        setShowProfilePage={setShowProfilePage}
-        setShowBooks={setShowBooks}
-        setSearchValue={setSearchValue}
-      />
-
-      {showLogin ? (
-        <SignIn
-          myTheme={myTheme}
-        />
-      ) : showRegistration ? (
-        <SignUp
-          myTheme={myTheme}
-        />
-      ) : showCreatePost ? (
-        <CreatePost
-          myTheme={myTheme}
+    <ThemeProvider theme={myTheme}>
+      <div style={containerStyle}>
+        <CssBaseline />
+        <ResponsiveNavbar
           setShowCreatePost={setShowCreatePost}
+          setBookList={setBookList}
+          setShowProfilePage={setShowProfilePage}
+          setShowBooks={setShowBooks}
+          setSearchValue={setSearchValue}
         />
-      ) : showProfilePage ? (
-        <Profile />
-      ) : showBooks ? (
-        <Album
-          theme={myTheme}
-          books={bookList}
-        />
-      ) : searchValue ? (
-        <SelectedPost book={searchValue}/>
-      ):(
-        <h1>Home Page</h1>
-      )}
-    </div>
+
+        {showLogin ? (
+          <SignIn
+          />
+        ) : showRegistration ? (
+          <SignUp
+          />
+        ) : showCreatePost ? (
+          <CreatePost
+            setShowCreatePost={setShowCreatePost}
+          />
+        ) : showProfilePage ? (
+          <Profile />
+        ) : showBooks ? (
+          <Album
+            books={bookList}
+            setSearchValue={setSearchValue}
+            setShowBooks={setShowBooks}
+          />
+        ) : searchValue ? (
+          <SelectedPost book={searchValue} />
+        ) : (
+          <h1>Home Page</h1>
+        )}
+      </div>
+    </ThemeProvider>
   );
 }
 

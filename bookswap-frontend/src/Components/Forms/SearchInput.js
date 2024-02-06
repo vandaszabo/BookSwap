@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { TextField, Stack, Autocomplete } from '@mui/material';
 
 //*********-------Main function for autocomplete Search input-------*********//
-function SearchInput({ books, onSearch, theme }) {
+function SearchInput({ books, onSearch }) {
 
-    const [value, setValue] = useState(null);
-
+    const [value, setValue] = useState(null);  
     //*********-------Provide data for autocomplete functionality-------*********//
     const defaultProps = {
         options: books,

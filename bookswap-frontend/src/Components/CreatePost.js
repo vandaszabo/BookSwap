@@ -39,7 +39,7 @@ function getStepContent(step, bookPostData, coverImage, setCoverImage) {
 }
 
 //*********-------Main function for post creation-------*********//
-export default function CreatePost({ myTheme, setShowCreatePost }) {
+export default function CreatePost({ setShowCreatePost }) {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
@@ -102,9 +102,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
   };
 
   return (
-    <ThemeProvider theme={myTheme}>
       <React.Fragment>
-        <CssBaseline />
         <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
           <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
             <Typography component="h1" variant="h4" align="center">
@@ -132,7 +130,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
                       onClick={() => setShowCreatePost(false)}
                       sx={{
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
+                          backgroundColor: (theme) => theme.palette.primary.light,
                         },
                       }}>
                       Close
@@ -156,7 +154,7 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
                         mt: 3,
                         ml: 1,
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
+                          backgroundColor: (theme) => theme.palette.primary.light,
                         },
                       }}
                     >
@@ -178,6 +176,5 @@ export default function CreatePost({ myTheme, setShowCreatePost }) {
           </Paper>
         </Container>
       </React.Fragment>
-    </ThemeProvider>
   );
 }

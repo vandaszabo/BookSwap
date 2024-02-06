@@ -57,12 +57,27 @@ export default function Profile({ myTheme }) {
         <React.Fragment>
             {authUser &&
                 <>
-                    <Container>
-                        <Typography variant="h6" gutterBottom>
-                            Personal info
-                        </Typography>
-                        <Grid container spacing={2}>
+                    <Container maxWidth="lg" sx={{ mt: 4 }}>
+                        <Grid container spacing={2} sx={{ maxWidth: '50%' }}>
+                            <Grid item xs={12} sm={8} md={6} lg={6}>
+                                <Typography variant="h6" gutterBottom>
+                                    Profile Image
+                                </Typography>
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        alt={authUser.username}
+                                        //height="300"
+                                        image={authUser && authUser.profileImage
+                                            ? authUser.profileImage
+                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
+                                    />
+                                </Card>
+                            </Grid>
                             <Grid item xs={12} md={8}>
+                                <Typography variant="h6" gutterBottom>
+                                    Personal info
+                                </Typography>
                                 <Card>
                                     <CardContent>
                                         <List>
@@ -85,45 +100,35 @@ export default function Profile({ myTheme }) {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} md={4}>
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        alt={authUser.username}
-                                        //height="300"
-                                        image={authUser && authUser.profileImage
-                                            ? authUser.profileImage
-                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
-                                    />
-                                </Card>
-                            </Grid>
+
                         </Grid>
                     </Container>
-                    <Container sx={{ py: 8 }} maxWidth="md">
+                    <Container sx={{ py: 4 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
                             Books
                         </Typography>
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (
-                                <Grid item key={`${post.id}_${index}`} xs={12} sm={6} md={4}>
+                                <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
                                     <Card
-                                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                        sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                     >
                                         <CardMedia
                                             component="div"
                                             sx={{
-                                                // 16:9
-                                                pt: '56.25%',
-                                                // width: '100%',
-                                                // height: '300px'
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                height: '200px',
+                                                width: '100%',
                                             }}
                                             image={post.coverImage}
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
-                                            <Typography gutterBottom variant="h5" component="h2">
+                                            <Typography variant="body1" component="div">
                                                 {post.title}
                                             </Typography>
-                                            <Typography>
+                                            <Typography variant="body2" color="text.secondary">
                                                 {post.author}
                                             </Typography>
                                         </CardContent>

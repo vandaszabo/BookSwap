@@ -14,8 +14,6 @@ import { FormControl } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
-
-import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 
 function topFunction() {
@@ -23,12 +21,12 @@ function topFunction() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-export default function Album({ theme, books }) {
+export default function Album({ books, setSearchValue, setShowBooks }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
     const [favorites, setFavorites] = useState([]);
-    const {authUser} = useAuth();
+    const { authUser } = useAuth();
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);
@@ -43,19 +41,21 @@ export default function Album({ theme, books }) {
         setFavorites(prev => [...prev, bookId]);
     };
 
-    const handleView = (bookId) => {
-        console.log("view this with details: ", bookId);
+    const handleView = (book) => {
+        setSearchValue(book);
+        setShowBooks(false);
     };
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <main>
+        <React.Fragment>
+        <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
+            <Box>
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
-                        pt: 8,
-                        pb: 6,
+                        mt: 8,
+                        mb: 2,
                     }}
                 >
                     <Container maxWidth="sm">
@@ -131,10 +131,11 @@ export default function Album({ theme, books }) {
                                     <CardMedia
                                         component="div"
                                         sx={{
-                                            // 16:9
-                                            // pt: '56.25%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            height: '200px',
                                             width: '100%',
-                                            height: '200px'
                                         }}
                                         image={book.coverImage}
                                     />
@@ -147,18 +148,19 @@ export default function Album({ theme, books }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button onClick={()=>handleView(book.postId)} size="small">View</Button>
-                                        <Button onClick={()=>handleLike(book.postId)} size="small">Like</Button>
+                                        <Button onClick={() => handleView(book)} size="small">View</Button>
+                                        <Button onClick={() => handleLike(book.postId)} size="small">Like</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>
                         ))}
                     </Grid>
                 </Container>
-            </main>
+            </Box>
             <Box sx={{ bgcolor: 'background.paper', p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} component="footer">
                 <Button onClick={topFunction}>Back to top</Button>
             </Box>
-        </ThemeProvider>
+            </Container>
+        </React.Fragment>
     );
 }

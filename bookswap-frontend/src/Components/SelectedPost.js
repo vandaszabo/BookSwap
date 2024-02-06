@@ -5,14 +5,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 
 //*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book }) {
     return (
         <React.Fragment>
-            <CssBaseline />
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+            <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8}}>
                 <Typography variant="h6" gutterBottom>
                     {book.title}
                 </Typography>
@@ -44,7 +42,7 @@ export default function SelectedPost({ book }) {
                             src={book.coverImage}
                             alt="cover-image"
                             style={{
-                                width: '100%',
+                                maxWidth: '50%',
                                 height: 'auto',
                             }}
                         />

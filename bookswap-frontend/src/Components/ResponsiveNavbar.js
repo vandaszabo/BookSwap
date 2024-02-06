@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, AppBar, Button, CssBaseline, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
+import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';
-import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
 
 //*********-------Main function for Navbar-------*********//
-function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProfilePage, setShowBooks, setSearchValue }) {
-
+function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, setShowBooks, setSearchValue }) {
 
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, setShowLogin, setShowRegistration } = useAuth();
-    const isSmallScreen = useMediaQuery(myTheme.breakpoints.down('sm'));
+    const isSmallScreen = useMediaQuery((theme)=>theme.breakpoints.down('sm'));
 
     //*********-------Handle input change in navbar Search field-------*********//
     const handleSearch = (value) => {
@@ -122,11 +120,9 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
 
     return (
         <>
-            <ThemeProvider theme={myTheme}>
-                <CssBaseline />
-                <AppBar position="static" color='primary' sx={{ background: myTheme.palette.primary.main, padding: '3px' }}>
-                    <Container maxWidth="xl" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                <AppBar position="static"  elevation={0} color='primary' sx={{ background: (theme) => theme.palette.secondary.main, padding: '3px' }}>
+                    <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             <Tooltip title="Menu">
                                 <IconButton
                                     size="large"
@@ -140,7 +136,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                                 </IconButton>
                             </Tooltip>
                         </Box>
-                        <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                        <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             <Menu
                                 id="main-menu"
                                 anchorEl={anchorElBooks}
@@ -162,7 +158,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                                 <MenuItem onClick={showBooks}>Books</MenuItem>
                             </Menu>
                         </Box>
-                        <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                        <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             {isSmallScreen ? null : (
                                 <Typography
                                     variant="h6"
@@ -188,12 +184,12 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                             )}
                         </Box>
 
-                        <Box sx={{ flexGrow: 1, display: 'inline-flex' }}>
+                        <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             {isSmallScreen ? null : (
-                                    <SearchInput onSearch={handleSearch} books={books} theme={myTheme} />
+                                    <SearchInput onSearch={handleSearch} books={books} />
                             )}
                         </Box>
-                        <Box sx={{ flexGrow: 0, display: 'inline-flex' }}>
+                        <Box sx={{ flexGrow: 0, display: 'flex' }}>
                             {!isLoggedIn ? (
                                 <>
                                     <Button onClick={logIn} color="inherit" align="end">
@@ -235,7 +231,7 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                         >
                             {authUser &&
                                 <Typography variant='h6' sx={{
-                                    borderBottom: `2px solid ${myTheme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
+                                    borderBottom: (theme) => `2px solid ${theme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
                                 }}>{authUser.username}</Typography>}
                             <MenuItem onClick={createPost}>Create new post</MenuItem>
                             <MenuItem onClick={showProfile}>Profile</MenuItem>
@@ -243,7 +239,6 @@ function ResponsiveNavbar({ myTheme, setShowCreatePost, setBookList, setShowProf
                         </Menu>
                     </Container>
                 </AppBar>
-            </ThemeProvider>
         </>
     )
 }

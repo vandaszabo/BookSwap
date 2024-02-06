@@ -1,7 +1,6 @@
 import {React, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { Alert } from '@mui/material';
@@ -9,11 +8,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './AuthContext';
 
 //*********-------main function for Registration-------*********//
-export default function SignUp({myTheme}) {
+export default function SignUp() {
 
 const {setShowRegistration, setShowLogin } = useAuth();
 const [error, setError] = useState('');
@@ -65,9 +63,7 @@ const [error, setError] = useState('');
   };
   
   return (
-    <ThemeProvider theme={myTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -138,6 +134,5 @@ const [error, setError] = useState('');
         </Box>
         {error &&  <Alert severity="error">{error}</Alert>}
       </Container>
-    </ThemeProvider>
   );
 }
