@@ -8,12 +8,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 //*********-------main function for Login-------*********//
 export default function SignIn() {
 
-  const { authUser, setAuthUser, setIsLoggedIn, setShowLogin } = useAuth();
+  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Useeffect signin authuser:", authUser);
@@ -97,7 +99,7 @@ export default function SignIn() {
           console.warn(`User doesn't have details yet.(userDetails = null) ${error.message}`);
         }
         setIsLoggedIn(true);
-        setShowLogin(false);
+        navigate('/');
       }
     } catch (error) {
       console.error(`Error in sendUserData: ${error.message}`);

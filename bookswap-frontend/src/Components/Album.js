@@ -15,18 +15,20 @@ import { MenuItem } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { useAuth } from './Authentication/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-export default function Album({ books, setSearchValue, setShowBooks }) {
+export default function Album({ books, setSelectedPost }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
     const [favorites, setFavorites] = useState([]);
     const { authUser } = useAuth();
+    const navigate = useNavigate();
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);
@@ -42,8 +44,8 @@ export default function Album({ books, setSearchValue, setShowBooks }) {
     };
 
     const handleView = (book) => {
-        setSearchValue(book);
-        setShowBooks(false);
+        setSelectedPost(book);
+        navigate('/post');
     };
 
 

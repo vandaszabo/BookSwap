@@ -5,23 +5,23 @@ import { useAuth } from './Authentication/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchInput from './Forms/SearchInput';
 import { useMediaQuery } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 //*********-------Main function for Navbar-------*********//
-function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, setShowBooks, setSearchValue }) {
+function ResponsiveNavbar({setSelectedPost, setBookList}) {
 
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
-    const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, setShowLogin, setShowRegistration } = useAuth();
+    const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
     const isSmallScreen = useMediaQuery((theme)=>theme.breakpoints.down('sm'));
+    const navigate = useNavigate();
 
     //*********-------Handle input change in navbar Search field-------*********//
     const handleSearch = (value) => {
-        setSearchValue(value);
-        setShowBooks(false);
-        setShowProfilePage(false);
-        setShowCreatePost(false);
-
+        setSelectedPost(value);
+        navigate('/post');
     };
 
     //*********-------API call for getting all existing Posts-------*********//
@@ -53,12 +53,6 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
         fetchData();
     }, [setBooks, setBookList]);
 
-    //*********-------Handle click on Navbar Sign In button-------*********//
-    const logIn = () => {
-        setShowLogin(true);
-        setShowRegistration(false);
-    };
-
     //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {
         setIsLoggedIn(false);
@@ -66,36 +60,7 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
         setAuthUser(null);
         localStorage.removeItem('authUser');
         localStorage.removeItem('details');
-    };
-
-    //*********-------Handle click on Navbar Sign Up button-------*********//
-    const register = () => {
-        setShowRegistration(true);
-        setShowLogin(false);
-    };
-
-    //*********-------Handle click on Navbar Profile menu option-------*********//
-    const showProfile = () => {
-        setAnchorElUser(null);
-        setShowProfilePage(true);
-        setShowCreatePost(false);
-        setShowBooks(false);
-    };
-
-    //*********-------Handle click on Navbar Books menu option-------*********//
-    const showBooks = () => {
-        setAnchorElBooks(null);
-        setShowBooks(true);
-        setShowProfilePage(false);
-        setShowCreatePost(false);
-    };
-
-    //*********-------Handle click on Navbar Create new Post menu option-------*********//
-    const createPost = () => {
-        setAnchorElUser(null);
-        setShowCreatePost(true);
-        setShowBooks(false);
-        setShowProfilePage(false);
+        navigate('/login');
     };
 
     //*********-------Open menu on Navbar Avatar icon button-------*********//
@@ -155,7 +120,7 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
                                     display: 'flex',
                                 }}
                             >
-                                <MenuItem onClick={showBooks}>Books</MenuItem>
+                                <MenuItem component={Link} to={'/books'} onClick={()=>setAnchorElBooks(null)}>Books</MenuItem>
                             </Menu>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: 'flex' }}>
@@ -163,10 +128,8 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
                                 <Typography
                                     variant="h6"
                                     noWrap
-                                    component="a"
-                                    onClick={() => {
-                                        window.location.reload()
-                                    }}
+                                    component={Link}
+                                    to={'/'}
                                     sx={{
                                         mr: 2,
                                         display: 'flex',
@@ -192,10 +155,10 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
                         <Box sx={{ flexGrow: 0, display: 'flex' }}>
                             {!isLoggedIn ? (
                                 <>
-                                    <Button onClick={logIn} color="inherit" align="end">
+                                    <Button component={Link} to={'/login'} color="inherit" align="end">
                                         <Typography variant="button" style={{ color: '' }}>Sign In</Typography>
                                     </Button> <Typography sx={{ alignSelf: 'center' }}>/</Typography>
-                                    <Button onClick={register} color="inherit" align="end">
+                                    <Button component={Link} to={'/register'} color="inherit" align="end">
                                         <Typography variant="button" style={{ color: '#999999' }}>Sign Up</Typography>
                                     </Button>
                                 </>
@@ -233,8 +196,8 @@ function ResponsiveNavbar({ setShowCreatePost, setBookList, setShowProfilePage, 
                                 <Typography variant='h6' sx={{
                                     borderBottom: (theme) => `2px solid ${theme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
                                 }}>{authUser.username}</Typography>}
-                            <MenuItem onClick={createPost}>Create new post</MenuItem>
-                            <MenuItem onClick={showProfile}>Profile</MenuItem>
+                            <MenuItem component={Link} to={'/create'} onClick={()=>setAnchorElUser(null)}>Create new post</MenuItem>
+                            <MenuItem component={Link} to={'/profile'} onClick={()=>setAnchorElUser(null)}>Profile</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>
                         </Menu>
                     </Container>
