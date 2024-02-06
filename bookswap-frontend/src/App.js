@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import { useAuth } from './Components/Authentication/AuthContext';
+import { Route, Routes } from 'react-router-dom';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
 import { createTheme } from '@mui/material/styles';
@@ -10,14 +10,12 @@ import Profile from './Components/Profile';
 import SelectedPost from './Components/SelectedPost';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import Home from './Components/Home';
 
 function App() {
-  const { showLogin, showRegistration } = useAuth();
-  const [showCreatePost, setShowCreatePost] = useState(false);
-  const [showBooks, setShowBooks] = useState(false);
-  const [bookList, setBookList] = useState(false);
-  const [showProfilePage, setShowProfilePage] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+
+  const [selectedPost, setSelectedPost] = useState({});
+  const [bookList, setBookList] = useState([]);
 
   const myTheme = createTheme({
     palette: {
@@ -43,36 +41,18 @@ function App() {
       <div style={containerStyle}>
         <CssBaseline />
         <ResponsiveNavbar
-          setShowCreatePost={setShowCreatePost}
-          setBookList={setBookList}
-          setShowProfilePage={setShowProfilePage}
-          setShowBooks={setShowBooks}
-          setSearchValue={setSearchValue}
-        />
+          setSelectedPost={setSelectedPost}
+          setBookList={setBookList} />
 
-        {showLogin ? (
-          <SignIn
-          />
-        ) : showRegistration ? (
-          <SignUp
-          />
-        ) : showCreatePost ? (
-          <CreatePost
-            setShowCreatePost={setShowCreatePost}
-          />
-        ) : showProfilePage ? (
-          <Profile />
-        ) : showBooks ? (
-          <Album
-            books={bookList}
-            setSearchValue={setSearchValue}
-            setShowBooks={setShowBooks}
-          />
-        ) : searchValue ? (
-          <SelectedPost book={searchValue} />
-        ) : (
-          <h1>Home Page</h1>
-        )}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<SignUp />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/books" element={<Album books={bookList} setSelectedPost={setSelectedPost}/>} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/post" element={<SelectedPost book={selectedPost} />} />
+          <Route path="/create" element={<CreatePost />} />
+        </Routes>
       </div>
     </ThemeProvider>
   );
