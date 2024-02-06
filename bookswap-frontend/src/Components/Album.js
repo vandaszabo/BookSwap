@@ -55,7 +55,6 @@ export default function Album({ books, setSelectedPost }) {
             <Box>
                 <Box
                     sx={{
-                        bgcolor: 'background.paper',
                         mt: 8,
                         mb: 2,
                     }}
@@ -159,7 +158,7 @@ export default function Album({ books, setSelectedPost }) {
                     </Grid>
                 </Container>
             </Box>
-            <Box sx={{ bgcolor: 'background.paper', p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} component="footer">
+            <Box sx={{ p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} component="footer">
                 <Button onClick={topFunction}>Back to top</Button>
             </Box>
             </Container>

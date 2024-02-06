@@ -20,18 +20,24 @@ function App() {
   const myTheme = createTheme({
     palette: {
       primary: {
-        main: '#FFA500',
-        light: '#ffb52e',
+        main: '#D9ADD2',
+        light: '#FFFFFF',
       },
       secondary: {
-        main: '#FFFFFF',
-        light: '#f4f4f4',
+        main: '#003B4A',
+        light: '#A0B3D9',
+      },
+      background: {
+        main: '#F2CCB6',
       }
     },
   });
 
   const containerStyle = {
-    backgroundColor: 'myTheme.palette.primary.main',
+    backgroundColor: myTheme.palette.primary.light,
+    // backgroundImage: "url(https://wallpapers-clan.com/wp-content/uploads/2023/11/aesthetic-pastel-clouds-desktop-wallpaper-preview.jpg)",
+    // backgroundRepeat: 'no-repeat',
+    // backgroundSize: 'cover',
     minHeight: '100vh',
 
   };

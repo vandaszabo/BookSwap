@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -10,12 +9,12 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PostForm from './Forms/PostForm';
-import { ThemeProvider } from '@mui/material/styles';
 import { useAuth } from './Authentication/AuthContext';
 import FileUpload from './Forms/FileUpload';
 import Review from './Forms/Review';
 import { Alert } from '@mui/material';
 import ImageForm from './Forms/ImageForm';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
@@ -39,13 +38,14 @@ function getStepContent(step, bookPostData, coverImage, setCoverImage) {
 }
 
 //*********-------Main function for post creation-------*********//
-export default function CreatePost({ setShowCreatePost }) {
+export default function CreatePost() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
   const [error, setError] = useState("");
   const [coverImage, setCoverImage] = useState("url");
   const { authUser } = useAuth();
+  const navigate = useNavigate();
 
   //*********-------Next or Back button handling-------*********//
   const handleNext = () => {
@@ -127,10 +127,10 @@ export default function CreatePost({ setShowCreatePost }) {
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                       variant="contained"
-                      onClick={() => setShowCreatePost(false)}
+                      onClick={() => navigate('/books')}
                       sx={{
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.primary.light,
+                          backgroundColor: (theme) => theme.palette.secondary.light,
                         },
                       }}>
                       Close
@@ -154,7 +154,7 @@ export default function CreatePost({ setShowCreatePost }) {
                         mt: 3,
                         ml: 1,
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.primary.light,
+                          backgroundColor: (theme) => theme.palette.secondary.light,
                         },
                       }}
                     >
@@ -167,9 +167,16 @@ export default function CreatePost({ setShowCreatePost }) {
               <>
                 <Typography variant='h6'>Creation failed.</Typography>
                 <Alert severity="error">{error}</Alert>
-                <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                  Back
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button variant="contained" onClick={()=>window.location.reload()} sx={{
+                  mt: 3,
+                        '&:hover': {
+                          backgroundColor: (theme) => theme.palette.secondary.light,
+                        },
+                      }}>
+                 Try again
                 </Button>
+                </Box>
               </>
             )}
 
