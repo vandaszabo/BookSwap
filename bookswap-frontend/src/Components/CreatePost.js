@@ -13,7 +13,6 @@ import { useAuth } from './Authentication/AuthContext';
 import FileUpload from './Forms/FileUpload';
 import Review from './Forms/Review';
 import { Alert } from '@mui/material';
-import ImageForm from './Forms/ImageForm';
 import { useNavigate } from 'react-router-dom';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
@@ -26,9 +25,7 @@ function getStepContent(step, bookPostData, coverImage, setCoverImage) {
     case 1:
       return <>
         <h2>Please upload a cover image of your book</h2>
-        <FileUpload />
-        <h4>Or Paste link here</h4>
-        <ImageForm setCoverImage={setCoverImage} />
+        <FileUpload setCoverImage={setCoverImage}/>
       </>;
     case 2:
       return <Review bookData={bookPostData} image={coverImage} />;
@@ -43,7 +40,7 @@ export default function CreatePost() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
   const [error, setError] = useState("");
-  const [coverImage, setCoverImage] = useState("url");
+  const [coverImage, setCoverImage] = useState("");
   const { authUser } = useAuth();
   const navigate = useNavigate();
 
@@ -54,7 +51,7 @@ export default function CreatePost() {
       setBookPostData(postData);
     }
     if (activeStep === 1) {
-      console.log("review: ", bookPostData)
+      console.log("review: ", bookPostData, coverImage)
     }
     if (activeStep === 2) {
       handleCreatePost(bookPostData, coverImage, authUser.id)
