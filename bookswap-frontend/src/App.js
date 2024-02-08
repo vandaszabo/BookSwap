@@ -24,12 +24,12 @@ function App() {
   const lightTheme = createTheme({
     palette: {
       primary: {
-        main: '#D9ADD2',
+        main: '#5bb450',
         light: '#FFFFFF',
       },
       secondary: {
         main: '#003B4A',
-        light: '#A0B3D9',
+        light: '#acd8a7',
       },
       background: {
         main: '#F2CCB6',

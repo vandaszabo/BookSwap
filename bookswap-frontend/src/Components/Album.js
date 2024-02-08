@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -29,6 +29,11 @@ export default function Album({ books, setSelectedPost }) {
     const [favorites, setFavorites] = useState([]);
     const { authUser } = useAuth();
     const navigate = useNavigate();
+
+
+    useEffect(()=> {
+        
+    },[books]);
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);

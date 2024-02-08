@@ -19,6 +19,12 @@ function ImageForm({setCoverImage}) {
     };
 
     return (
+        <div>
+        {imageUrl && <img
+            src={URL.createObjectURL(imageUrl)}
+            alt="cover-image"
+            style={{ width: '100px', height: 'auto' }}
+          /> }
         <form onSubmit={handleSubmit}>
             <TextField
                 id="standard-basic"
@@ -29,6 +35,7 @@ function ImageForm({setCoverImage}) {
             />
             <Button type="submit">Submit</Button>
         </form>
+        </div>
     );
 }
 

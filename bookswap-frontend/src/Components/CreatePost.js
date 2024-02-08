@@ -124,7 +124,7 @@ export default function CreatePost() {
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                       variant="contained"
-                      onClick={() => navigate('/books')}
+                      onClick={() => navigate('/')}
                       sx={{
                         '&:hover': {
                           backgroundColor: (theme) => theme.palette.secondary.light,
