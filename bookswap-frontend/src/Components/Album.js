@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -30,6 +30,11 @@ export default function Album({ books, setSelectedPost }) {
     const { authUser } = useAuth();
     const navigate = useNavigate();
 
+
+    useEffect(()=> {
+        
+    },[books]);
+
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);
     };
@@ -55,7 +60,6 @@ export default function Album({ books, setSelectedPost }) {
             <Box>
                 <Box
                     sx={{
-                        bgcolor: 'background.paper',
                         mt: 8,
                         mb: 2,
                     }}
@@ -159,7 +163,7 @@ export default function Album({ books, setSelectedPost }) {
                     </Grid>
                 </Container>
             </Box>
-            <Box sx={{ bgcolor: 'background.paper', p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} component="footer">
+            <Box sx={{ p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} component="footer">
                 <Button onClick={topFunction}>Back to top</Button>
             </Box>
             </Container>

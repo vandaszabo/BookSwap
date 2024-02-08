@@ -85,7 +85,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList}) {
 
     return (
         <>
-                <AppBar position="static"  elevation={0} color='primary' sx={{ background: (theme) => theme.palette.secondary.main, padding: '3px' }}>
+                <AppBar position="static"  elevation={0} color='primary' sx={{padding: '3px' }}>
                     <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             <Tooltip title="Menu">
@@ -159,7 +159,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList}) {
                                         <Typography variant="button" style={{ color: '' }}>Sign In</Typography>
                                     </Button> <Typography sx={{ alignSelf: 'center' }}>/</Typography>
                                     <Button component={Link} to={'/register'} color="inherit" align="end">
-                                        <Typography variant="button" style={{ color: '#999999' }}>Sign Up</Typography>
+                                        <Typography variant="button" style={{ color: '#666666' }}>Sign Up</Typography>
                                     </Button>
                                 </>
                             ) : (

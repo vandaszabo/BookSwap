@@ -13,9 +13,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Container } from '@mui/material';
+import AddProfileImage from './Forms/AddProfileImage';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile({ myTheme }) {
+export default function Profile() {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
 
@@ -74,6 +75,7 @@ export default function Profile({ myTheme }) {
                                     />
                                 </Card>
                             </Grid>
+                            <AddProfileImage/>
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info

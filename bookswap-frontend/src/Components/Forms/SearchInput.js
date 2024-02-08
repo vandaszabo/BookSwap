@@ -38,7 +38,7 @@ function SearchInput({ books, onSearch }) {
                         <TextField {...params} label="Book Title" color='primary'
                         InputLabelProps={{
                             style: {
-                                color: '#999999',
+                                color: '#333333',
                                 paddingLeft: '2px',
                                 fontSize: 'small'
                             },

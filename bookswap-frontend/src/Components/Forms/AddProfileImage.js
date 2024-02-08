@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Input } from '@mui/material';
+import { useAuth } from '../Authentication/AuthContext';
 
 //*********-------main function for Upload Image file-------*********//
-export default function FileUpload({ setCoverImage }) {
+export default function AddProfileImage() {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const {authUser, setAuthUser} = useAuth();
 
 
   const handleFileChange = (event) => {
@@ -23,7 +25,7 @@ export default function FileUpload({ setCoverImage }) {
       // Set loading state to true before making the fetch request
       setLoading(true);
   
-      fetch('http://localhost:5029/api/BookPost/Upload', {
+      fetch('http://localhost:5029/api/User/Upload', {
         method: 'POST',
         body: formData,
       })
@@ -35,9 +37,41 @@ export default function FileUpload({ setCoverImage }) {
           }
         })
         .then((responseData) => {
+          const imageUrl = responseData.s3Url;
+          console.log('File uploaded successfully');
+          setAuthUser(prevAuthUser => ({ ...prevAuthUser, profileImage: imageUrl}))
+          console.log(imageUrl);
+        })
+        .catch((error) => {
+          console.error('Error uploading file:', error);
+        })
+        .finally(() => {
+          // Set loading state to false after the upload is complete (or in case of an error)
+          setLoading(false);
+        });       
+
+    } else {
+      console.log('No file selected');
+    }
+  };
+  
+  //Image should assigned to user in database
+  const AddUserDetails = (userDetails) =>{
+    fetch('http://localhost:5029/api/User/AddDetails', {
+        method: 'POST',
+        body: userDetails,
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error(`Error uploading file: ${response.statusText}`);
+          }
+        })
+        .then((responseData) => {
           const imageUrl = responseData;
           console.log('File uploaded successfully');
-          setCoverImage(imageUrl.s3Url);
+          setAuthUser(prevAuthUser => ({ ...prevAuthUser, profileImage: imageUrl.s3Url}))
           console.log(imageUrl);
         })
         .catch((error) => {
@@ -47,15 +81,12 @@ export default function FileUpload({ setCoverImage }) {
           // Set loading state to false after the upload is complete (or in case of an error)
           setLoading(false);
         });
-    } else {
-      console.log('No file selected');
-    }
-  };
-  
+};
+
 
   return (
     <div>
-      <h5>Picture upload</h5>
+      <h5>Change picture</h5>
       {selectedFile && <img
             src={URL.createObjectURL(selectedFile)}
             alt="cover-image"

@@ -25,4 +25,6 @@ public class BookPost
     [ForeignKey("UserDetailsId")]
     public Guid? UserDetailsId { get; set; }
     public UserDetails? UserDetails { get; set; }
+    
+    public ICollection<Like> Likes { get; set; }
 }
