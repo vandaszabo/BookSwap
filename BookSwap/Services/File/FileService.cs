@@ -7,12 +7,12 @@ namespace BookSwap.Services;
 
 public class FileService : IFileService
 {
-    public async Task<string> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file)
+    public async Task<string> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
     {
         var existingObjectRequest = new GetObjectMetadataRequest
         {
             BucketName = bucketName,
-            Key = $"userProfileImages/{DateTime.Now.Ticks}_{file.Name}"
+            Key = $"{imageCategory}/{DateTime.Now.Ticks}_{file.Name}"
         };
 
         try

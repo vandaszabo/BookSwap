@@ -43,7 +43,7 @@ public class FileController : ControllerBase
             {
                 // If file exists, return url
                 var existingImageUrl =
-                    await _fileService.CheckIfObjectExistsAndReturnUrlAsync(s3Client, _bucketName, file);
+                    await _fileService.CheckIfObjectExistsAndReturnUrlAsync(s3Client, _bucketName, file, imageCategory);
                 if (existingImageUrl != null)
                 {
                     return Ok(new { S3Url = existingImageUrl });
