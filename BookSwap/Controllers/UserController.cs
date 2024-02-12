@@ -17,6 +17,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    // List all user
     [HttpGet("User/List")]
     public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAll()
     {
@@ -27,57 +28,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetAll: {ex.Message}");
-
-            return StatusCode(500, "Internal Server Error");
+            return StatusCode(500, $"An error occurred: {ex.Message}");
         }
-    }
-
-    [HttpGet("Details/List")]
-    public async Task<ActionResult<IEnumerable<IdentityUser>>> GetAllDetails()
-    {
-        try
-        {
-            var userDetails = await _userService.GetAllUserDetails();
-            return Ok(userDetails);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error in GetAllDetails: {ex.Message}");
-
-            return StatusCode(500, "Internal Server Error");
-        }
-    }
-
-    [HttpPost("AddDetails")]
-    public async Task<ActionResult<UserDetails>> AddUserDetails([FromBody] UserDetailsRequest request)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        if (request.City == null && request.ProfileImage == null)
-        {
-            return BadRequest("At least one of City or ProfileImage must be non-null!");
-        }
-
-        var userDetails = await _userService.CreateUserDetails(request);
-
-        if (userDetails == null)
-        {
-            return BadRequest("Cannot create UserDetails");
-        }
-
-        var assignedUserDetails =
-            await _userService.AssignUserDetails(request.UserId, request.City, request.ProfileImage);
-
-        if (assignedUserDetails != null)
-        {
-            return Ok(assignedUserDetails);
-        }
-
-        return NotFound("User not found");
     }
 
     // Update main User data
@@ -100,6 +52,36 @@ public class UserController : ControllerBase
         return NotFound("User not found");
     }
 
+
+    // Update details for user
+    [HttpPost("UpdateDetails")]
+    public async Task<ActionResult<UserDetails>> UpdateUserDetails([FromBody] UserDetailsRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var existingUserDetails = await _userService.GetDetailsByUserId(request.UserId);
+
+            if (existingUserDetails != null)
+            {
+                var updatedDetails = await _userService.UpdateUserDetails(request);
+                return Ok(updatedDetails);
+            }
+
+            var createdUserDetails = await _userService.CreateUserDetails(request);
+            return Ok(createdUserDetails);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
+
+
     // Find User by Id
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDetails>> GetUser(string id)
@@ -117,9 +99,7 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetUser: {ex.Message}");
-
-            return StatusCode(500, "Internal Server Error");
+            return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
 
@@ -157,5 +137,4 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
-
 }

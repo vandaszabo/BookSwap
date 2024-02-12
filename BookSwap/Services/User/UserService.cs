@@ -2,6 +2,7 @@ using BookSwap.Contracts;
 using BookSwap.Data;
 using BookSwap.Models;
 using BookSwap.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,21 +29,10 @@ public class UserService : IUserService
         var users = await _userManager.Users.ToListAsync();
         return users;
     }
-    
-    public async Task<IEnumerable<UserDetails?>> GetAllUserDetails()
-    {
-        return await _userDetailsRepository.GetAll();
-    }
 
     public async Task<IdentityUser?> GetUserById(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
-        return user;
-    }
-
-    public async Task<IdentityUser?> GetUserByUsername(string username)
-    {
-        var user = await _userManager.FindByNameAsync(username);
         return user;
     }
 
@@ -77,53 +67,23 @@ public class UserService : IUserService
         return user.UserName;
     }
 
-    public async Task<IList<string>> GetUserRoles(string userName)
+    public async Task<UserDetails?> UpdateUserDetails(UserDetailsRequest request)
     {
-        var user = await _userManager.FindByNameAsync(userName);
-
-        if (user == null)
-        {
-            return new List<string>();
-        }
-
-        var roles = await _userManager.GetRolesAsync(user);
-        return roles;
-    }
-
-    public async Task<string?> SetUserRole(string userName, string role)
-    {
-        var user = await _userManager.FindByNameAsync(userName);
-
-        if (user == null)
+        var details = await _userDetailsRepository.GetByUserId(request.UserId);
+        
+        if (details == null)
         {
             return null;
         }
+        
+        await _userDetailsRepository.UpdateUserCity(request.UserId, request.City);
+        await _userDetailsRepository.UpdateProfileImage(request.UserId, request.ProfileImage);
+        
+        var updatedDetails = await _userDetailsRepository.GetByUserId(request.UserId);
+        return updatedDetails;
 
-        var existingRoles = await _userManager.GetRolesAsync(user);
-        if (existingRoles.Any())
-        {
-            await _userManager.RemoveFromRolesAsync(user, existingRoles);
-        }
-
-        await _userManager.AddToRoleAsync(user, role);
-
-        return user.UserName;
     }
 
-    public async Task<UserDetails?> AssignUserDetails(string userId, string? city, string? profileImage)
-    {
-        var userToAssign = await GetUserById(userId);
-
-        if (userToAssign == null)
-        {
-            return null;
-        }
-
-        var newDetailObj = new UserDetails { UserId = userToAssign.Id, City = city, ProfileImage = profileImage };
-        _dbContext.UserDetails.Add(newDetailObj);
-        return newDetailObj;
-    }
-    
     public async Task<UserDetails?> CreateUserDetails(UserDetailsRequest request)
     {
         var user = await GetUserById(request.UserId);

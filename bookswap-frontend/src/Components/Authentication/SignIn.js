@@ -14,7 +14,7 @@ import { useAuth } from './AuthContext';
 //*********-------main function for Login-------*********//
 export default function SignIn() {
 
-  const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
+  const { authUser, setAuthUser, setIsLoggedIn} = useAuth();
   const [error, setError] = useState('');
   const navigate = useNavigate();
 

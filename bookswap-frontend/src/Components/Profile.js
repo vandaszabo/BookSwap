@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useAuth } from './Authentication/AuthContext';
 import UploadProfileImage from './Forms/UploadProfileImage';
@@ -21,40 +23,31 @@ import UploadProfileImage from './Forms/UploadProfileImage';
 export default function Profile() {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
-
-    useEffect(() => {
-        console.log("Useeffect profile authuser:", authUser);
-    }, [authUser])
+    const [editingPhoto, setEditingPhoto] = useState(false);
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
+                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const data = await response.json();
 
-                if (data !== null) {
-                    setUserPosts(data);
-                    const updatedAuthUser = { ...authUser, bookPosts: data };
-                    setAuthUser(updatedAuthUser);
-                }
+                setUserPosts(data || []);
+                setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: data || [] }));
             } catch (error) {
                 console.error(`Error in fetchUserPosts: ${error.message}`);
             }
         };
 
         fetchUserPosts();
-    }, [setUserPosts]);
+    }, [authUser.id, setAuthUser]);
+
+    const handleEditPicture = () => {
+        setEditingPhoto((prevEditing) => !prevEditing);
+    };
 
     return (
         <React.Fragment>
@@ -75,9 +68,29 @@ export default function Profile() {
                                             ? authUser.profileImage
                                             : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
                                     />
+                                    <div style={{
+                                        position: 'relative',
+                                        width: '100%',
+                                        height: '100%',
+                                    }}>
+                                        <Button
+                                            onClick={handleEditPicture}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: 0,
+                                                right: 0,
+                                                borderRadius: '50%',
+                                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                            }}
+                                        >
+                                            {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
+                                        </Button>
+                                    </div>
                                 </Card>
                             </Grid>
-                            <UploadProfileImage/>
+
+                            {editingPhoto && <UploadProfileImage />}
+
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
@@ -85,21 +98,11 @@ export default function Profile() {
                                 <Card>
                                     <CardContent>
                                         <List>
-                                            <ListItem key="username" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.username} secondary="Username" />
-                                            </ListItem>
-
-                                            <ListItem key="email" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.email} secondary="Email" />
-                                            </ListItem>
-
-                                            <ListItem key="phoneNumber" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.phoneNumber} secondary="Phone number" />
-                                            </ListItem>
-
-                                            <ListItem key="city" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.city} secondary="City" />
-                                            </ListItem>
+                                            {['username', 'email', 'phoneNumber', 'city'].map((field) => (
+                                                <ListItem key={field} sx={{ py: 1, px: 0 }}>
+                                                    <ListItemText primary={authUser[field]} secondary={field.charAt(0).toUpperCase() + field.slice(1)} />
+                                                </ListItem>
+                                            ))}
                                         </List>
                                     </CardContent>
                                 </Card>

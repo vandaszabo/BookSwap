@@ -26,12 +26,12 @@ public class FileService : IFileService
         }
     }
     
-    public async Task<string> UploadFileToS3Async(AmazonS3Client s3Client, string bucketName, IFormFile file)
+    public async Task<string> UploadFileToS3Async(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
     {
         var uploadRequest = new PutObjectRequest
         {
             BucketName = bucketName,
-            Key = $"userProfileImages/{DateTime.Now.Ticks}_{file.Name}",
+            Key = $"{imageCategory}/{DateTime.Now.Ticks}_{file.Name}",
             InputStream = file.OpenReadStream(),
             ContentType = file.ContentType,
             CannedACL = S3CannedACL.PublicRead

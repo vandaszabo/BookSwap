@@ -20,7 +20,7 @@ public class FileController : ControllerBase
     }
 
     [HttpPost("Upload")]
-    public async Task<IActionResult> UploadFile(IFormFile file)
+    public async Task<IActionResult> UploadFile(IFormFile file, ImageCategory imageCategory)
     {
         // Check file format
         if (!_fileService.IsImage(file))
@@ -50,7 +50,7 @@ public class FileController : ControllerBase
                 }
 
                 // If not, upload first, then return url
-                var imageUrl = await _fileService.UploadFileToS3Async(s3Client, _bucketName, file);
+                var imageUrl = await _fileService.UploadFileToS3Async(s3Client, _bucketName, file, imageCategory);
                 return Ok(new { S3Url = imageUrl });
             }
             catch (Exception ex)
