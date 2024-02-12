@@ -1,39 +1,36 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import { Select } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import { MenuItem } from '@mui/material';
+import Button from '@mui/material/Button';
+import { InputLabel } from '@mui/material';
+import { FormControl } from '@mui/material';
+import CardMedia from '@mui/material/CardMedia';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { FormControl } from '@mui/material';
-import { MenuItem } from '@mui/material';
-import { InputLabel } from '@mui/material';
-import { Select } from '@mui/material';
+
 import { useAuth } from './Authentication/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-export default function Album({ books, setSelectedPost }) {
+export default function AllBooks({ books, setSelectedPost }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
     const [favorites, setFavorites] = useState([]);
     const { authUser } = useAuth();
     const navigate = useNavigate();
-
-
-    useEffect(()=> {
-        
-    },[books]);
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);

@@ -16,14 +16,16 @@
       "applicationUrl": "http://localhost:5029",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "GOOGLEBOOKS_APIKEY": "YourApiKey",        
         "ASPNETCORE_CONNECTIONSTRING": "",
         "ASPNETCORE_VALIDISSUER": "",
         "ASPNETCORE_VALIDAUDIENCE": "",
         "ASPNETCORE_ISSUERSIGNINGKEY": "",
         "ASPNETCORE_ADMINEMAIL": "",
         "ASPNETCORE_ADMINPASSWORD": "",
-        "ASPNETCORE_ADMINUSERNAME": ""
+        "ASPNETCORE_ADMINUSERNAME": "",
+        "AWS_ACCESSKEY": "",
+        "AWS_SECRETKEY": "",
+        "AWS_BUCKET_NAME": ""
       }
     },
     "https": {

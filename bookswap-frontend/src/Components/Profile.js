@@ -1,19 +1,21 @@
 import React from 'react';
-import { useAuth } from './Authentication/AuthContext';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import CardActions from '@mui/material/CardActions';
-import { Button } from '@mui/material';
+
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import List from '@mui/material/List';
+import { Button } from '@mui/material';
 import { Container } from '@mui/material';
-import AddProfileImage from './Forms/AddProfileImage';
+import ListItem from '@mui/material/ListItem';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import ListItemText from '@mui/material/ListItemText';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+
+import { useAuth } from './Authentication/AuthContext';
+import UploadProfileImage from './Forms/UploadProfileImage';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile() {
@@ -75,7 +77,7 @@ export default function Profile() {
                                     />
                                 </Card>
                             </Grid>
-                            <AddProfileImage/>
+                            <UploadProfileImage/>
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
@@ -107,7 +109,7 @@ export default function Profile() {
                     </Container>
                     <Container sx={{ py: 4 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
-                            Books
+                            Your posts
                         </Typography>
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (
