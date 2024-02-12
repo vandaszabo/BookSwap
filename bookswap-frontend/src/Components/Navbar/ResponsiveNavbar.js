@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
-import { AutoStories } from '@mui/icons-material';
-import { useAuth } from './Authentication/AuthContext';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchInput from './Forms/SearchInput';
-import { useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import { AutoStories } from '@mui/icons-material';
+import { useMediaQuery } from '@mui/material';
+import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
+
+import { useAuth } from '../Authentication/AuthContext';
+import SearchInput from './SearchInput';
 
 //*********-------Main function for Navbar-------*********//
-function ResponsiveNavbar({setSelectedPost, setBookList}) {
+function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
 
     const [books, setBooks] = useState([]);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
+
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
     const isSmallScreen = useMediaQuery((theme)=>theme.breakpoints.down('sm'));
     const navigate = useNavigate();
@@ -51,7 +54,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList}) {
         };
 
         fetchData();
-    }, [setBooks, setBookList]);
+    }, [setBooks, setBookList, created]);
 
     //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {

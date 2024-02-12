@@ -1,25 +1,28 @@
 import { React, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+
+import { Container } from '@mui/material';
+import Switch from '@mui/material/Switch';
+import { CssBaseline } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+import Home from './Components/Home';
+import Profile from './Components/Profile';
+import AllBooks from './Components/AllBooks';
+import CreatePost from './Components/CreatePost';
+import SelectedPost from './Components/SelectedPost';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
-import { createTheme } from '@mui/material/styles';
-import CreatePost from './Components/CreatePost';
-import ResponsiveNavbar from './Components/ResponsiveNavbar';
-import Album from './Components/Album';
-import Profile from './Components/Profile';
-import SelectedPost from './Components/SelectedPost';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-import Home from './Components/Home';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import {Container} from '@mui/material';
+import ResponsiveNavbar from './Components/Navbar/ResponsiveNavbar';
 
 function App() {
 
-  const [selectedPost, setSelectedPost] = useState({});
   const [bookList, setBookList] = useState([]);
+  const [created, setCreated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
 
   const lightTheme = createTheme({
     palette: {
@@ -68,24 +71,29 @@ function App() {
     <ThemeProvider theme={selectedTheme}>
       <div style={containerStyle}>
         <CssBaseline />
+
         <ResponsiveNavbar
           setSelectedPost={setSelectedPost}
-          setBookList={setBookList} />
-          <Container maxWidth="lg" sx={{ mt: 4 }}>
-         <FormControlLabel
-          control={<Switch checked={darkMode} onChange={toggleDarkMode} />}
-          label="Dark Mode"
-        />
+          setBookList={setBookList}
+          created={created} />
+
+        <Container maxWidth="lg" sx={{ mt: 4 }}>
+          <FormControlLabel
+            control={<Switch checked={darkMode} onChange={toggleDarkMode} />}
+            label="Dark Mode"
+          />
         </Container>
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
-          <Route path="/books" element={<Album books={bookList} setSelectedPost={setSelectedPost} />} />
+          <Route path="/books" element={<AllBooks books={bookList} setSelectedPost={setSelectedPost} />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/post" element={<SelectedPost book={selectedPost} />} />
-          <Route path="/create" element={<CreatePost />} />
+          <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
+
       </div>
     </ThemeProvider>
   );

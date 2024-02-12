@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import PostForm from './Forms/PostForm';
-import { useAuth } from './Authentication/AuthContext';
-import FileUpload from './Forms/FileUpload';
-import Review from './Forms/Review';
-import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
+import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
+import Step from '@mui/material/Step';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Stepper from '@mui/material/Stepper';
+import StepLabel from '@mui/material/StepLabel';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+
+import Review from './Forms/Review';
+import CreatePostForm from './Forms/CreatePostForm';
+import { useAuth } from './Authentication/AuthContext';
+import UploadCoverImage from './Forms/UploadCoverImage';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
@@ -21,11 +23,11 @@ const steps = ['Add information', 'Upload picture', 'Review'];
 function getStepContent(step, bookPostData, coverImage, setCoverImage) {
   switch (step) {
     case 0:
-      return <PostForm />;
+      return <CreatePostForm />;
     case 1:
       return <>
         <h2>Please upload a cover image of your book</h2>
-        <FileUpload setCoverImage={setCoverImage}/>
+        <UploadCoverImage setCoverImage={setCoverImage}/>
       </>;
     case 2:
       return <Review bookData={bookPostData} image={coverImage} />;
@@ -35,7 +37,7 @@ function getStepContent(step, bookPostData, coverImage, setCoverImage) {
 }
 
 //*********-------Main function for post creation-------*********//
-export default function CreatePost() {
+export default function CreatePost({setCreated}) {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
@@ -47,7 +49,7 @@ export default function CreatePost() {
   //*********-------Next or Back button handling-------*********//
   const handleNext = () => {
     if (activeStep === 0) {
-      const postData = PostForm.getData();
+      const postData = CreatePostForm.getData();
       setBookPostData(postData);
     }
     if (activeStep === 1) {
@@ -91,6 +93,7 @@ export default function CreatePost() {
 
       if (responseData !== null) {
         console.log("Id of new post: ", responseData);
+        setCreated(true);
       }
     } catch (error) {
       console.error(`Error in createPost: ${error.message}`);
