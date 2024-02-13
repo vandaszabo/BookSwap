@@ -15,6 +15,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
+import Fab from '@mui/material/Fab';
 
 import { useAuth } from './Authentication/AuthContext';
 import UploadProfileImage from './Forms/UploadProfileImage';
@@ -54,43 +55,26 @@ export default function Profile() {
             {authUser &&
                 <>
                     <Container maxWidth="lg" sx={{ mt: 4 }}>
-                        <Grid container spacing={2} sx={{ maxWidth: '50%' }}>
-                            <Grid item xs={12} sm={8} md={6} lg={6}>
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item xs={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
-                                    Profile Image
+                                    Profile picture
                                 </Typography>
-                                <Card>
+                                <Card sx={{ width: 200, height: 200, borderRadius: '50%', overflow: 'hidden' }}>
                                     <CardMedia
                                         component="img"
                                         alt={authUser.username}
-                                        //height="300"
+                                        sx={{ objectFit: 'cover', height: '100%', width: '100%' }}
                                         image={authUser && authUser.profileImage
                                             ? authUser.profileImage
-                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
+                                            : "https://static.vecteezy.com/system/resources/previews/020/646/716/non_2x/empty-face-icon-avatar-with-black-hair-illustration-vector.jpg"}
                                     />
-                                    <div style={{
-                                        position: 'relative',
-                                        width: '100%',
-                                        height: '100%',
-                                    }}>
-                                        <Button
-                                            onClick={handleEditPicture}
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                right: 0,
-                                                borderRadius: '50%',
-                                                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                            }}
-                                        >
-                                            {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
-                                        </Button>
-                                    </div>
                                 </Card>
+                                <Fab size="small" onClick={handleEditPicture} color="primary" aria-label="edit">
+                                    {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
+                                </Fab>
                             </Grid>
-
-                            {editingPhoto && <UploadProfileImage />}
-
+                            {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto}/>}
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
@@ -107,7 +91,6 @@ export default function Profile() {
                                     </CardContent>
                                 </Card>
                             </Grid>
-
                         </Grid>
                     </Container>
                     <Container sx={{ py: 4 }} maxWidth="lg">
@@ -128,8 +111,9 @@ export default function Profile() {
                                                 justifyContent: 'center',
                                                 height: '200px',
                                                 width: '100%',
+                                                background: `url(${post.coverImage}) center/cover no-repeat`,
                                             }}
-                                            image={post.coverImage}
+                                        //image={post.coverImage}
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
                                             <Typography variant="body1" component="div">

@@ -4,8 +4,9 @@ import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAuth } from '../Authentication/AuthContext';
 
+
 //*********-------main function for Upload Image file-------*********//
-export default function UploadProfileImage() {
+export default function UploadProfileImage({setEditingPhoto}) {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,7 @@ export default function UploadProfileImage() {
       })
       .finally(() => {
         setLoading(false);
+        setEditingPhoto(false);
       });
   };
   

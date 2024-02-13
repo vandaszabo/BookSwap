@@ -12,7 +12,7 @@ public class FileService : IFileService
         var existingObjectRequest = new GetObjectMetadataRequest
         {
             BucketName = bucketName,
-            Key = $"{imageCategory}/{DateTime.Now.Ticks}_{file.Name}"
+            Key = $"{imageCategory}/{file.FileName}",
         };
 
         try
@@ -31,12 +31,13 @@ public class FileService : IFileService
         var uploadRequest = new PutObjectRequest
         {
             BucketName = bucketName,
-            Key = $"{imageCategory}/{DateTime.Now.Ticks}_{file.Name}",
+            Key = $"{imageCategory}/{file.FileName}",
             InputStream = file.OpenReadStream(),
             ContentType = file.ContentType,
             CannedACL = S3CannedACL.PublicRead
         };
-
+        //uploadRequest.Metadata.Add("file", file.FileName);
+        
         var response = await s3Client.PutObjectAsync(uploadRequest);
 
         if (response.HttpStatusCode == HttpStatusCode.OK)
