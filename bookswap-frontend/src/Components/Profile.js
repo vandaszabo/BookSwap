@@ -19,12 +19,14 @@ import Fab from '@mui/material/Fab';
 
 import { useAuth } from './Authentication/AuthContext';
 import UploadProfileImage from './Forms/UploadProfileImage';
+import DetailsEdit from './Forms/DetailsEdit';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile() {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
+    const [editingDetails, setEditingDetails] = useState(false);
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
@@ -49,6 +51,9 @@ export default function Profile() {
     const handleEditPicture = () => {
         setEditingPhoto((prevEditing) => !prevEditing);
     };
+    const handleEditData = () => {
+        setEditingDetails((prevEditing) => !prevEditing);
+    };
 
     return (
         <React.Fragment>
@@ -56,6 +61,8 @@ export default function Profile() {
                 <>
                     <Container maxWidth="lg" sx={{ mt: 4 }}>
                         <Grid container spacing={2} alignItems="center">
+
+                            {/* Picture */}
                             <Grid item xs={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
                                     Profile picture
@@ -74,25 +81,37 @@ export default function Profile() {
                                     {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
                                 </Fab>
                             </Grid>
-                            {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto}/>}
+                            {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto} />}
+
+                            {/* Personal Data */}
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
                                 </Typography>
-                                <Card>
-                                    <CardContent>
-                                        <List>
-                                            {['username', 'email', 'phoneNumber', 'city'].map((field) => (
-                                                <ListItem key={field} sx={{ py: 1, px: 0 }}>
-                                                    <ListItemText primary={authUser[field]} secondary={field.charAt(0).toUpperCase() + field.slice(1)} />
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    </CardContent>
-                                </Card>
+                                <Fab size="small" onClick={handleEditData} color="primary" aria-label="edit">
+                                    {!editingDetails ? (<EditIcon />) : (<CloseIcon />)}
+                                </Fab>
+                                {!editingDetails ? (
+                                    <Card>
+                                        <CardContent>
+                                            <List>
+                                                {['username', 'email', 'phoneNumber', 'city'].map((field) => (
+                                                    <ListItem key={field} sx={{ py: 1, px: 0 }}>
+                                                        <ListItemText primary={authUser[field]} secondary={field.charAt(0).toUpperCase() + field.slice(1)} />
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                ) : (
+                                    <DetailsEdit setEditingDetails={setEditingDetails} />
+                                )}
                             </Grid>
+
                         </Grid>
                     </Container>
+
+                    {/* Posts */}
                     <Container sx={{ py: 4 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
                             Your posts

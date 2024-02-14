@@ -34,7 +34,7 @@ public class UserController : ControllerBase
 
     // Update main User data
     [HttpPost("UpdateData")]
-    public async Task<ActionResult<UserDetails>> UpdateUserData([FromBody] UpdateDataRequest request)
+    public async Task<ActionResult<IdentityUser>> UpdateUserData([FromBody] UpdateDataRequest request)
     {
         if (!ModelState.IsValid)
         {
