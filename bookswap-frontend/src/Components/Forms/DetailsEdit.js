@@ -16,16 +16,17 @@ export default function DetailsEdit({ setEditingDetails }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log("authuser: ", authUser);
 
         const cityEditRequest = {
             userId: authUser.id,
             city: event.target.city.value,
-            profileImage: authUser.profileImage
+            //profileImage: authUser.profileImage
         };
         const dataEditRequest = {
             userId: authUser.id,
             newEmail: event.target.email.value,
-            newUsername: event.target.username.value,
+            newUsername: event.target.userName.value,
             newPhoneNumber: event.target.phoneNumber.value
         };
 
@@ -46,14 +47,19 @@ export default function DetailsEdit({ setEditingDetails }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-              },
+            },
             body: JSON.stringify(data),
         })
             .then((response) => response.json())
             .then((responseData) => {
-                console.log(responseData);
+                const newUserObj = {
+                    id: responseData.id,
+                    userName: responseData.userName,
+                    email: responseData.email,
+                    phoneNumber: responseData.phoneNumber
+                }
                 setAuthUser((prevAuthUser) => ({
-                    ...prevAuthUser, responseData
+                    ...prevAuthUser, ...newUserObj
                 }));
                 localStorage.setItem('authUser', JSON.stringify(responseData));
             })
@@ -74,16 +80,15 @@ export default function DetailsEdit({ setEditingDetails }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-              },
+            },
             body: JSON.stringify(data),
         })
             .then((response) => response.json())
-            .then((responseData) => {
-                console.log(responseData);
+            .then((details) => {
                 setAuthUser((prevAuthUser) => ({
-                    ...prevAuthUser, responseData
+                    ...prevAuthUser, city: details.city
                 }));
-                localStorage.setItem('details', JSON.stringify(responseData));
+                modifyLocalStorageValue(details.city);
             })
             .catch((error) => {
                 console.error('Error saving userDetails:', error);
@@ -94,6 +99,12 @@ export default function DetailsEdit({ setEditingDetails }) {
             });
     };
 
+    const modifyLocalStorageValue = (value) => {
+        var detailsObj = JSON.parse(localStorage.getItem('details'));
+        detailsObj.city = value;
+        localStorage.setItem('details', JSON.stringify(detailsObj));
+    };
+
     return (
         <Container component="main" maxWidth="md">
             <Card component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -102,10 +113,10 @@ export default function DetailsEdit({ setEditingDetails }) {
                         margin="normal"
                         required
                         fullWidth
-                        id="username"
+                        id="userName"
                         label="New Username"
-                        name="username"
-                        defaultValue={authUser.username}
+                        name="userName"
+                        defaultValue={authUser.userName}
                     />
                     <TextField
                         margin="normal"

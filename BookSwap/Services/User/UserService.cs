@@ -75,9 +75,16 @@ public class UserService : IUserService
         {
             return null;
         }
-        
-        await _userDetailsRepository.UpdateUserCity(request.UserId, request.City);
-        await _userDetailsRepository.UpdateProfileImage(request.UserId, request.ProfileImage);
+
+        if (request.City != null)
+        {
+            await _userDetailsRepository.UpdateUserCity(request.UserId, request.City);
+        }
+
+        if (request.ProfileImage != null)
+        {
+            await _userDetailsRepository.UpdateProfileImage(request.UserId, request.ProfileImage);
+        }
         
         var updatedDetails = await _userDetailsRepository.GetByUserId(request.UserId);
         return updatedDetails;

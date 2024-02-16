@@ -95,7 +95,7 @@ export default function Profile() {
                                     <Card>
                                         <CardContent>
                                             <List>
-                                                {['username', 'email', 'phoneNumber', 'city'].map((field) => (
+                                                {['userName', 'email', 'phoneNumber', 'city'].map((field) => (
                                                     <ListItem key={field} sx={{ py: 1, px: 0 }}>
                                                         <ListItemText primary={authUser[field]} secondary={field.charAt(0).toUpperCase() + field.slice(1)} />
                                                     </ListItem>

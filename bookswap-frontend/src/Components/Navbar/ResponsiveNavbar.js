@@ -170,7 +170,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
                                     <Tooltip title="Settings">
                                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                             <Avatar
-                                                alt={authUser.username}
+                                                alt={authUser.userName}
                                                 src={authUser && authUser.profileImage
                                                     ? authUser.profileImage
                                                     : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
@@ -198,7 +198,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
                             {authUser &&
                                 <Typography variant='h6' sx={{
                                     borderBottom: (theme) => `2px solid ${theme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
-                                }}>{authUser.username}</Typography>}
+                                }}>{authUser.userName}</Typography>}
                             <MenuItem component={Link} to={'/create'} onClick={()=>setAnchorElUser(null)}>Create new post</MenuItem>
                             <MenuItem component={Link} to={'/profile'} onClick={()=>setAnchorElUser(null)}>Profile</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>

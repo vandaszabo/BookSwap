@@ -88,7 +88,7 @@ export default function SignIn() {
       if (responseData !== null) {
         const newUserObj = {
           id: responseData.id,
-          username: responseData.username,
+          userName: responseData.username,
           email: responseData.email,
           phoneNumber: responseData.phoneNumber
         }

@@ -14,7 +14,7 @@ export default function UploadProfileImage({setEditingPhoto}) {
 
   const userDetails = {
     userId: authUser.id,
-    city: authUser.city,
+    //city: authUser.city,
     profileImage: authUser.profileImage
   }
 
