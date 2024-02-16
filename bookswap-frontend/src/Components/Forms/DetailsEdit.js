@@ -21,7 +21,6 @@ export default function DetailsEdit({ setEditingDetails }) {
         const cityEditRequest = {
             userId: authUser.id,
             city: event.target.city.value,
-            //profileImage: authUser.profileImage
         };
         const dataEditRequest = {
             userId: authUser.id,
@@ -31,8 +30,14 @@ export default function DetailsEdit({ setEditingDetails }) {
         };
 
         try {
-            saveUserDetails(cityEditRequest);
-            saveUserData(dataEditRequest);
+            if (dataEditRequest.newEmail !== authUser.email ||
+                dataEditRequest.newPhoneNumber !== authUser.phoneNumber ||
+                dataEditRequest.newUsername !== authUser.userName) {
+                saveUserData(dataEditRequest);
+            }
+            if (cityEditRequest.city !== authUser.city) {
+                saveUserDetails(cityEditRequest);
+            }
         } catch (error) {
             console.error(`Error in handleSubmit: ${error.message}`);
             setError(error.message);
