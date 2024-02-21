@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import List from '@mui/material/List';
@@ -22,11 +22,12 @@ import UploadProfileImage from './Forms/UploadProfileImage';
 import DetailsEdit from './Forms/DetailsEdit';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile() {
+export default function Profile({setSelectedPost}) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const navigate = useNavigate();
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
@@ -53,6 +54,14 @@ export default function Profile() {
     };
     const handleEditData = () => {
         setEditingDetails((prevEditing) => !prevEditing);
+    };
+
+    const handleViewPost =(post)=>{
+        setSelectedPost(post);
+        navigate('/your-post');
+    };
+    const handleEditPost =()=>{
+
     };
 
     return (
@@ -132,7 +141,6 @@ export default function Profile() {
                                                 width: '100%',
                                                 background: `url(${post.coverImage}) center/cover no-repeat`,
                                             }}
-                                        //image={post.coverImage}
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
                                             <Typography variant="body1" component="div">
@@ -143,8 +151,8 @@ export default function Profile() {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button size="small">View</Button>
-                                            <Button size="small">Edit</Button>
+                                            <Button onClick={()=> handleViewPost(post)} size="small">View</Button>
+                                            <Button onClick={handleEditPost} size="small">Edit</Button>
                                         </CardActions>
                                     </Card>
                                 </Grid>

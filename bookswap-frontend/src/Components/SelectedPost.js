@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import Button from '@mui/material/Button';
@@ -11,13 +9,30 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { Dialog, DialogContent } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import NavigateBack from './NavigateBack';
+import Poster from './Poster';
+
 
 //*********-------Main function for Review data for Creating new Post-------*********//
-export default function SelectedPost({ book }) {
-
-    const navigate = useNavigate();
+export default function SelectedPost({ book, backPath }) {
     const [openModal, setOpenModal] = useState(false);
+    const [localBook, setLocalBook] = useState(null);
+
+    useEffect(() => {
+        console.log('Book data before storing:', book);
+        if (book.title) {
+            localStorage.setItem('book', JSON.stringify(book));
+            setLocalBook(book);
+        }
+    }, [book]);
+
+    useEffect(() => {
+        const storedBook = localStorage.getItem('book');
+        console.log('Book data after retrieving:', storedBook);
+        if (storedBook) {
+            setLocalBook(JSON.parse(storedBook));
+        }
+    }, []);    
 
     const handleViewImage = () => {
         setOpenModal(true);
@@ -29,47 +44,39 @@ export default function SelectedPost({ book }) {
 
     return (
         <React.Fragment>
-            {book &&
+            {localBook &&
                 <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'left' }}>
-                        <Button
-                            variant='outlined'
-                            sx={{ mb: 4 }}
-                            size="small"
-                            onClick={() => navigate('/books')}>
-                            <ArrowBackIcon />
-                        </Button>
-                    </Box>
+                    <NavigateBack path={backPath} />
                     <Typography variant="h6" gutterBottom>
-                        {book.title}
+                        {localBook.title}
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={8}>
                             <List>
                                 <ListItem key="title" sx={{ py: 1, px: 0 }}>
-                                    <ListItemText primary={book.title} secondary="title" />
+                                    <ListItemText primary={localBook.title} secondary="title" />
                                 </ListItem>
 
                                 <ListItem key="author" sx={{ py: 1, px: 0 }}>
-                                    <ListItemText primary={book.author} secondary="author" />
+                                    <ListItemText primary={localBook.author} secondary="author" />
                                 </ListItem>
 
                                 <ListItem key="category" sx={{ py: 1, px: 0 }}>
-                                    <ListItemText primary={book.category} secondary="category" />
+                                    <ListItemText primary={localBook.category} secondary="category" />
                                 </ListItem>
 
                                 <ListItem key="pageCount" sx={{ py: 1, px: 0 }}>
-                                    <ListItemText primary={book.pageCount} secondary="pageCount" />
+                                    <ListItemText primary={localBook.pageCount} secondary="pageCount" />
                                 </ListItem>
                                 <ListItem key="description" sx={{ py: 1, px: 0 }}>
-                                    <ListItemText primary={book.description} secondary="description" />
+                                    <ListItemText primary={localBook.description} secondary="description" />
                                 </ListItem>
                             </List>
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Button onClick={handleViewImage}>
                                 <img
-                                    src={book.coverImage}
+                                    src={localBook.coverImage}
                                     alt="cover"
                                     style={{
                                         maxWidth: '50%',
@@ -80,7 +87,7 @@ export default function SelectedPost({ book }) {
                             <Dialog open={openModal} onClose={handleCloseModal}>
                                 <DialogContent>
                                     <img
-                                        src={book.coverImage}
+                                        src={localBook.coverImage}
                                         alt="full-size-cover"
                                         style={{
                                             width: '100%',
@@ -91,6 +98,7 @@ export default function SelectedPost({ book }) {
                             </Dialog>
                         </Grid>
                     </Grid>
+                    <Poster posterId={localBook.userId}/>
                 </Container>
             }
         </React.Fragment>

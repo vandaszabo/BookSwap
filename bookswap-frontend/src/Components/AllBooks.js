@@ -132,15 +132,15 @@ export default function AllBooks({ books, setSelectedPost }) {
                                     sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                 >
                                     <CardMedia
-                                        component="div"
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            height: '200px',
-                                            width: '100%',
-                                        }}
-                                        image={book.coverImage}
+                                       component="div"
+                                       sx={{
+                                           display: 'flex',
+                                           alignItems: 'center',
+                                           justifyContent: 'center',
+                                           height: '200px',
+                                           width: '100%',
+                                           background: `url(${book.coverImage}) center/cover no-repeat`,
+                                       }}
                                     />
                                     <CardContent sx={{ flexGrow: 1 }}>
                                         <Typography variant="body1" component="div">

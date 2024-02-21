@@ -89,8 +89,9 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/books" element={<AllBooks books={bookList} setSelectedPost={setSelectedPost} />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/post" element={<SelectedPost book={selectedPost} />} />
+          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost}/>} />
+          <Route path="/post" element={<SelectedPost book={selectedPost} backPath='/books'/>} />
+          <Route path="/your-post" element={<SelectedPost book={selectedPost} backPath='/profile'/>} />
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
