@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
-import { useAuth } from './Authentication/AuthContext';
+import { useAuth } from '../Components/Authentication/AuthContext';
 
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
@@ -59,6 +59,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                     sx={{
                         mt: 8,
                         mb: 2,
+                        color: (theme) => theme.palette.secondary.main
                     }}
                 >
                     <Container maxWidth="sm">
@@ -66,28 +67,28 @@ export default function AllBooks({ books, setSelectedPost }) {
                             component="h5"
                             variant="body1"
                             align="center"
-                            color="text.primary"
                             gutterBottom
                         >
                             Find your new favourite book!
                         </Typography>
-                        <Typography variant="body2" align="center" color="text.secondary" paragraph>
+                        <Typography variant="body2" align="center" paragraph>
                             Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                         </Typography>
                         <Stack
-                            sx={{ pt: 4 }}
+                            sx={{ pt: 4, color: (theme) => theme.palette.secondary.main }}
                             direction="row"
                             spacing={2}
                             justifyContent="center"
                         >
                             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                <InputLabel id="genre">Genre</InputLabel>
+                                <InputLabel id="genre" sx={{color: (theme) => theme.palette.secondary.main}}>Genre</InputLabel>
                                 <Select
                                     labelId="genre"
                                     id="demo-select-small"
                                     value={selectedGenre}
                                     label="Age"
                                     onChange={handleChangeGenre}
+                                    sx={{color: (theme) => theme.palette.secondary.main}}
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
@@ -105,13 +106,14 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 </Select>
                             </FormControl>
                             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                <InputLabel id="language">Language</InputLabel>
+                                <InputLabel id="language" sx={{color: (theme) => theme.palette.secondary.main}}>Language</InputLabel>
                                 <Select
                                     labelId="language"
                                     id="demo-select-small"
                                     value={selectedLanguage}
                                     label="Age"
                                     onChange={handleChangeLanguage}
+                                    sx={{color: (theme) => theme.palette.secondary.main}}
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
@@ -123,7 +125,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                         </Stack>
                     </Container>
                 </Box>
-                <Container sx={{ py: 8 }} maxWidth="md">
+                <Container sx={{ py: 8,  color: (theme) => theme.palette.secondary.main}} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {books && books.map((book, index) => (
@@ -146,7 +148,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                                         <Typography variant="body1" component="div">
                                             {book.title}
                                         </Typography>
-                                        <Typography variant="body2" color="text.secondary">
+                                        <Typography variant="body2">
                                             {book.author}
                                         </Typography>
                                     </CardContent>

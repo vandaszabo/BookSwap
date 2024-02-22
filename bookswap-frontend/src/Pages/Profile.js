@@ -17,9 +17,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import Fab from '@mui/material/Fab';
 
-import { useAuth } from './Authentication/AuthContext';
-import UploadProfileImage from './Forms/UploadProfileImage';
-import DetailsEdit from './Forms/DetailsEdit';
+import { useAuth } from '../Components/Authentication/AuthContext';
+import UploadProfileImage from '../Components/Forms/UploadProfileImage';
+import DetailsEdit from '../Components/Forms/DetailsEdit';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({setSelectedPost}) {
@@ -146,7 +146,7 @@ export default function Profile({setSelectedPost}) {
                                             <Typography variant="body1" component="div">
                                                 {post.title}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2">
                                                 {post.author}
                                             </Typography>
                                         </CardContent>

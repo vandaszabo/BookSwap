@@ -19,7 +19,6 @@ export default function Poster({ posterId }) {
     };
 
     const fetchPosterData = async (id) => {
-        console.log("posterId: ", id);
         try {
             const response = await fetch(`http://localhost:5029/api/User/${posterId}`, {
                 method: 'GET',
@@ -35,49 +34,51 @@ export default function Poster({ posterId }) {
             const data = await response.json();
 
             if (data !== null) {
-                console.log(data)
-                setPoster(data);
+                setPoster(prev => ({
+                    ...prev, 
+                    ...data
+                }));
             }
         } catch (error) {
             console.error(`Error in fetchPosterData: ${error.message}`);
         }
     };
 
-    // const fetchPosterDetails = async (id)=>{
-    //     try {
-    //         const response = await fetch(`http://localhost:5029/api/User/Details/${id}`, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         });
+    const getPosterDetails = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
 
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! Status: ${response.status}`);
-    //         }
+            if (response.ok) {
+                const details = await response.json();
 
-    //         const data = await response.json();
-
-    //         if (data !== null) {
-    //             console.log(data)
-    //             setPoster((prevData) => ({
-    //                 ...prevData,
-    //                 ...data
-    //             }));
-    //         }
-    //     } catch (error) {
-    //         console.error(`Error in fetchPosterData: ${error.message}`);
-    //     }
-    // };
+                if (details !== null) {
+                    const detailsObj = {
+                        detailsId: details.id,
+                        city: details.city,
+                        profileImage: details.profileImage,
+                        bookPosts: details.bookPosts
+                    }
+                    setPoster((prevData) => ({
+                        ...prevData,
+                        ...detailsObj
+                    }));
+                }
+            } else {
+                console.error('Error fetching poster details:', response.statusText);
+            }
+        } catch (error) {
+            console.warn(`Poster doesn't have details yet.(userDetails = null) ${error.message}`);
+        }
+    };
 
     useEffect(() => {
         fetchPosterData(posterId);
-        // fetchPosterDetails(posterId);
-    }, [setPoster, posterId]);
+        getPosterDetails(posterId);
+    }, [posterId]);
 
     return (
         <Container>
-             <Typography variant="body2" gutterBottom>Owner of this book:</Typography>
+            <Typography variant="body2" gutterBottom>Owner of this book:</Typography>
             <IconButton onClick={handleViewPoster} sx={{ p: 0 }}>
                 <Avatar
                     alt={poster.userName}

@@ -12,10 +12,10 @@ import StepLabel from '@mui/material/StepLabel';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import Review from './Forms/Review';
-import CreatePostForm from './Forms/CreatePostForm';
-import { useAuth } from './Authentication/AuthContext';
-import UploadCoverImage from './Forms/UploadCoverImage';
+import Review from '../Components/Forms/Review';
+import CreatePostForm from '../Components/Forms/CreatePostForm';
+import { useAuth } from '../Components/Authentication/AuthContext';
+import UploadCoverImage from '../Components/Forms/UploadCoverImage';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
