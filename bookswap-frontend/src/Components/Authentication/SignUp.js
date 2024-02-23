@@ -25,12 +25,7 @@ export default function SignUp() {
       username: event.target.username.value,
       password: event.target.password.value,
     };
-    try {
-      await createUser(formData);
-    } catch (error) {
-      console.error(`Error in handleSubmit: ${error.message}`);
-      setError(error.message);
-    }
+    await createUser(formData);
   };
 
   //*********-------Add new user to our database-------*********//
@@ -44,27 +39,27 @@ export default function SignUp() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        setError("Invalid registration data")
-        throw new Error('Registration failed.');
-      }
-
       const responseData = await response.json();
+      console.log("Respons:", responseData);
 
-      if (responseData !== null) {
+      if (responseData.id) {
+        setError(null);
         console.log("registered user data: ", responseData)
 
         setAlert('Registration Successful!');
-        setError(null);
 
         setTimeout(() => {
           navigate('/login');
         }, 8000);
 
+      } else {
+        console.error('Invalid response:', responseData);
+        setError(responseData);
+        setAlert(null);
       }
     } catch (error) {
-      console.error(`Error in createUser: ${error.message}`);
-      setError(error.message);
+      console.error(error);
+      setError("Sorry! Unexpected error occured during registration process.");
       setAlert(null);
     }
   };
@@ -140,13 +135,26 @@ export default function SignUp() {
         </Box>
       </Box>
       <div>
-        {error && <Alert severity="error">{error}</Alert>}
-        {alert &&
-          <>
-            <Alert severity="success">{alert}</Alert>
-            <Typography variant='h5' >Thank You for registration! You can Sign In now.</Typography>
-          </>}
+        {error?.PasswordTooShort ? (
+          <Alert severity="error">
+            {error.PasswordTooShort[0]}
+          </Alert>
+        ) : error?.DuplicateEmail ? (
+          <Alert severity="error">
+            {error.DuplicateEmail[0]}
+          </Alert>
+        ) : (
+          error && <Alert severity="error">
+            {error}
+          </Alert>
+        )}
       </div>
+
+      {alert &&
+        <>
+          <Alert severity="success">{alert}</Alert>
+          <Typography variant='h5' >Thank You for registration! You can Sign In now.</Typography>
+        </>}
     </Container>
   );
 }

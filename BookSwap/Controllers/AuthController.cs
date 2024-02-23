@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             AddErrors(result);
-            return BadRequest(result);
+            return BadRequest(ModelState);
         }
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Id, result.Email, result.UserName));
     }
@@ -57,7 +57,8 @@ public class AuthController : ControllerBase
 
         if (!result.Success)
         {
-            return BadRequest("Authentication failed");
+            AddErrors(result);
+            return BadRequest(ModelState);
         }
 
         return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.PhoneNumber, result.Token));

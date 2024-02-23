@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import List from '@mui/material/List';
+import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Container } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
@@ -22,7 +23,7 @@ import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile({setSelectedPost}) {
+export default function Profile({ setSelectedPost }) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
@@ -56,11 +57,11 @@ export default function Profile({setSelectedPost}) {
         setEditingDetails((prevEditing) => !prevEditing);
     };
 
-    const handleViewPost =(post)=>{
+    const handleViewPost = (post) => {
         setSelectedPost(post);
         navigate('/your-post');
     };
-    const handleEditPost =()=>{
+    const handleEditPost = () => {
 
     };
 
@@ -125,6 +126,11 @@ export default function Profile({setSelectedPost}) {
                         <Typography variant="h6" gutterBottom>
                             Your posts
                         </Typography>
+                        {userPosts.length == 0 &&
+                            <>
+                                <Typography>You don't have any post yet.</Typography>
+                                <Button component={Link} to={'/create'}>Upload Now</Button>
+                            </>}
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (
                                 <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
@@ -151,7 +157,7 @@ export default function Profile({setSelectedPost}) {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button onClick={()=> handleViewPost(post)} size="small">View</Button>
+                                            <Button onClick={() => handleViewPost(post)} size="small">View</Button>
                                             <Button onClick={handleEditPost} size="small">Edit</Button>
                                         </CardActions>
                                     </Card>
