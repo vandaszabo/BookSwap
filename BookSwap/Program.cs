@@ -4,6 +4,7 @@ using BookSwap.Models;
 using BookSwap.Repositories;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
+using BookSwap.Services.Like;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -66,9 +67,11 @@ public class Program
 
             builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
             builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            builder.Services.AddScoped<ILikeRepository, LikeRepository>();
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<ILikeService, LikeService>();
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
