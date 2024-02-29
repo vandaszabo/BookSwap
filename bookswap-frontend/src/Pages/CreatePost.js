@@ -150,6 +150,7 @@ export default function CreatePost({setCreated}) {
                     <Button
                       variant="contained"
                       onClick={handleNext}
+                      disabled={activeStep === 1 && !coverImage ? true : false}
                       sx={{
                         mt: 3,
                         ml: 1,

@@ -7,9 +7,8 @@ namespace BookSwap.Data;
 
 public class BookSwapDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
-    public DbSet<UserDetails> UserDetails { get; set; }
+    public DbSet<ApplicationUser> AppUsers { get; set; }
     public DbSet<BookPost> BookPosts { get; set; }
-    
     public DbSet<Like> Likes { get; set; }
 
     public BookSwapDbContext(DbContextOptions<BookSwapDbContext> options)
@@ -23,27 +22,16 @@ public class BookSwapDbContext : IdentityDbContext<IdentityUser, IdentityRole, s
 
         modelBuilder.Entity<BookPost>()
             .HasOne(e => e.User)
-            .WithMany()
-            .HasForeignKey(e => e.UserId)
-            .IsRequired();
-
-        modelBuilder.Entity<BookPost>()
-            .HasOne(e => e.UserDetails)
             .WithMany(e => e.BookPosts)
-            .HasForeignKey(e => e.UserDetailsId);
+            .HasForeignKey(e => e.UserId);
         
         modelBuilder.Entity<Like>()
-            .HasKey(l => new { l.LikerId, l.OwnerId, l.PostId });
+            .HasKey(l => new { l.LikerId, l.PostId });
 
         modelBuilder.Entity<Like>()
             .HasOne(l => l.Liker)
-            .WithMany(u => u.LikesReceived)
+            .WithMany()
             .HasForeignKey(l => l.LikerId);
-
-        modelBuilder.Entity<Like>()
-            .HasOne(l => l.Owner)
-            .WithMany() // Assuming that a user can own multiple posts
-            .HasForeignKey(l => l.OwnerId); // Foreign key relationship to the UserDetails entity
 
         modelBuilder.Entity<Like>()
             .HasOne(l => l.Post)

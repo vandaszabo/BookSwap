@@ -5,5 +5,5 @@ namespace BookSwap.Services.Authentication;
 
 public interface ITokenService
 {
-    string CreateToken(IdentityUser user, string? role);
+    string CreateToken(ApplicationUser user, string? role);
 }

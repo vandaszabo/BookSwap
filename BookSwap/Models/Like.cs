@@ -2,11 +2,8 @@ namespace BookSwap.Models;
 
 public class Like
 {
-    public Guid LikerId { get; set; }
-    public Guid OwnerId { get; set; }
+    public string LikerId { get; set; }
+    public ApplicationUser Liker { get; set; }
     public Guid PostId { get; set; }
-
-    public UserDetails? Liker { get; set; }
-    public UserDetails? Owner { get; set; }
     public BookPost Post { get; set; }
 }

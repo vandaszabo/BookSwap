@@ -6,17 +6,11 @@ import { useAuth } from '../Authentication/AuthContext';
 
 
 //*********-------main function for Upload Image file-------*********//
-export default function UploadProfileImage({setEditingPhoto}) {
+export default function UploadProfileImage({ setEditingPhoto }) {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
-  const { authUser, setAuthUser} = useAuth();
-
-  const userDetails = {
-    userId: authUser.id,
-    //city: authUser.city,
-    profileImage: authUser.profileImage
-  }
+  const { authUser, setAuthUser } = useAuth();
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0])
@@ -24,7 +18,7 @@ export default function UploadProfileImage({setEditingPhoto}) {
 
   const uploadImageToS3 = (formData) => {
     setLoading(true);
-  
+
     fetch('http://localhost:5029/api/File/Upload', {
       method: 'POST',
       body: formData,
@@ -33,15 +27,16 @@ export default function UploadProfileImage({setEditingPhoto}) {
       .then((responseData) => {
 
         const imageUrl = responseData.s3Url;
+        console.log("Imageurl: ", imageUrl);
         console.log('File uploaded successfully');
-        const updatedUserDetails = { ...userDetails, profileImage: imageUrl };
+        console.log("authuser: ", authUser);
+        const updatedUser = { ...authUser, profileImage: imageUrl };
+        console.log("UpdatedUser: ", updatedUser);
 
-        setAuthUser((prevAuthUser) => ({
-          ...prevAuthUser, profileImage: imageUrl
-        }));
-        localStorage.setItem('details', JSON.stringify(updatedUserDetails));
+        setAuthUser(updatedUser);
+        localStorage.setItem('authUser', JSON.stringify(updatedUser));
 
-        storeImageUrlInDb(updatedUserDetails);
+        storeImageUrlInDb(updatedUser);
       })
       .catch((error) => {
         console.error('Error uploading file:', error);
@@ -51,21 +46,29 @@ export default function UploadProfileImage({setEditingPhoto}) {
         setEditingPhoto(false);
       });
   };
-  
+
 
   //Image should assigned to user in database
-  const storeImageUrlInDb = (userDetails) => {
-    fetch('http://localhost:5029/api/User/UpdateDetails', {
+  const storeImageUrlInDb = (updatedUser) => {
+    const requestObj = {
+      userId: updatedUser.id,
+      newEmail: updatedUser.email,
+      newUsername: updatedUser.userName,
+      newPhoneNumber: updatedUser.phoneNumber,
+      newCity: updatedUser.city,
+      profileImage: updatedUser.profileImage
+    }
+
+    fetch('http://localhost:5029/api/User/UpdateData', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userDetails)
+      body: JSON.stringify(requestObj)
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log("Successfully stored URL in database");
-        console.log("Updated details: ",responseData);
+        console.log("Updated user: ", responseData);
       })
       .catch((error) => {
         console.error('Error storing image URL in the database:', error.message);

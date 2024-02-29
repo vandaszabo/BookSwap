@@ -17,25 +17,20 @@ export default function DetailsEdit({ setEditingDetails }) {
         event.preventDefault();
         console.log("authuser: ", authUser);
 
-        const cityEditRequest = {
-            userId: authUser.id,
-            city: event.target.city.value,
-        };
         const dataEditRequest = {
             userId: authUser.id,
             newEmail: event.target.email.value,
             newUsername: event.target.userName.value,
-            newPhoneNumber: event.target.phoneNumber.value
+            newPhoneNumber: event.target.phoneNumber.value,
+            newCity: event.target.city.value,
         };
 
         try {
             if (dataEditRequest.newEmail !== authUser.email ||
                 dataEditRequest.newPhoneNumber !== authUser.phoneNumber ||
-                dataEditRequest.newUsername !== authUser.userName) {
+                dataEditRequest.newUsername !== authUser.userName ||
+                dataEditRequest.newCity !== authUser.city) {
                 saveUserData(dataEditRequest);
-            }
-            if (cityEditRequest.city !== authUser.city) {
-                saveUserDetails(cityEditRequest);
             }
         } catch (error) {
             console.error(`Error in handleSubmit: ${error.message}`);
@@ -45,7 +40,6 @@ export default function DetailsEdit({ setEditingDetails }) {
 
     const saveUserData = (data) => {
         setLoading(true);
-        console.log(data);
 
         fetch("http://localhost:5029/api/User/UpdateData", {
             method: 'POST',
@@ -60,7 +54,8 @@ export default function DetailsEdit({ setEditingDetails }) {
                     id: responseData.id,
                     userName: responseData.userName,
                     email: responseData.email,
-                    phoneNumber: responseData.phoneNumber
+                    phoneNumber: responseData.phoneNumber,
+                    city: responseData.city
                 }
                 setAuthUser((prevAuthUser) => ({
                     ...prevAuthUser, ...newUserObj
@@ -74,39 +69,6 @@ export default function DetailsEdit({ setEditingDetails }) {
                 setLoading(false);
                 setEditingDetails(false);
             });
-    };
-
-    const saveUserDetails = (data) => {
-        setLoading(true);
-        console.log(data);
-
-        fetch("http://localhost:5029/api/User/UpdateDetails", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then((response) => response.json())
-            .then((details) => {
-                setAuthUser((prevAuthUser) => ({
-                    ...prevAuthUser, city: details.city
-                }));
-                modifyLocalStorageValue(details.city);
-            })
-            .catch((error) => {
-                console.error('Error saving userDetails:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-                setEditingDetails(false);
-            });
-    };
-
-    const modifyLocalStorageValue = (value) => {
-        var detailsObj = JSON.parse(localStorage.getItem('details'));
-        detailsObj.city = value;
-        localStorage.setItem('details', JSON.stringify(detailsObj));
     };
 
     return (

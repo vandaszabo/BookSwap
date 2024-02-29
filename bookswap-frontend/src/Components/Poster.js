@@ -32,48 +32,18 @@ export default function Poster({ posterId }) {
             }
 
             const data = await response.json();
+            console.log(data);
 
             if (data !== null) {
-                setPoster(prev => ({
-                    ...prev, 
-                    ...data
-                }));
+                setPoster(data);
             }
         } catch (error) {
             console.error(`Error in fetchPosterData: ${error.message}`);
         }
     };
 
-    const getPosterDetails = async (userId) => {
-        try {
-            const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
-
-            if (response.ok) {
-                const details = await response.json();
-
-                if (details !== null) {
-                    const detailsObj = {
-                        detailsId: details.id,
-                        city: details.city,
-                        profileImage: details.profileImage,
-                        bookPosts: details.bookPosts
-                    }
-                    setPoster((prevData) => ({
-                        ...prevData,
-                        ...detailsObj
-                    }));
-                }
-            } else {
-                console.error('Error fetching poster details:', response.statusText);
-            }
-        } catch (error) {
-            console.warn(`Poster doesn't have details yet.(userDetails = null) ${error.message}`);
-        }
-    };
-
     useEffect(() => {
         fetchPosterData(posterId);
-        getPosterDetails(posterId);
     }, [posterId]);
 
     return (

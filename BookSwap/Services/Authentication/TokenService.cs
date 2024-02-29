@@ -11,7 +11,7 @@ namespace BookSwap.Services.Authentication;
 public class TokenService : ITokenService
     {
         private const int ExpirationMinutes = 30;
-        public string CreateToken(IdentityUser user, string role)
+        public string CreateToken(ApplicationUser user, string role)
         {
             var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
             var token = CreateJwtToken(
@@ -33,7 +33,7 @@ public class TokenService : ITokenService
                 signingCredentials: credentials
             );
 
-        private List<Claim> CreateClaims(IdentityUser user, string? role)
+        private List<Claim> CreateClaims(ApplicationUser user, string? role)
         {
             try
             {

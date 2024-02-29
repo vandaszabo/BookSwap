@@ -10,47 +10,65 @@ namespace BookSwap.Services;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserDetailsRepository _userDetailsRepository;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserRepository _userRepository;
     private readonly IBookPostRepository _bookPostRepository;
     private readonly BookSwapDbContext _dbContext;
 
-    public UserService(UserManager<IdentityUser> userManager, BookSwapDbContext dbContext,
-        IUserDetailsRepository userDetailsRepository, IBookPostRepository bookPostRepository)
+    public UserService(UserManager<ApplicationUser> userManager, BookSwapDbContext dbContext, IBookPostRepository bookPostRepository, IUserRepository userRepository)
     {
         _userManager = userManager;
-        _userDetailsRepository = userDetailsRepository;
         _bookPostRepository = bookPostRepository;
+        _userRepository = userRepository;
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<IdentityUser>> GetAllUser()
+    public async Task<IEnumerable<ApplicationUser>> GetAllUser()
     {
-        var users = await _userManager.Users.ToListAsync();
+        var users = await _dbContext.AppUsers.ToListAsync();
         return users;
     }
 
-    public async Task<IdentityUser?> GetUserById(string userId)
+    public async Task<ApplicationUser?> GetUserById(string userId)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await _userRepository.GetById(userId);
         return user;
     }
 
-    public async Task<IdentityUser?> UpdateUserData(string userId, string newEmail, string newUsername, string newPhoneNumber)
+    public async Task<ApplicationUser?> UpdateUserData(UpdateDataRequest request)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await _userRepository.GetById(request.UserId);
 
         if (user == null)
         {
             return null;
         }
 
-        user.Email = newEmail;
-        user.UserName = newUsername;
-        user.PhoneNumber = newPhoneNumber;
-        
+        user.Email = request.NewEmail;
+        user.UserName = request.NewUsername;
         await _dbContext.SaveChangesAsync();
-        return user;
+        
+        
+        if (request.NewPhoneNumber != null)
+        {
+            user.PhoneNumber = request.NewPhoneNumber;
+            await _dbContext.SaveChangesAsync();
+        }
+        
+        if (request.NewCity != null)
+        {
+            user.City = request.NewCity;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        if (request.NewProfileImage != null)
+        {
+            user.ProfileImage = request.NewProfileImage;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        var updatedUser = await _userRepository.GetById(request.UserId);
+        return updatedUser;
     }
 
     public async Task<string?> DeleteUser(string userId)
@@ -67,63 +85,12 @@ public class UserService : IUserService
         return user.UserName;
     }
 
-    public async Task<UserDetails?> UpdateUserDetails(UserDetailsRequest request)
-    {
-        var details = await _userDetailsRepository.GetByUserId(request.UserId);
-        
-        if (details == null)
-        {
-            return null;
-        }
-
-        if (request.City != null)
-        {
-            await _userDetailsRepository.UpdateUserCity(request.UserId, request.City);
-        }
-
-        if (request.ProfileImage != null)
-        {
-            await _userDetailsRepository.UpdateProfileImage(request.UserId, request.ProfileImage);
-        }
-        
-        var updatedDetails = await _userDetailsRepository.GetByUserId(request.UserId);
-        return updatedDetails;
-
-    }
-
-    public async Task<UserDetails?> CreateUserDetails(UserDetailsRequest request)
-    {
-        var user = await GetUserById(request.UserId);
-
-        if (user == null)
-        {
-            return null;
-        }
-        
-        var newUserDetails = new UserDetails
-        {
-            City = request.City,
-            ProfileImage = request.ProfileImage,
-            UserId = user.Id,
-            User = user,
-        };
-
-        return await _userDetailsRepository.Create(newUserDetails);
-    }
-    
-    public async Task<UserDetails?> GetDetailsByUserId(string id)
-    {
-        var userDetail = await _userDetailsRepository.GetByUserId(id);
-
-        return userDetail;
-    }
-
     public async Task AddBookPost(string userId, Guid postId)
     {
         var bookPost = await _bookPostRepository.GetById(postId);
         if (bookPost != null)
         {
-            await _userDetailsRepository.AddBookPost(userId, bookPost);
+            await _userRepository.AddBookPost(userId, bookPost);
         }
     }
 }

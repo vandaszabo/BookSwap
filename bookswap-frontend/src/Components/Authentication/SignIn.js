@@ -37,36 +37,6 @@ export default function SignIn() {
     }
   };
 
-  //*********-------Retrieve extra details about the User-------*********//
-  const getUserDetails = async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:5029/api/User/Details/${userId}`);
-
-      if (response.ok) {
-        const details = await response.json();
-        console.log(details);
-
-        if (details !== null) {
-          const detailsObj = {
-            detailsId: details.id,
-            city: details.city,
-            profileImage: details.profileImage,
-            bookPosts: details.bookPosts
-          }
-          setAuthUser((prevAuthUser) => ({
-            ...prevAuthUser,
-            ...detailsObj
-          }));
-          localStorage.setItem('details', JSON.stringify(detailsObj));
-        }
-      } else {
-        console.error('Error fetching user details:', response.statusText);
-      }
-    } catch (error) {
-      console.warn(`User doesn't have details yet.(userDetails = null) ${error.message}`);
-    }
-  };
-
   //*********-------Retrieve main data about the User-------*********//
   const getUserData = async (data) => {
     try {
@@ -90,15 +60,13 @@ export default function SignIn() {
           id: responseData.id,
           userName: responseData.username,
           email: responseData.email,
-          phoneNumber: responseData.phoneNumber
+          phoneNumber: responseData.phoneNumber,
+          city: responseData.city,
+          profileImage: responseData.profileImage,
+          bookPosts: responseData.bookPosts
         }
         setAuthUser(newUserObj);
         localStorage.setItem('authUser', JSON.stringify(newUserObj));
-        try {
-          await getUserDetails(newUserObj.id);
-        } catch (error) {
-          console.warn(`User doesn't have details yet.(userDetails = null) ${error.message}`);
-        }
         setIsLoggedIn(true);
         navigate('/');
       }
