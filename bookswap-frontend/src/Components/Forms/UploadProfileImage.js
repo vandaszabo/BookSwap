@@ -27,11 +27,8 @@ export default function UploadProfileImage({ setEditingPhoto }) {
       .then((responseData) => {
 
         const imageUrl = responseData.s3Url;
-        console.log("Imageurl: ", imageUrl);
-        console.log('File uploaded successfully');
-        console.log("authuser: ", authUser);
+        console.log('File uploaded successfully ', imageUrl);
         const updatedUser = { ...authUser, profileImage: imageUrl };
-        console.log("UpdatedUser: ", updatedUser);
 
         setAuthUser(updatedUser);
         localStorage.setItem('authUser', JSON.stringify(updatedUser));
@@ -56,7 +53,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
       newUsername: updatedUser.userName,
       newPhoneNumber: updatedUser.phoneNumber,
       newCity: updatedUser.city,
-      profileImage: updatedUser.profileImage
+      newProfileImage: updatedUser.profileImage
     }
 
     fetch('http://localhost:5029/api/User/UpdateData', {

@@ -60,6 +60,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
         setAnchorElUser(null);
         setAuthUser(null);
         localStorage.removeItem('authUser');
+        localStorage.removeItem('book');
         navigate('/login');
     };
 

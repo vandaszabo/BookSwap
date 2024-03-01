@@ -2,7 +2,6 @@ using BookSwap.Contracts;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BookSwap.Controllers;
 
@@ -32,7 +31,7 @@ public class AuthController : ControllerBase
             AddErrors(result);
             return BadRequest(ModelState);
         }
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Id, result.Email, result.UserName));
+        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.User.Id, result.User.Email, result.User.UserName));
     }
 
     private void AddErrors(AuthResult result)
@@ -61,7 +60,12 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return Ok(new LoginResponse(result.Id, result.Email, result.UserName, result.PhoneNumber, result.Token));
+        if (result.User == null)
+        {
+            return NotFound(ModelState);
+        }
+        
+        return Ok(new LoginResponse(result.User, result.Token));
     }
 
 }

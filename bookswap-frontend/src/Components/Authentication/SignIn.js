@@ -14,13 +14,9 @@ import { useAuth } from './AuthContext';
 //*********-------main function for Login-------*********//
 export default function SignIn() {
 
-  const { authUser, setAuthUser, setIsLoggedIn} = useAuth();
+  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("Useeffect signin authuser:", authUser);
-  }, [authUser])
 
   //*********-------Handle click on submit Sign In button-------*********//
   const handleSubmit = async (event) => {
@@ -48,91 +44,91 @@ export default function SignIn() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        setError("Invalid Username or Password")
-        throw new Error('Authentication failed.');
-      }
-
       const responseData = await response.json();
 
-      if (responseData !== null) {
+      if (responseData.user && responseData.user.id) {
+        setError(null);
+        console.log("login user: ", responseData.user)
+
         const newUserObj = {
-          id: responseData.id,
-          userName: responseData.username,
-          email: responseData.email,
-          phoneNumber: responseData.phoneNumber,
-          city: responseData.city,
-          profileImage: responseData.profileImage,
-          bookPosts: responseData.bookPosts
+          id: responseData.user.id,
+          userName: responseData.user.userName,
+          email: responseData.user.email,
+          phoneNumber: responseData.user.phoneNumber,
+          city: responseData.user.city,
+          profileImage: responseData.user.profileImage,
+          bookPosts: responseData.user.bookPosts
         }
         setAuthUser(newUserObj);
         localStorage.setItem('authUser', JSON.stringify(newUserObj));
         setIsLoggedIn(true);
         navigate('/');
       }
+      else {
+        setError("Invalid email or password!");
+      }
     } catch (error) {
-      console.error(`Error in sendUserData: ${error.message}`);
-      setError(error.message);
-      throw error;
+      console.error(error);
+      setError("Sorry! Unexpected error occured during login process.");
     }
   };
 
   return (
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{
-                mt: 3,
-                mb: 2,
-                backgroundColor: (theme) => theme.palette.primary.main,
-                '&:hover': {
-                  backgroundColor: (theme) => theme.palette.secondary.light,
-                },
-              }}
-            >
-              Sign In
-            </Button>
-          </Box>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: (theme) => theme.palette.primary.main,
+              '&:hover': {
+                backgroundColor: (theme) => theme.palette.secondary.light,
+              },
+            }}
+          >
+            Sign In
+          </Button>
         </Box>
-        {error && <Alert severity="error">{error}</Alert>}
-      </Container>
+      </Box>
+      {error && <Alert severity="error">{error}</Alert>}
+    </Container>
   );
 }

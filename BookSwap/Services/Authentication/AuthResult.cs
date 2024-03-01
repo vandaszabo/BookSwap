@@ -1,11 +1,10 @@
+using BookSwap.Models;
+
 namespace BookSwap.Services.Authentication;
 
 public record AuthResult(
     bool Success,
-    string Id,
-    string Email,
-    string UserName,
-    string PhoneNumber,
+    ApplicationUser? User,
     string Token)
 {
     //Error code - error message

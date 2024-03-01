@@ -32,7 +32,6 @@ export default function Poster({ posterId }) {
             }
 
             const data = await response.json();
-            console.log(data);
 
             if (data !== null) {
                 setPoster(data);

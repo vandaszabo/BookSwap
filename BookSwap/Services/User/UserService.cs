@@ -43,33 +43,31 @@ public class UserService : IUserService
         {
             return null;
         }
-
+        
         user.Email = request.NewEmail;
         user.UserName = request.NewUsername;
-        await _dbContext.SaveChangesAsync();
-        
-        
+
         if (request.NewPhoneNumber != null)
         {
             user.PhoneNumber = request.NewPhoneNumber;
-            await _dbContext.SaveChangesAsync();
         }
-        
+
         if (request.NewCity != null)
         {
             user.City = request.NewCity;
-            await _dbContext.SaveChangesAsync();
         }
 
         if (request.NewProfileImage != null)
         {
             user.ProfileImage = request.NewProfileImage;
-            await _dbContext.SaveChangesAsync();
         }
-
+        
+        await _dbContext.SaveChangesAsync();
+        
         var updatedUser = await _userRepository.GetById(request.UserId);
         return updatedUser;
     }
+
 
     public async Task<string?> DeleteUser(string userId)
     {
