@@ -1,9 +1,12 @@
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using BookSwap.Data;
 using BookSwap.Models;
 using BookSwap.Repositories;
 using BookSwap.Services;
 using BookSwap.Services.Authentication;
+using BookSwap.Services.Like;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -65,9 +68,12 @@ public class Program
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
-            builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ILikeRepository, LikeRepository>();
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<ILikeService, LikeService>();
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
@@ -150,11 +156,16 @@ public class Program
         {
             // User requirements
             builder.Services
-                .AddIdentityCore<IdentityUser>(options =>
+                .AddIdentityCore<ApplicationUser>(options =>
                 {
                     // Configure identity options for ApplicationUser
                     options.SignIn.RequireConfirmedAccount = false;
                     options.User.RequireUniqueEmail = true;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BookSwapDbContext>();
@@ -198,12 +209,12 @@ public class Program
         async Task CreateAdminIfNotExists()
         {
             using var scope = app.Services.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var adminInDb = await userManager.FindByEmailAsync("admin@admin.com");
 
             if (adminInDb == null)
             {
-                var admin = new IdentityUser
+                var admin = new ApplicationUser
                 {
                     UserName = "someAdmin",
                     Email = "admin@admin.com",
@@ -216,6 +227,7 @@ public class Program
                 }
             }
         }
+        
 
     }
 }

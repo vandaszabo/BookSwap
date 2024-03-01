@@ -38,7 +38,7 @@ export default function Review({bookData, image}) {
         <Grid item xs={12} md={4}>
           <img
             src={image}
-            alt="cover-image"
+            alt="cover"
             style={{
               width: '100%',
               height: 'auto',

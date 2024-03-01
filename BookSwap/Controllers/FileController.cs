@@ -20,7 +20,7 @@ public class FileController : ControllerBase
     }
 
     [HttpPost("Upload")]
-    public async Task<IActionResult> UploadFile(IFormFile file)
+    public async Task<IActionResult> UploadFile(IFormFile file, ImageCategory imageCategory)
     {
         // Check file format
         if (!_fileService.IsImage(file))
@@ -43,14 +43,14 @@ public class FileController : ControllerBase
             {
                 // If file exists, return url
                 var existingImageUrl =
-                    await _fileService.CheckIfObjectExistsAndReturnUrlAsync(s3Client, _bucketName, file);
+                    await _fileService.CheckIfObjectExistsAndReturnUrlAsync(s3Client, _bucketName, file, imageCategory);
                 if (existingImageUrl != null)
                 {
                     return Ok(new { S3Url = existingImageUrl });
                 }
 
                 // If not, upload first, then return url
-                var imageUrl = await _fileService.UploadFileToS3Async(s3Client, _bucketName, file);
+                var imageUrl = await _fileService.UploadFileToS3Async(s3Client, _bucketName, file, imageCategory);
                 return Ok(new { S3Url = imageUrl });
             }
             catch (Exception ex)

@@ -1,6 +1,8 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
+using BookSwap.Repositories;
 using BookSwap.Services;
+using BookSwap.Services.Like;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSwap.Controllers;
@@ -10,10 +12,12 @@ namespace BookSwap.Controllers;
 public class BookPostController : ControllerBase
 {
     private readonly IBookService _bookService;
+    private readonly ILikeService _likeService;
 
-    public BookPostController(IBookService bookService)
+    public BookPostController(IBookService bookService, ILikeService likeService)
     {
         _bookService = bookService;
+        _likeService = likeService;
     }
 
     [HttpPost("Create")]
@@ -35,6 +39,26 @@ public class BookPostController : ControllerBase
             }
 
             return CreatedAtAction(nameof(CreatePost), new { id = createdBookPost.PostId }, createdBookPost.PostId);
+        }
+    }
+    
+    [HttpPost("Like")]
+    public async Task<ActionResult<Guid>> AddLike([FromBody] LikeRequest request)
+    {
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var createdLike = await _likeService.CreateLike(request);
+
+            if (createdLike == null)
+            {
+                return BadRequest("Error creating like.");
+            }
+
+            return CreatedAtAction(nameof(AddLike), new { id = createdLike.LikerId }, createdLike.PostId);
         }
     }
 

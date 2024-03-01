@@ -1,3 +1,5 @@
+using BookSwap.Models;
+
 namespace BookSwap.Contracts;
 
-public record LoginResponse(string Id, string Email, string Username, string? PhoneNumber, string Token);
+public record LoginResponse(ApplicationUser User, string Token);

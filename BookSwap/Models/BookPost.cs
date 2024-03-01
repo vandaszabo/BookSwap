@@ -20,11 +20,6 @@ public class BookPost
     
     [ForeignKey("UserId")]
     public string UserId { get; set; }
-    public IdentityUser User { get; set; }
-    
-    [ForeignKey("UserDetailsId")]
-    public Guid? UserDetailsId { get; set; }
-    public UserDetails? UserDetails { get; set; }
-    
+    public ApplicationUser User { get; set; }
     public ICollection<Like> Likes { get; set; }
 }

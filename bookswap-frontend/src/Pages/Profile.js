@@ -1,10 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import List from '@mui/material/List';
+import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Container } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
@@ -13,104 +14,123 @@ import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
+import Fab from '@mui/material/Fab';
 
-import { useAuth } from './Authentication/AuthContext';
-import UploadProfileImage from './Forms/UploadProfileImage';
+import { useAuth } from '../Components/Authentication/AuthContext';
+import UploadProfileImage from '../Components/Forms/UploadProfileImage';
+import DetailsEdit from '../Components/Forms/DetailsEdit';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile() {
+export default function Profile({ setSelectedPost }) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
-
-    useEffect(() => {
-        console.log("Useeffect profile authuser:", authUser);
-    }, [authUser])
+    const [editingPhoto, setEditingPhoto] = useState(false);
+    const [editingDetails, setEditingDetails] = useState(false);
+    const navigate = useNavigate();
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
+                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
                 const data = await response.json();
 
-                if (data !== null) {
-                    setUserPosts(data);
-                    const updatedAuthUser = { ...authUser, bookPosts: data };
-                    setAuthUser(updatedAuthUser);
-                }
+                setUserPosts(data || []);
+                setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: data || [] }));
             } catch (error) {
                 console.error(`Error in fetchUserPosts: ${error.message}`);
             }
         };
 
         fetchUserPosts();
-    }, [setUserPosts]);
+    }, [authUser.id, setAuthUser]);
+
+    const handleEditPicture = () => {
+        setEditingPhoto((prevEditing) => !prevEditing);
+    };
+    const handleEditData = () => {
+        setEditingDetails((prevEditing) => !prevEditing);
+    };
+
+    const handleViewPost = (post) => {
+        setSelectedPost(post);
+        navigate('/your-post');
+    };
+    const handleEditPost = () => {
+
+    };
 
     return (
         <React.Fragment>
             {authUser &&
                 <>
                     <Container maxWidth="lg" sx={{ mt: 4 }}>
-                        <Grid container spacing={2} sx={{ maxWidth: '50%' }}>
-                            <Grid item xs={12} sm={8} md={6} lg={6}>
+                        <Grid container spacing={2} alignItems="center">
+
+                            {/* Picture */}
+                            <Grid item xs={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
-                                    Profile Image
+                                    Profile picture
                                 </Typography>
-                                <Card>
+                                <Card sx={{ width: 200, height: 200, borderRadius: '50%', overflow: 'hidden' }}>
                                     <CardMedia
                                         component="img"
                                         alt={authUser.username}
-                                        //height="300"
+                                        sx={{ objectFit: 'cover', height: '100%', width: '100%' }}
                                         image={authUser && authUser.profileImage
                                             ? authUser.profileImage
-                                            : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
+                                            : "https://static.vecteezy.com/system/resources/previews/020/646/716/non_2x/empty-face-icon-avatar-with-black-hair-illustration-vector.jpg"}
                                     />
                                 </Card>
+                                <Fab size="small" onClick={handleEditPicture} color="primary" aria-label="edit">
+                                    {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
+                                </Fab>
                             </Grid>
-                            <UploadProfileImage/>
+                            {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto} />}
+
+                            {/* Personal Data */}
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
                                 </Typography>
-                                <Card>
-                                    <CardContent>
-                                        <List>
-                                            <ListItem key="username" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.username} secondary="Username" />
-                                            </ListItem>
-
-                                            <ListItem key="email" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.email} secondary="Email" />
-                                            </ListItem>
-
-                                            <ListItem key="phoneNumber" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.phoneNumber} secondary="Phone number" />
-                                            </ListItem>
-
-                                            <ListItem key="city" sx={{ py: 1, px: 0 }}>
-                                                <ListItemText primary={authUser.city} secondary="City" />
-                                            </ListItem>
-                                        </List>
-                                    </CardContent>
-                                </Card>
+                                <Fab size="small" onClick={handleEditData} color="primary" aria-label="edit">
+                                    {!editingDetails ? (<EditIcon />) : (<CloseIcon />)}
+                                </Fab>
+                                {!editingDetails ? (
+                                    <Card>
+                                        <CardContent>
+                                            <List>
+                                                {['userName', 'email', 'phoneNumber', 'city'].map((field) => (
+                                                    <ListItem key={field} sx={{ py: 1, px: 0 }}>
+                                                        <ListItemText primary={authUser[field]} secondary={field.charAt(0).toUpperCase() + field.slice(1)} />
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                ) : (
+                                    <DetailsEdit setEditingDetails={setEditingDetails} />
+                                )}
                             </Grid>
 
                         </Grid>
                     </Container>
+
+                    {/* Posts */}
                     <Container sx={{ py: 4 }} maxWidth="lg">
                         <Typography variant="h6" gutterBottom>
                             Your posts
                         </Typography>
+                        {userPosts.length == 0 &&
+                            <>
+                                <Typography>You don't have any post yet.</Typography>
+                                <Button component={Link} to={'/create'}>Upload Now</Button>
+                            </>}
                         <Grid container spacing={4}>
                             {userPosts && userPosts.map((post, index) => (
                                 <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
@@ -125,20 +145,20 @@ export default function Profile() {
                                                 justifyContent: 'center',
                                                 height: '200px',
                                                 width: '100%',
+                                                background: `url(${post.coverImage}) center/cover no-repeat`,
                                             }}
-                                            image={post.coverImage}
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
                                             <Typography variant="body1" component="div">
                                                 {post.title}
                                             </Typography>
-                                            <Typography variant="body2" color="text.secondary">
+                                            <Typography variant="body2">
                                                 {post.author}
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button size="small">View</Button>
-                                            <Button size="small">Edit</Button>
+                                            <Button onClick={() => handleViewPost(post)} size="small">View</Button>
+                                            <Button onClick={handleEditPost} size="small">Edit</Button>
                                         </CardActions>
                                     </Card>
                                 </Grid>

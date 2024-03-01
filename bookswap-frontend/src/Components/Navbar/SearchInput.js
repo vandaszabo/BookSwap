@@ -1,11 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
 import { TextField, Stack, Autocomplete } from '@mui/material';
 
 //*********-------Main function for autocomplete Search input-------*********//
 function SearchInput({ books, onSearch }) {
 
-    const [value, setValue] = useState(null);  
     //*********-------Provide data for autocomplete functionality-------*********//
     const defaultProps = {
         options: books,
@@ -16,7 +14,6 @@ function SearchInput({ books, onSearch }) {
     //*********-------Handle Change for Search bar input field-------*********//
     const handleChange = (event, newValue) => {
         event.preventDefault();
-        setValue(newValue)
         onSearch(newValue)
     };
 
