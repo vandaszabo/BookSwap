@@ -1,8 +1,9 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Repositories;
+using BookSwap.Services.User;
 
-namespace BookSwap.Services;
+namespace BookSwap.Services.Book;
 
 public class BookService : IBookService
 {

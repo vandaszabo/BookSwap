@@ -1,7 +1,7 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 
-namespace BookSwap.Services;
+namespace BookSwap.Services.Book;
 
 public interface IBookService
 {

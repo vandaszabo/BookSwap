@@ -2,6 +2,7 @@ using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Repositories;
 using BookSwap.Services;
+using BookSwap.Services.Book;
 using BookSwap.Services.Like;
 using Microsoft.AspNetCore.Mvc;
 

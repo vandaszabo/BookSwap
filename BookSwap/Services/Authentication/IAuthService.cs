@@ -1,6 +1,4 @@
-using BookSwap.Services.Authentication;
-
-namespace BookSwap.Services;
+namespace BookSwap.Services.Authentication;
 
 public interface IAuthService
 {

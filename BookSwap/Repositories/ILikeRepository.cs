@@ -1,4 +1,3 @@
-using BookSwap.Contracts;
 using BookSwap.Models;
 
 namespace BookSwap.Repositories;

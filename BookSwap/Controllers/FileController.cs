@@ -1,6 +1,7 @@
 using Amazon;
 using Amazon.S3;
 using BookSwap.Services;
+using BookSwap.Services.File;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookSwap.Controllers;
