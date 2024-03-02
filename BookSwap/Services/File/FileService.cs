@@ -3,11 +3,11 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace BookSwap.Services;
+namespace BookSwap.Services.File;
 
 public class FileService : IFileService
 {
-    public async Task<string> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
+    public async Task<string?> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
     {
         var existingObjectRequest = new GetObjectMetadataRequest
         {
@@ -36,7 +36,6 @@ public class FileService : IFileService
             ContentType = file.ContentType,
             CannedACL = S3CannedACL.PublicRead
         };
-        //uploadRequest.Metadata.Add("file", file.FileName);
         
         var response = await s3Client.PutObjectAsync(uploadRequest);
 
