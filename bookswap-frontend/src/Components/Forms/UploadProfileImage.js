@@ -80,7 +80,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
-      formData.append('imageCategory', 'ProfileImage');
+      formData.append('imageCategory', 0);
 
       uploadImageToS3(formData);
     } else {

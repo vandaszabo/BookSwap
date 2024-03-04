@@ -1,4 +1,5 @@
 using Amazon.S3;
+using BookSwap.Enums;
 
 namespace BookSwap.Services.File;
 

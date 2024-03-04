@@ -19,7 +19,7 @@ export default function UploadCoverImage({ setCoverImage }) {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
-      formData.append('imageCategory', 'CoverImage');
+      formData.append('imageCategory', 1);
   
       // Set loading state to true before making the fetch request
       setLoading(true);

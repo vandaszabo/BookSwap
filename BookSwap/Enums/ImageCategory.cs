@@ -1,4 +1,4 @@
-namespace BookSwap;
+namespace BookSwap.Enums;
 
 public enum ImageCategory
 {
