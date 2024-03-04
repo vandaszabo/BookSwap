@@ -76,6 +76,9 @@ export default function Profile({ setSelectedPost }) {
                             <Grid item xs={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
                                     Profile picture
+                                    <Fab size="small" onClick={handleEditPicture} style={{ background: 'transparent', boxShadow: 'none' }} aria-label="edit">
+                                        {!editingPhoto ? (<EditIcon color="primary"/>) : (<CloseIcon color="primary"/>)}
+                                    </Fab>
                                 </Typography>
                                 <Card sx={{ width: 200, height: 200, borderRadius: '50%', overflow: 'hidden' }}>
                                     <CardMedia
@@ -87,9 +90,7 @@ export default function Profile({ setSelectedPost }) {
                                             : "https://static.vecteezy.com/system/resources/previews/020/646/716/non_2x/empty-face-icon-avatar-with-black-hair-illustration-vector.jpg"}
                                     />
                                 </Card>
-                                <Fab size="small" onClick={handleEditPicture} color="primary" aria-label="edit">
-                                    {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
-                                </Fab>
+
                             </Grid>
                             {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto} />}
 
@@ -97,10 +98,11 @@ export default function Profile({ setSelectedPost }) {
                             <Grid item xs={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
-                                </Typography>
-                                <Fab size="small" onClick={handleEditData} color="primary" aria-label="edit">
-                                    {!editingDetails ? (<EditIcon />) : (<CloseIcon />)}
+                                    <Fab size="small" onClick={handleEditData} style={{ background: 'transparent', boxShadow: 'none' }} aria-label="edit">
+                                    {!editingDetails ? (<EditIcon color='primary'/>) : (<CloseIcon color='primary'/>)}
                                 </Fab>
+                                </Typography>
+                               
                                 {!editingDetails ? (
                                     <Card>
                                         <CardContent>

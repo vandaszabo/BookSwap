@@ -130,7 +130,7 @@ export default function CreatePost({setCreated}) {
                       onClick={() => navigate('/')}
                       sx={{
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
+                          backgroundColor: (theme) => theme.palette.secondary.main,
                         },
                       }}>
                       Close
@@ -155,7 +155,7 @@ export default function CreatePost({setCreated}) {
                         mt: 3,
                         ml: 1,
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
+                          backgroundColor: (theme) => theme.palette.secondary.main,
                         },
                       }}
                     >
@@ -172,7 +172,7 @@ export default function CreatePost({setCreated}) {
                 <Button variant="contained" onClick={()=>window.location.reload()} sx={{
                   mt: 3,
                         '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
+                          backgroundColor: (theme) => theme.palette.secondary.main,
                         },
                       }}>
                  Try again

@@ -19,7 +19,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
   const uploadImageToS3 = (formData) => {
     setLoading(true);
 
-    fetch('http://localhost:5029/api/File/Upload', {
+    fetch('http://localhost:5029/api/File/Upload?imageCategory=ProfileImage', {
       method: 'POST',
       body: formData,
     })
@@ -80,7 +80,6 @@ export default function UploadProfileImage({ setEditingPhoto }) {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
-      formData.append('imageCategory', 0);
 
       uploadImageToS3(formData);
     } else {
@@ -110,7 +109,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
           mt: 3,
           ml: 1,
           '&:hover': {
-            backgroundColor: (theme) => theme.palette.secondary.light,
+            backgroundColor: (theme) => theme.palette.secondary.main,
           },
         }}>
         Upload

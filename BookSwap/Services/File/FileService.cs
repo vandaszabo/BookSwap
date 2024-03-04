@@ -8,7 +8,7 @@ namespace BookSwap.Services.File;
 
 public class FileService : IFileService
 {
-    public async Task<string?> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
+    public async Task<string?> CheckIfObjectExistsAndReturnUrlAsync(AmazonS3Client s3Client, string bucketName, IFormFile file, string imageCategory)
     {
         var existingObjectRequest = new GetObjectMetadataRequest
         {
@@ -27,7 +27,7 @@ public class FileService : IFileService
         }
     }
     
-    public async Task<string> UploadFileToS3Async(AmazonS3Client s3Client, string bucketName, IFormFile file, ImageCategory imageCategory)
+    public async Task<string> UploadFileToS3Async(AmazonS3Client s3Client, string bucketName, IFormFile file, string imageCategory)
     {
         var uploadRequest = new PutObjectRequest
         {

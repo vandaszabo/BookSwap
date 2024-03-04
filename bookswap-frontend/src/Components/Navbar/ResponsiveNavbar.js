@@ -86,7 +86,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
 
     return (
         <>
-                <AppBar position="static"  elevation={0} color='primary' sx={{padding: '3px' }}>
+                <AppBar position="static"  elevation={0} color='primary' >
                     <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Box sx={{ flexGrow: 1, display: 'flex' }}>
                             <Tooltip title="Menu">

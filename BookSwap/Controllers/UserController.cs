@@ -69,6 +69,24 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
+    
+    // Delete User by Id
+    [HttpDelete("Delete/{id}")]
+    public async Task<ActionResult<string>> DeleteUser(string id)
+    {
+        try
+        {
+            var deletedUserEmail = await _userService.DeleteUser(id);
+
+            if (deletedUserEmail == null) return NotFound($"No user found with this id: {id}");
+
+            return Ok(deletedUserEmail);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
 
     // Add New Post to User object
     [HttpPost("AddBookPost")]

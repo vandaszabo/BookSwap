@@ -53,13 +53,13 @@ export default function AllBooks({ books, setSelectedPost }) {
 
     return (
         <React.Fragment>
-        <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
+        <Container component="main" maxWidth="lg" sx={{ mb: 4, backgroundImage: `url('https://i.pinimg.com/originals/5a/a9/cd/5aa9cdc6e6b05f29b95357c4ab29a280.jpg')`, backgroundSize: 'cover'}}>
             <Box>
                 <Box
                     sx={{
                         mt: 8,
                         mb: 2,
-                        color: (theme) => theme.palette.secondary.main
+                        color: (theme) => theme.palette.primary.main
                     }}
                 >
                     <Container maxWidth="sm">
@@ -75,20 +75,20 @@ export default function AllBooks({ books, setSelectedPost }) {
                             Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                         </Typography>
                         <Stack
-                            sx={{ pt: 4, color: (theme) => theme.palette.secondary.main }}
+                            sx={{ pt: 4, color: (theme) => theme.palette.primary.main }}
                             direction="row"
                             spacing={2}
                             justifyContent="center"
                         >
                             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                <InputLabel id="genre" sx={{color: (theme) => theme.palette.secondary.main}}>Genre</InputLabel>
+                                <InputLabel id="genre" sx={{color: (theme) => theme.palette.primary.main}}>Genre</InputLabel>
                                 <Select
                                     labelId="genre"
                                     id="demo-select-small"
                                     value={selectedGenre}
                                     label="Age"
                                     onChange={handleChangeGenre}
-                                    sx={{color: (theme) => theme.palette.secondary.main}}
+                                    sx={{color: (theme) => theme.palette.primary.main}}
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
@@ -106,14 +106,14 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 </Select>
                             </FormControl>
                             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                <InputLabel id="language" sx={{color: (theme) => theme.palette.secondary.main}}>Language</InputLabel>
+                                <InputLabel id="language" sx={{color: (theme) => theme.palette.primary.main}}>Language</InputLabel>
                                 <Select
                                     labelId="language"
                                     id="demo-select-small"
                                     value={selectedLanguage}
                                     label="Age"
                                     onChange={handleChangeLanguage}
-                                    sx={{color: (theme) => theme.palette.secondary.main}}
+                                    sx={{color: (theme) => theme.palette.primary.main}}
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
@@ -125,7 +125,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                         </Stack>
                     </Container>
                 </Box>
-                <Container sx={{ py: 8,  color: (theme) => theme.palette.secondary.main}} maxWidth="md">
+                <Container sx={{ py: 8,  color: (theme) => theme.palette.primary.main}} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {books && books.map((book, index) => (

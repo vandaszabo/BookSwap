@@ -11,19 +11,26 @@ namespace BookSwap.Controllers;
 [Route("api/[controller]")]
 public class FileController : ControllerBase
 {
+    private readonly ILogger<FileController> _logger;
     private readonly IFileService _fileService;
     private readonly string? _accessKey = Environment.GetEnvironmentVariable("AWS_ACCESSKEY");
     private readonly string? _secretKey = Environment.GetEnvironmentVariable("AWS_SECRETKEY");
     private readonly string? _bucketName = Environment.GetEnvironmentVariable("AWS_BUCKET_NAME");
 
-    public FileController(IFileService fileService)
+    public FileController(IFileService fileService, ILogger<FileController> logger)
     {
+        _logger = logger;
         _fileService = fileService;
     }
 
     [HttpPost("Upload")]
-    public async Task<IActionResult> UploadFile(IFormFile file, ImageCategory imageCategory)
+    public async Task<IActionResult> UploadFile()
     {
+        var file = HttpContext.Request.Form.Files.GetFile("file");
+        var imageCategory = HttpContext.Request.Form["imageCategory"];
+        
+        _logger.LogInformation($"Received imageCategory: {imageCategory}");
+        
         // Check file format
         if (!_fileService.IsImage(file))
         {

@@ -64,7 +64,7 @@ public class UserRepository : IUserRepository
     public async Task<string?> Delete(ApplicationUser user)
     {
         await _userManager.DeleteAsync(user);
-        return user.UserName;
+        return user.Email;
     }
     
     
