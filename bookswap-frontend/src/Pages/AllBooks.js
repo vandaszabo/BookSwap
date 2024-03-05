@@ -51,7 +51,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
-                            height: '30vh',
+                            height: '40vh',
                             color: (theme) => theme.palette.primary.light,
                             backgroundColor: (theme) => theme.palette.primary.main,
                             alignItems: 'center',
@@ -75,12 +75,12 @@ export default function AllBooks({ books, setSelectedPost }) {
                         </Container>
                         <Container>
                             <img
-                                src="https://static.vecteezy.com/system/resources/previews/003/416/667/original/young-woman-reading-book-on-bag-chair-vector.jpg"
+                                src="https://cdn.dribbble.com/users/486498/screenshots/11951875/media/ba889cb7336c75a8cfa54656dc912bd9.jpg?compress=1&resize=700x525&vertical=center"
                                 alt="reading-woman"
                                 style={{
                                     maxWidth: 'auto',
                                     maxHeight: 'auto',
-                                    height: '30vh',
+                                    height: '40vh',
                                     width: 'auto',
                                     display: 'block', // Remove any default spacing issues
                                 }}

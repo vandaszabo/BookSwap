@@ -65,8 +65,11 @@ export default function Filters({ setFilterObj }) {
     return (
         <Stack
             sx={{
-                pt: [2, 4],
-                color: (theme) => theme.palette.primary.main
+                pt: [2, 3],
+                pb: [1, 2],
+                color: (theme) => theme.palette.primary.main,
+                backgroundColor: (theme) => theme.palette.secondary.medium,
+                
             }}
             direction={['column', 'row']}
             spacing={2}
