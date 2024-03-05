@@ -160,7 +160,11 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
                                         <Typography variant="button" style={{ color: '' }}>Sign In</Typography>
                                     </Button> <Typography sx={{ alignSelf: 'center' }}>/</Typography>
                                     <Button component={Link} to={'/register'} color="inherit" align="end">
-                                        <Typography variant="button" style={{ color: '#666666' }}>Sign Up</Typography>
+                                        <Typography 
+                                            variant="button" 
+                                            sx={{ color: theme => theme.palette.secondary.light }}>
+                                            Sign Up
+                                        </Typography>
                                     </Button>
                                 </>
                             ) : (

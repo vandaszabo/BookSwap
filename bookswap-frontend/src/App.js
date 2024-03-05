@@ -19,7 +19,7 @@ import { useAuth } from './Components/Authentication/AuthContext';
 import { lightTheme, darkTheme } from './Style/Themes';
 
 function App() {
-  const {authUser} = useAuth();
+  const { authUser } = useAuth();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -56,7 +56,7 @@ function App() {
 
         <Container maxWidth="lg" sx={{ mt: 4 }}>
           <FormControlLabel
-            control={<Switch checked={darkMode} onChange={toggleDarkMode} />}
+            control={<Switch checked={darkMode} onChange={toggleDarkMode} size='small' />}
             label="Dark Mode"
           />
         </Container>
@@ -66,9 +66,9 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/books" element={<AllBooks books={othersList} setSelectedPost={setSelectedPost} />} />
-          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost}/>} />
-          <Route path="/post" element={<SelectedPost book={selectedPost} backPath='/books'/>} />
-          <Route path="/your-post" element={<SelectedPost book={selectedPost} backPath='/profile'/>} />
+          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost} />} />
+          <Route path="/post" element={<SelectedPost book={selectedPost} backPath='/books' />} />
+          <Route path="/your-post" element={<SelectedPost book={selectedPost} backPath='/profile' />} />
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 

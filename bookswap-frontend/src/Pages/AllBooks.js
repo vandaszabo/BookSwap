@@ -45,16 +45,19 @@ export default function AllBooks({ books, setSelectedPost }) {
             <Container
                 component="main"
                 maxWidth="lg"
-                sx={{ mb: 4, backgroundImage: `url('https://i.pinimg.com/originals/5a/a9/cd/5aa9cdc6e6b05f29b95357c4ab29a280.jpg')`, backgroundSize: 'cover' }}>
+                sx={{ mb: 4 }}>
                 <Box>
                     <Box
                         sx={{
-                            mt: 8,
-                            mb: 2,
-                            color: (theme) => theme.palette.primary.main
+                            display: 'flex',
+                            flexDirection: 'row',
+                            height: '30vh',
+                            color: (theme) => theme.palette.primary.light,
+                            backgroundColor: (theme) => theme.palette.primary.main,
+                            alignItems: 'center',
                         }}
                     >
-                        <Container maxWidth="sm">
+                        <Container>
                             <Typography
                                 component="h5"
                                 variant="body1"
@@ -69,11 +72,24 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 paragraph>
                                 Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                             </Typography>
-                            <Filters
-                                setFilterObj={setFilterObj}
+                        </Container>
+                        <Container>
+                            <img
+                                src="https://static.vecteezy.com/system/resources/previews/003/416/667/original/young-woman-reading-book-on-bag-chair-vector.jpg"
+                                alt="reading-woman"
+                                style={{
+                                    maxWidth: 'auto',
+                                    maxHeight: 'auto',
+                                    height: '30vh',
+                                    width: 'auto',
+                                    display: 'block', // Remove any default spacing issues
+                                }}
                             />
                         </Container>
                     </Box>
+                    <Filters
+                        setFilterObj={setFilterObj}
+                    />
                     <Container
                         sx={{ py: 8, color: (theme) => theme.palette.primary.main }}
                         maxWidth="md">
@@ -118,8 +134,8 @@ export default function AllBooks({ books, setSelectedPost }) {
                                                 size="small">
                                                 View
                                             </Button>
-                                            <Button 
-                                                onClick={() => handleLike(book.postId)} 
+                                            <Button
+                                                onClick={() => handleLike(book.postId)}
                                                 size="small">
                                                 Like
                                             </Button>
@@ -130,10 +146,10 @@ export default function AllBooks({ books, setSelectedPost }) {
                         </Grid>
                     </Container>
                 </Box>
-                <Box 
-                    sx={{ p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                <Box
+                    sx={{ p: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     component="footer">
-                    <Button 
+                    <Button
                         onClick={topFunction}>
                         Back to top
                     </Button>

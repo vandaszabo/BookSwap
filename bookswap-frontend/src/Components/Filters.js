@@ -64,15 +64,24 @@ export default function Filters({ setFilterObj }) {
 
     return (
         <Stack
-            sx={{ pt: 4, color: (theme) => theme.palette.primary.main }}
-            direction="row"
+            sx={{
+                pt: [2, 4],
+                color: (theme) => theme.palette.primary.main
+            }}
+            direction={['column', 'row']}
             spacing={2}
             justifyContent="center"
         >
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel 
-                    id="genre" 
-                    sx={{ color: (theme) => theme.palette.primary.main }}>
+            <FormControl
+                sx={{ m: 1, minWidth: 120 }}
+                size="small"
+            >
+                <InputLabel
+                    id="genre"
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
+                    }}
+                >
                     Genre
                 </InputLabel>
                 <Select
@@ -81,7 +90,9 @@ export default function Filters({ setFilterObj }) {
                     value={selectedGenre}
                     label="Genre"
                     onChange={handleChangeGenre}
-                    sx={{ color: (theme) => theme.palette.primary.main }}
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
+                    }}
                 >
                     <MenuItem value="">
                         <em>None</em>
@@ -98,12 +109,17 @@ export default function Filters({ setFilterObj }) {
                     <MenuItem value={"children"}>Children's Literature</MenuItem>
                 </Select>
             </FormControl>
-            <FormControl 
-                sx={{ m: 1, minWidth: 120 }} 
+            <FormControl
+                sx={{
+                    m: 1,
+                    minWidth: 120
+                }}
                 size="small">
-                <InputLabel 
-                    id="language" 
-                    sx={{ color: (theme) => theme.palette.primary.main }}>
+                <InputLabel
+                    id="language"
+                    sx={{ 
+                        color: (theme) => theme.palette.primary.main 
+                    }}>
                     Language
                 </InputLabel>
                 <Select
@@ -112,7 +128,9 @@ export default function Filters({ setFilterObj }) {
                     value={selectedLanguage}
                     label="Language"
                     onChange={handleChangeLanguage}
-                    sx={{ color: (theme) => theme.palette.primary.main }}
+                    sx={{ 
+                        color: (theme) => theme.palette.primary.main 
+                    }}
                 >
                     <MenuItem value="">
                         <em>None</em>
@@ -122,11 +140,16 @@ export default function Filters({ setFilterObj }) {
                 </Select>
             </FormControl>
             <FormControl
-                sx={{ m: 1, minWidth: 120 }}
+                sx={{ 
+                    m: 1, 
+                    minWidth: 120 
+                }}
                 size="small">
                 <InputLabel
                     id="location"
-                    sx={{ color: (theme) => theme.palette.primary.main }}>
+                    sx={{ 
+                        color: (theme) => theme.palette.primary.main 
+                    }}>
                     Location
                 </InputLabel>
                 <Select
@@ -135,7 +158,9 @@ export default function Filters({ setFilterObj }) {
                     value={selectedLocation}
                     label="Location"
                     onChange={handleChangeLocation}
-                    sx={{ color: (theme) => theme.palette.primary.main }}
+                    sx={{ 
+                        color: (theme) => theme.palette.primary.main 
+                    }}
                 >
                     <MenuItem
                         value="">
@@ -153,7 +178,9 @@ export default function Filters({ setFilterObj }) {
             <Button
                 onClick={handleFilter}
                 variant="contained"
-                disabled={loading}>
+                disabled={loading}
+                sx={{ mt: [2, 0] }}
+            >
                 Filter
             </Button>
         </Stack>

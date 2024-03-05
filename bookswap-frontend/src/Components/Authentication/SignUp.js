@@ -126,7 +126,7 @@ export default function SignUp() {
               mb: 2,
               backgroundColor: (theme) => theme.palette.primary.main,
               '&:hover': {
-                backgroundColor: (theme) => theme.palette.secondary.light,
+                backgroundColor: (theme) => theme.palette.secondary.main,
               },
             }}
           >

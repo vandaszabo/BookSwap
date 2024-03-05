@@ -9,7 +9,7 @@ export const lightTheme = createTheme({
         secondary: {
             //main: '#9FCC4B',
             main: '#00A388',
-            light: '#acd8a7',
+            light: '#bfbfbf',
         },
         background: {
             main: '#F2CCB6',
