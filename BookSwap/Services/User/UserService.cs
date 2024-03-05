@@ -20,6 +20,11 @@ public class UserService : IUserService
         return await _userRepository.GetAll();
     }
 
+    public async Task<IEnumerable<string>> GetAllUserLocations()
+    {
+        return await _userRepository.GetAllLocations();
+    }
+
     public async Task<ApplicationUser?> GetUserById(string userId)
     {
         return await _userRepository.GetById(userId);

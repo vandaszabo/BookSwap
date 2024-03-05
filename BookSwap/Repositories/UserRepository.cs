@@ -26,6 +26,11 @@ public class UserRepository : IUserRepository
         return await _dbContext.AppUsers.ToListAsync();
     }
     
+    public async Task<List<string?>> GetAllLocations()
+    {
+        return await _dbContext.AppUsers.Select(u => u.City).ToListAsync();
+    }
+    
     public async Task AddBookPost(string userId, BookPost post)
     {
         var user = await GetById(userId);

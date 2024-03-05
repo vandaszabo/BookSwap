@@ -19,13 +19,28 @@ public class UserController : ControllerBase
     }
 
     // List all user
-    [HttpGet("User/List")]
+    [HttpGet("List")]
     public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAll()
     {
         try
         {
             var identityUsers = await _userService.GetAllUser();
             return Ok(identityUsers);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
+    
+    // List all user locations
+    [HttpGet("Location/List")]
+    public async Task<ActionResult<IEnumerable<string>>> GetAllLocations()
+    {
+        try
+        {
+            var cityList = await _userService.GetAllUserLocations();
+            return Ok(cityList);
         }
         catch (Exception ex)
         {
