@@ -45,17 +45,22 @@ export default function AllBooks({ books, setSelectedPost }) {
             <Container
                 component="main"
                 maxWidth="lg"
-                sx={{ mb: 4 }}>
+                sx={{ mb: 4, mt: 4}}>
                 <Box>
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
                             height: '40vh',
-                            color: (theme) => theme.palette.primary.light,
-                            backgroundColor: (theme) => theme.palette.primary.main,
+                            color: (theme) => theme.palette.primary.main,
+                            backgroundColor: (theme) => theme.palette.secondary.beige,
                             alignItems: 'center',
+                            '@media (max-width: 600px)': {
+                                flexDirection: 'column-reverse', // Stack image below text on smaller screens
+                                height: 'auto',
+                            },
                         }}
+
                     >
                         <Container>
                             <Typography
@@ -63,13 +68,29 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 variant="body1"
                                 align="center"
                                 gutterBottom
+                                sx={{
+                                    fontSize: {
+                                        xs: '1.5rem', 
+                                        sm: '2rem', 
+                                        md: '2rem', 
+                                        lg: '2.2rem',
+                                    },
+                                }}
                             >
                                 Find your new favourite book!
                             </Typography>
                             <Typography
                                 variant="body2"
                                 align="center"
-                                paragraph>
+                                paragraph
+                                sx={{
+                                    fontSize: {
+                                        xs: '1rem',
+                                        sm: '1.1rem',
+                                        md: '1.1rem',
+                                        lg: '1.1rem',
+                                    },
+                                }}>
                                 Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                             </Typography>
                         </Container>
@@ -78,11 +99,10 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 src="https://cdn.dribbble.com/users/486498/screenshots/11951875/media/ba889cb7336c75a8cfa54656dc912bd9.jpg?compress=1&resize=700x525&vertical=center"
                                 alt="reading-woman"
                                 style={{
+                                    maxHeight: '40vh',
                                     maxWidth: 'auto',
-                                    maxHeight: 'auto',
-                                    height: '40vh',
-                                    width: 'auto',
-                                    display: 'block', // Remove any default spacing issues
+                                    height: 'auto',
+                                    display: 'block',
                                 }}
                             />
                         </Container>

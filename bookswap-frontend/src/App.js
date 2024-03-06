@@ -54,12 +54,12 @@ function App() {
           setBookList={setBookList}
           created={created} />
 
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
+        {/* <Container maxWidth="lg" sx={{ mt: 4 }}>
           <FormControlLabel
             control={<Switch checked={darkMode} onChange={toggleDarkMode} size='small' />}
             label="Dark Mode"
           />
-        </Container>
+        </Container> */}
 
         <Routes>
           <Route path="/" element={<Home />} />

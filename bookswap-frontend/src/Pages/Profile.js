@@ -128,7 +128,7 @@ export default function Profile({ setSelectedPost }) {
                         <Typography variant="h6" gutterBottom>
                             Your posts
                         </Typography>
-                        {userPosts.length == 0 &&
+                        {userPosts.length === 0 &&
                             <>
                                 <Typography>You don't have any post yet.</Typography>
                                 <Button component={Link} to={'/create'}>Upload Now</Button>
