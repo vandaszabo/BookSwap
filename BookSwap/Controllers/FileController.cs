@@ -1,3 +1,4 @@
+using System.Net;
 using Amazon;
 using Amazon.S3;
 using BookSwap.Enums;
@@ -81,33 +82,38 @@ public class FileController : ControllerBase
     [HttpDelete("Delete")]
     public async Task<IActionResult> DeleteFile([FromBody] Uri fileUrl)
     {
-
         _logger.LogInformation($"Received url: {fileUrl}");
 
-
-        // Create s3 client
-        if (_bucketName != null && _accessKey != null && _secretKey != null)
-        {
-            var s3Client = new AmazonS3Client(_accessKey, _secretKey, RegionEndpoint.EUCentral1);
-            try
-            {
-                var key = fileUrl.AbsolutePath.TrimStart('/');
-                await s3Client.DeleteObjectAsync(_bucketName, key);
-                
-                return Ok(new { Message = $"File deleted successfully from S3 bucket {_bucketName}" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error: {ex.Message}");
-            }
-            finally
-            {
-                s3Client.Dispose();
-            }
-        }
-        else
+        if (_bucketName == null || _accessKey == null || _secretKey == null)
         {
             return BadRequest("AWS credentials or bucket name not configured.");
+        }
+
+        using var s3Client = new AmazonS3Client(_accessKey, _secretKey, RegionEndpoint.EUCentral1);
+
+        try
+        {
+            var key = await _fileService.CheckIfObjectExistsAndReturnKeyAsync(s3Client, _bucketName, fileUrl);
+
+            if (key != null)
+            {
+                await _fileService.DeleteFileAsync(s3Client, _bucketName, key);
+                return Ok(new {
+                    Message = "File deleted successfully from S3 bucket yourBucketName", Url = fileUrl });
+            }
+            else
+            {
+                return NotFound("File key was not found.");
+            }
+        }
+        catch (AmazonS3Exception ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return NotFound("File not found in the S3 bucket.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error deleting file: {ex.Message}");
+            return StatusCode(500, $"Error: {ex.Message}");
         }
     }
 }
