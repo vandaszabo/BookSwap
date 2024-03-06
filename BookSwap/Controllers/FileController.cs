@@ -28,9 +28,9 @@ public class FileController : ControllerBase
     {
         var file = HttpContext.Request.Form.Files.GetFile("file");
         var imageCategory = HttpContext.Request.Form["imageCategory"];
-        
+
         _logger.LogInformation($"Received imageCategory: {imageCategory}");
-        
+
         // Check file format
         if (!_fileService.IsImage(file))
         {
@@ -42,7 +42,7 @@ public class FileController : ControllerBase
         {
             return BadRequest("File size exceeds the allowed limit (5 MB).");
         }
-        
+
         // Create s3 client
         if (_bucketName != null && _accessKey != null && _secretKey != null)
         {
@@ -71,7 +71,40 @@ public class FileController : ControllerBase
                 s3Client.Dispose();
             }
         }
-        
+
+        else
+        {
+            return BadRequest("AWS credentials or bucket name not configured.");
+        }
+    }
+
+    [HttpDelete("Delete")]
+    public async Task<IActionResult> DeleteFile([FromBody] Uri fileUrl)
+    {
+
+        _logger.LogInformation($"Received url: {fileUrl}");
+
+
+        // Create s3 client
+        if (_bucketName != null && _accessKey != null && _secretKey != null)
+        {
+            var s3Client = new AmazonS3Client(_accessKey, _secretKey, RegionEndpoint.EUCentral1);
+            try
+            {
+                var key = fileUrl.AbsolutePath.TrimStart('/');
+                await s3Client.DeleteObjectAsync(_bucketName, key);
+                
+                return Ok(new { Message = $"File deleted successfully from S3 bucket {_bucketName}" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+            finally
+            {
+                s3Client.Dispose();
+            }
+        }
         else
         {
             return BadRequest("AWS credentials or bucket name not configured.");
