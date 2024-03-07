@@ -7,7 +7,6 @@ public interface IUserRepository
     Task<ApplicationUser?> GetById(string userId);
     Task<IEnumerable<ApplicationUser>> GetAll();
     Task<List<string?>> GetAllLocations();
-    Task AddBookPost(string userId, BookPost post);
     Task UpdateUserNameAndEmail(ApplicationUser user, string newUserName, string newEmail);
     Task UpdatePhoneNumber(ApplicationUser user, string newPhoneNumber);
     Task UpdateCity(ApplicationUser user, string newCity);

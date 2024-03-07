@@ -35,16 +35,6 @@ public class UserRepository : IUserRepository
             .ToListAsync();
     }
     
-    public async Task AddBookPost(string userId, BookPost post)
-    {
-        var user = await GetById(userId);
-        if (user != null)
-        {
-            user.BookPosts.Add(post);
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-    
     public async Task UpdateUserNameAndEmail(ApplicationUser user, string newUserName, string newEmail)
     {
         user.Email = newEmail;

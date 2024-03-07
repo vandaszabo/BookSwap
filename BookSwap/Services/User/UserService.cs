@@ -73,13 +73,4 @@ public class UserService : IUserService
 
         return await _userRepository.Delete(user);
     }
-
-    public async Task AddBookPost(string userId, Guid postId)
-    {
-        var bookPost = await _bookPostRepository.GetById(postId);
-        if (bookPost != null)
-        {
-            await _userRepository.AddBookPost(userId, bookPost);
-        }
-    }
 }

@@ -9,6 +9,5 @@ public interface IUserService
     Task<List<string?>> GetAllUserLocations();
     Task<ApplicationUser?> GetUserById(string userId);
     Task<ApplicationUser?> UpdateUserData(UpdateDataRequest request);
-    Task AddBookPost(string userId, Guid postId);
     Task<string?> DeleteUser(string userId);
 }

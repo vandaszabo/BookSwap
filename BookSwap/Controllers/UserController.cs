@@ -47,7 +47,7 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
-
+    
     // Update main User data
     [HttpPost("UpdateData")]
     public async Task<ActionResult<ApplicationUser>> UpdateUserData([FromBody] UpdateDataRequest request)
@@ -96,27 +96,6 @@ public class UserController : ControllerBase
             if (deletedUserEmail == null) return NotFound($"No user found with this id: {id}");
 
             return Ok(deletedUserEmail);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"An error occurred: {ex.Message}");
-        }
-    }
-
-    // Add New Post to User object
-    [HttpPost("AddBookPost")]
-    public async Task<ActionResult<ApplicationUser>> AddBookPost([FromBody] AddBookPostRequest request)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            await _userService.AddBookPost(request.UserId, request.PostId);
-
-            return Ok("Book post added successfully");
         }
         catch (Exception ex)
         {
