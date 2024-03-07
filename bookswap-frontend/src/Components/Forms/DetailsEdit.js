@@ -50,16 +50,7 @@ export default function DetailsEdit({ setEditingDetails }) {
         })
             .then((response) => response.json())
             .then((responseData) => {
-                const newUserObj = {
-                    id: responseData.id,
-                    userName: responseData.userName,
-                    email: responseData.email,
-                    phoneNumber: responseData.phoneNumber,
-                    city: responseData.city
-                }
-                setAuthUser((prevAuthUser) => ({
-                    ...prevAuthUser, ...newUserObj
-                }));
+                setAuthUser(responseData);
                 localStorage.setItem('authUser', JSON.stringify(responseData));
             })
             .catch((error) => {

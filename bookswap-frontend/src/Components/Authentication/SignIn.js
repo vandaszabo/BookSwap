@@ -48,19 +48,10 @@ export default function SignIn() {
 
       if (responseData.user && responseData.user.id) {
         setError(null);
-        console.log("login user: ", responseData.user)
-
-        const newUserObj = {
-          id: responseData.user.id,
-          userName: responseData.user.userName,
-          email: responseData.user.email,
-          phoneNumber: responseData.user.phoneNumber,
-          city: responseData.user.city,
-          profileImage: responseData.user.profileImage,
-          bookPosts: responseData.user.bookPosts
-        }
-        setAuthUser(newUserObj);
-        localStorage.setItem('authUser', JSON.stringify(newUserObj));
+        console.log("login user: ", responseData.user, "token: ", responseData.token);
+        
+        setAuthUser(responseData.user);
+        localStorage.setItem('authUser', JSON.stringify(responseData.user));
         setIsLoggedIn(true);
         navigate('/');
       }
