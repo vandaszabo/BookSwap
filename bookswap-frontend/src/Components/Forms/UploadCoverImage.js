@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
+import { Alert } from '@mui/material';
 
 //*********-------main function for Upload Image file-------*********//
 export default function UploadCoverImage({ setCoverImage }) {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const handleFileChange = (event) => {
@@ -22,6 +24,7 @@ export default function UploadCoverImage({ setCoverImage }) {
   
       // Set loading state to true before making the fetch request
       setLoading(true);
+      setError(null);
   
       fetch('http://localhost:5029/api/File/Upload?imageCategory=CoverImage', {
         method: 'POST',
@@ -42,6 +45,7 @@ export default function UploadCoverImage({ setCoverImage }) {
         })
         .catch((error) => {
           console.error('Error uploading file:', error);
+          setError("Accepted file formats: JPG, JPEG, PNG, GIF, BMP, TIF, TIFF, WEBP, SVG.");
         })
         .finally(() => {
           // Set loading state to false after the upload is complete (or in case of an error)
@@ -79,6 +83,7 @@ export default function UploadCoverImage({ setCoverImage }) {
         }}>
         Upload
       </Button>
+      {error && <Alert severity="error">{error}</Alert>}
 
     </div>
   );

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAuth } from '../Authentication/AuthContext';
+import { Alert } from '@mui/material';
 
 
 //*********-------main function for Upload Image file-------*********//
@@ -10,6 +11,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { authUser, setAuthUser } = useAuth();
 
   const handleFileChange = (event) => {
@@ -37,10 +39,11 @@ export default function UploadProfileImage({ setEditingPhoto }) {
       })
       .catch((error) => {
         console.error('Error uploading file:', error);
+        setError("Accepted file formats: JPG, JPEG, PNG, GIF, BMP, TIF, TIFF, WEBP, SVG.");
+        
       })
       .finally(() => {
         setLoading(false);
-        setEditingPhoto(false);
       });
   };
 
@@ -72,6 +75,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
       })
       .finally(() => {
         setLoading(false);
+        setEditingPhoto(false);
       });
   };
 
@@ -114,7 +118,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
         }}>
         Upload
       </Button>
-
+      {error && <Alert severity="error">{error}</Alert>}
     </div>
   );
 }
