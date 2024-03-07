@@ -61,9 +61,8 @@ public class BookService : IBookService
         return await _bookPostRepository.GetAllFromUser(userId);
     }
 
-    public async Task<ApplicationUser?> UpdatePost(BookPost bookPost)
+    public async Task<BookPost?> UpdatePost(BookPost bookPost)
     {
-        await _bookPostRepository.Update(bookPost);
-        return await _userService.GetUserById(bookPost.UserId);
+        return await _bookPostRepository.Update(bookPost);
     }
 }

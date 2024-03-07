@@ -81,21 +81,40 @@ public class BookPostController : ControllerBase
 
     // Update main User data
     [HttpPost("Update")]
-    public async Task<ActionResult<ApplicationUser>> UpdateBookPost([FromBody] BookPost newBookPost)
+    public async Task<ActionResult<ApplicationUser>> UpdateBookPost([FromBody] UpdatePostRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var user = await _bookService.UpdatePost(newBookPost);
+        // Retrieve the existing BookPost from the database
+        var bookPost = await _bookService.GetByPostId(request.PostId);
 
-        if (user != null)
+        if (bookPost == null)
         {
-            return Ok(user);
+            return NotFound();
         }
 
-        return NotFound("User not found");
+        // Merge the data from the DTO with the existing data
+        bookPost.Title = request.Title;
+        bookPost.Author = request.Author;
+        bookPost.Category = request.Category;
+        bookPost.Description = request.Description;
+        bookPost.Language = request.Language;
+        bookPost.PageCount = request.PageCount;
+        bookPost.CoverImage = request.CoverImage;
+        
+
+        // Update the BookPost in the database
+        var updatedPost = await _bookService.UpdatePost(bookPost);
+
+        if (updatedPost != null)
+        {
+            return Ok(updatedPost);
+        }
+
+        return NotFound("Post not found");
     }
     
     [HttpDelete("Delete/{id}")]

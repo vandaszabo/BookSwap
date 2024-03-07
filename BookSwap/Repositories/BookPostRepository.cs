@@ -37,10 +37,12 @@ public class BookPostRepository : IBookPostRepository
         }
     }
 
-    public async Task Update(BookPost bookPost)
+    public async Task<BookPost?> Update(BookPost bookPost)
     {
         _dbContext.BookPosts.Update(bookPost);
         await _dbContext.SaveChangesAsync();
+        
+        return await GetById(bookPost.PostId);
     }
 
     public async Task<BookPost?> Delete(Guid postId)

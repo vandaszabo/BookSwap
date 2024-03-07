@@ -6,7 +6,7 @@ import Switch from '@mui/material/Switch';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import PostEdit from './Components/Forms/PostEdit';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import AllBooks from './Pages/AllBooks';
@@ -24,6 +24,7 @@ function App() {
   const [created, setCreated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
+  const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
 
   useEffect(() => {
@@ -66,9 +67,10 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/books" element={<AllBooks books={othersList} setSelectedPost={setSelectedPost} />} />
-          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost} />} />
+          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost} setEditingPost={setEditingPost}/>} />
           <Route path="/post" element={<SelectedPost book={selectedPost} backPath='/books' />} />
           <Route path="/your-post" element={<SelectedPost book={selectedPost} backPath='/profile' />} />
+          <Route path="/edit-post" element={<PostEdit book={editingPost} /> } />
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 

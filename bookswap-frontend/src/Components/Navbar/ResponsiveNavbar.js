@@ -52,7 +52,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
         };
 
         fetchData();
-    }, [setBooks, setBookList, created]);
+    }, [setBooks, setBookList, created, authUser]);
 
     //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {
@@ -169,7 +169,7 @@ function ResponsiveNavbar({setSelectedPost, setBookList, created}) {
                                 </>
                             ) : (
                                 <>
-                                    <Tooltip title="Settings">
+                                    <Tooltip title={authUser.userName}>
                                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                             <Avatar
                                                 alt={authUser.userName}
