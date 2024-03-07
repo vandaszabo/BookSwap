@@ -28,7 +28,11 @@ public class UserRepository : IUserRepository
     
     public async Task<List<string?>> GetAllLocations()
     {
-        return await _dbContext.AppUsers.Select(u => u.City).ToListAsync();
+        return await _dbContext.AppUsers
+            .Select(u => u.City)
+            .Where(city => city != null)
+            .Distinct()
+            .ToListAsync();
     }
     
     public async Task AddBookPost(string userId, BookPost post)
@@ -40,7 +44,7 @@ public class UserRepository : IUserRepository
             await _dbContext.SaveChangesAsync();
         }
     }
-
+    
     public async Task UpdateUserNameAndEmail(ApplicationUser user, string newUserName, string newEmail)
     {
         user.Email = newEmail;
