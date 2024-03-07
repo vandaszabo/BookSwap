@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
-import { Dialog, DialogContent } from '@mui/material';
+import { Dialog, DialogContent, Typography } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import NavigateBack from '../Components/NavigateBack';
 import Poster from '../Components/Poster';
@@ -44,34 +44,15 @@ export default function SelectedPost({ book, backPath }) {
     return (
         <React.Fragment>
             {localBook &&
-                <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8 }}>
+                <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8}}>
                     <NavigateBack path={backPath} />
-                    <Card>
+                    <Card sx={{backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end'}}>
+                        <Poster posterId={localBook.userId} />
+                    </Card>
+                    <Card sx={{backgroundColor: (theme) => theme.palette.secondary.grey}}>
                         <CardContent>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} md={8}>
-                                    <List>
-                                        <ListItem key="title" sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={localBook.title} secondary="title" />
-                                        </ListItem>
-
-                                        <ListItem key="author" sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={localBook.author} secondary="author" />
-                                        </ListItem>
-
-                                        <ListItem key="category" sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={localBook.category} secondary="category" />
-                                        </ListItem>
-
-                                        <ListItem key="pageCount" sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={localBook.pageCount} secondary="pageCount" />
-                                        </ListItem>
-                                        <ListItem key="description" sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={localBook.description} secondary="description" />
-                                        </ListItem>
-                                    </List>
-                                </Grid>
-                                <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={4}>
                                     <Button onClick={handleViewImage}>
                                         <img
                                             src={localBook.coverImage}
@@ -95,8 +76,31 @@ export default function SelectedPost({ book, backPath }) {
                                         </DialogContent>
                                     </Dialog>
                                 </Grid>
+                                <Grid item xs={12} md={8}>
+                                   
+                                        <Typography sx={{fontSize: '25px', mt: 1}} >
+                                            {localBook.title}
+                                        </Typography>
+
+                                        <Typography sx={{fontSize: '20px', mt: 1}} >
+                                            {localBook.author}
+                                        </Typography>
+
+                                        <Typography sx={{fontSize: '15px', mt: 1 }} >
+                                           Category/Genre: {localBook.category}
+                                        </Typography>
+
+                                        <Typography sx={{fontSize: '15px'}} >
+                                           Number of pages: {localBook.pageCount}
+                                        </Typography>
+                                        <Typography sx={{fontSize: '15px', mt: 2,}} >
+                                            {localBook.description}
+                                        </Typography>
+                                    
+                                </Grid>
+                               
                             </Grid>
-                            <Poster posterId={localBook.userId} />
+
                         </CardContent>
                     </Card>
                 </Container>

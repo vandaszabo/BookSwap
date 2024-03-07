@@ -112,7 +112,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                     />
                     <Container
                         sx={{ py: 8, color: (theme) => theme.palette.primary.main }}
-                        maxWidth="md">
+                        maxWidth="lg">
                         <Grid
                             container spacing={4}>
                             {books && books.map((book, index) => (
@@ -121,7 +121,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                                     xs={6}
                                     sm={4}
                                     md={3}
-                                    lg={3}>
+                                    lg={2}>
                                     <Card
                                         sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                     >
