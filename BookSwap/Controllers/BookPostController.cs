@@ -79,6 +79,25 @@ public class BookPostController : ControllerBase
         }
     }
 
+    // Update main User data
+    [HttpPost("Update")]
+    public async Task<ActionResult<ApplicationUser>> UpdateBookPost([FromBody] BookPost newBookPost)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var user = await _bookService.UpdatePost(newBookPost);
+
+        if (user != null)
+        {
+            return Ok(user);
+        }
+
+        return NotFound("User not found");
+    }
+    
     [HttpDelete("Delete/{id}")]
     public async Task<ActionResult<BookPost?>> DeletePost(Guid id)
     {
