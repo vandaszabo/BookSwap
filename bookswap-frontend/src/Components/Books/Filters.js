@@ -6,14 +6,17 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
+import { fetchAllLocations, fetchPostsByLocation } from '../../Utils/FetchFunctions';
+import { useAuth } from '../Authentication/AuthContext';
 
-export default function Filters({ setFilterObj }) {
+export default function Filters({ books, setFilteredBooks }) {
 
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("");
     const [selectedLocation, setSelectedLocation] = useState("");
     const [locations, setLocations] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { authUser } = useAuth();
 
     const handleChangeGenre = (event) => {
         setSelectedGenre(event.target.value);
@@ -27,38 +30,42 @@ export default function Filters({ setFilterObj }) {
         setSelectedLocation(event.target.value);
     };
 
-    const handleFilter = () => {
-        setFilterObj({
-            genre: selectedGenre,
-            language: selectedLanguage,
-            location: selectedLocation
-        })
+    const handleFilter = async() => {
+        setLoading(true);
+
+        let newList = books;
+        if (selectedLocation) {
+            newList = await fetchPostsByLocation(authUser.id, selectedLocation)
+        }
+        if (selectedGenre) {
+            newList = newList.filter(b => b.category.toLowerCase().includes(selectedGenre.toLowerCase()))
+        }
+        if (selectedLanguage) {
+            newList = newList.filter(b => b.language.toLowerCase().includes(selectedLanguage.toLowerCase()))
+        }
+        setFilteredBooks(newList);
+        setLoading(false);
     };
 
     useEffect(() => {
         const fetchLocations = async () => {
+
+            setLoading(true);
             try {
-                const response = await fetch("http://localhost:5029/api/User/Location/List", {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const locations = await fetchAllLocations();
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-
-                if (data !== null) {
-                    setLocations(data);
+                if (locations !== null) {
+                    setLocations(locations);
                 }
             } catch (error) {
                 console.error(`Error in fetchLocations: ${error.message}`);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchLocations();
+
     }, [setLocations]);
 
 
@@ -69,7 +76,7 @@ export default function Filters({ setFilterObj }) {
                 pb: [1, 2],
                 color: (theme) => theme.palette.primary.main,
                 backgroundColor: (theme) => theme.palette.secondary.medium,
-                
+
             }}
             direction={['column', 'row']}
             spacing={2}
@@ -120,8 +127,8 @@ export default function Filters({ setFilterObj }) {
                 size="small">
                 <InputLabel
                     id="language"
-                    sx={{ 
-                        color: (theme) => theme.palette.primary.main 
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
                     }}>
                     Language
                 </InputLabel>
@@ -131,27 +138,27 @@ export default function Filters({ setFilterObj }) {
                     value={selectedLanguage}
                     label="Language"
                     onChange={handleChangeLanguage}
-                    sx={{ 
-                        color: (theme) => theme.palette.primary.main 
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
                     }}
                 >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={"en"}>English</MenuItem>
-                    <MenuItem value={"hun"}>Hungarian</MenuItem>
+                    <MenuItem value={"hu"}>Hungarian</MenuItem>
                 </Select>
             </FormControl>
             <FormControl
-                sx={{ 
-                    m: 1, 
-                    minWidth: 120 
+                sx={{
+                    m: 1,
+                    minWidth: 120
                 }}
                 size="small">
                 <InputLabel
                     id="location"
-                    sx={{ 
-                        color: (theme) => theme.palette.primary.main 
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
                     }}>
                     Location
                 </InputLabel>
@@ -161,8 +168,8 @@ export default function Filters({ setFilterObj }) {
                     value={selectedLocation}
                     label="Location"
                     onChange={handleChangeLocation}
-                    sx={{ 
-                        color: (theme) => theme.palette.primary.main 
+                    sx={{
+                        color: (theme) => theme.palette.primary.main
                     }}
                 >
                     <MenuItem
@@ -185,6 +192,14 @@ export default function Filters({ setFilterObj }) {
                 sx={{ mt: [2, 0] }}
             >
                 Filter
+            </Button>
+            <Button
+                onClick={() => (setSelectedGenre(""), setSelectedLanguage(""), setSelectedLocation(""), setFilteredBooks(null))}
+                variant="outline"
+                disabled={loading}
+                sx={{ mt: [2, 0] }}
+            >
+                Reset
             </Button>
         </Stack>
 

@@ -182,4 +182,20 @@ public class BookPostController : ControllerBase
             return StatusCode(500, "Internal Server Error");
         }
     }
+    
+    [HttpGet("User/{userId}/Location/{location}")]
+    public async Task<ActionResult<IEnumerable<BookPost>>> GetPostsByUserLocation(string userId, string location)
+    {
+        try
+        {
+            var books = await _bookService.GetPostsByLocation(userId, location);
+            return Ok(books);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAll: {ex.Message}");
+
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
 }

@@ -20,6 +20,6 @@ public class BookPost
     
     [ForeignKey("UserId")]
     public string UserId { get; set; }
-    public ApplicationUser User { get; set; }
+    public ApplicationUser? User { get; set; }
     public ICollection<Like> Likes { get; set; }
 }
