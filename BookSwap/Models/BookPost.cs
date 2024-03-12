@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +22,6 @@ public class BookPost
     [ForeignKey("UserId")]
     public string UserId { get; set; }
     public ApplicationUser? User { get; set; }
+    
     public ICollection<Like> Likes { get; set; }
 }

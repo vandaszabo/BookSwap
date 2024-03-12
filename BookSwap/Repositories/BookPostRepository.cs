@@ -1,6 +1,9 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BookSwap.Data;
 using BookSwap.Models;
 using Microsoft.EntityFrameworkCore;
+using JsonSerializerOptions = Amazon.Util.Internal.JsonSerializerOptions;
 
 namespace BookSwap.Repositories;
 

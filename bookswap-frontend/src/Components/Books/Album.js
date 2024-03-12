@@ -1,15 +1,10 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
-
-// Import statements
-
-// Import statements
 
 export default function Album({ title, books, onView }) {
     return (

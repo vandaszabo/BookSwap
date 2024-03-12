@@ -8,12 +8,15 @@ import CardContent from '@mui/material/CardContent';
 import { Dialog, DialogContent, Typography } from '@mui/material';
 import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
+import { useAuth } from '../Components/Authentication/AuthContext';
 
 
 //*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book, backPath }) {
     const [openModal, setOpenModal] = useState(false);
     const [localBook, setLocalBook] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const {authUser} = useAuth();
 
     useEffect(() => {
         if (book.title) {
@@ -35,6 +38,30 @@ export default function SelectedPost({ book, backPath }) {
 
     const handleCloseModal = () => {
         setOpenModal(false);
+    };
+
+    const handleLike = () => {
+        setLoading(true);
+        console.log(book);
+        
+        fetch("http://localhost:5029/api/Like/Add", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: authUser.id, postId: book.postId}),
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                
+                console.log(responseData);
+            })
+            .catch((error) => {
+                console.error('Error saving like:', error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     return (
@@ -105,6 +132,7 @@ export default function SelectedPost({ book, backPath }) {
                                 </Grid>
                             </Grid>
                         </CardContent>
+                        <Button onClick={handleLike} variant='contained'>Like</Button>
                     </Card>
                 </Container>
             }

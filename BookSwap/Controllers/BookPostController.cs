@@ -40,7 +40,7 @@ public class BookPostController : ControllerBase
             }
 
             return CreatedAtAction(nameof(CreatePost), new { id = createdBookPost.PostId }, createdBookPost.PostId);
-        }
+        } 
     }
     
     [HttpPost("Like")]

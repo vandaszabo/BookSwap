@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Filters from '../Components/Books/Filters';
 import Album from '../Components/Books/Album';
-
 import { useAuth } from '../Components/Authentication/AuthContext';
 import BooksForYou from '../Components/Books/BooksForYou';
 
