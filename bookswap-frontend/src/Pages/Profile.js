@@ -21,33 +21,36 @@ import Fab from '@mui/material/Fab';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
+import { fetchUserPosts } from '../Utils/FetchFunctions';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile({ setSelectedPost }) {
+export default function Profile({ setSelectedPost, setEditingPost }) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
-        const fetchUserPosts = async () => {
-            try {
-                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
 
-                setUserPosts(data || []);
-                setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: data || [] }));
+        const fetchPosts = async () => {
+            setLoading(true);
+            try {
+                const bookList = await fetchUserPosts(authUser.id);
+                if(bookList != null){
+                    setUserPosts(bookList || []);
+                    setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: bookList || [] }));
+                }
             } catch (error) {
-                console.error(`Error in fetchUserPosts: ${error.message}`);
+                console.error(`Error in fetchPosts: ${error.message}`);
+            }finally{
+                setLoading(false);
             }
         };
 
-        fetchUserPosts();
+        fetchPosts();
     }, [authUser.id, setAuthUser]);
 
     const handleEditPicture = () => {
@@ -61,21 +64,26 @@ export default function Profile({ setSelectedPost }) {
         setSelectedPost(post);
         navigate('/your-post');
     };
-    const handleEditPost = () => {
-
+    const handleEditPost = (post) => {
+        setEditingPost(post)
+        navigate('/edit-post');
     };
+    
 
     return (
         <React.Fragment>
             {authUser &&
                 <>
-                    <Container maxWidth="lg" sx={{ mt: 4 }}>
+                    <Container maxWidth="lg" sx={{ pb: 4, mt: 4, backgroundColor: (theme) => theme.palette.secondary.grey }}>
                         <Grid container spacing={2} alignItems="center">
 
                             {/* Picture */}
                             <Grid item xs={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
                                     Profile picture
+                                    <Fab size="small" onClick={handleEditPicture} style={{ background: 'transparent', boxShadow: 'none' }} aria-label="edit">
+                                        {!editingPhoto ? (<EditIcon color="primary" />) : (<CloseIcon color="primary" />)}
+                                    </Fab>
                                 </Typography>
                                 <Card sx={{ width: 200, height: 200, borderRadius: '50%', overflow: 'hidden' }}>
                                     <CardMedia
@@ -87,20 +95,19 @@ export default function Profile({ setSelectedPost }) {
                                             : "https://static.vecteezy.com/system/resources/previews/020/646/716/non_2x/empty-face-icon-avatar-with-black-hair-illustration-vector.jpg"}
                                     />
                                 </Card>
-                                <Fab size="small" onClick={handleEditPicture} color="primary" aria-label="edit">
-                                    {!editingPhoto ? (<EditIcon />) : (<CloseIcon />)}
-                                </Fab>
+
                             </Grid>
                             {editingPhoto && <UploadProfileImage setEditingPhoto={setEditingPhoto} />}
 
                             {/* Personal Data */}
-                            <Grid item xs={12} md={8}>
+                            <Grid item xs={12} md={8} >
                                 <Typography variant="h6" gutterBottom>
                                     Personal info
+                                    <Fab size="small" onClick={handleEditData} style={{ background: 'transparent', boxShadow: 'none' }} aria-label="edit">
+                                        {!editingDetails ? (<EditIcon color='primary' />) : (<CloseIcon color='primary' />)}
+                                    </Fab>
                                 </Typography>
-                                <Fab size="small" onClick={handleEditData} color="primary" aria-label="edit">
-                                    {!editingDetails ? (<EditIcon />) : (<CloseIcon />)}
-                                </Fab>
+
                                 {!editingDetails ? (
                                     <Card>
                                         <CardContent>
@@ -119,51 +126,53 @@ export default function Profile({ setSelectedPost }) {
                             </Grid>
 
                         </Grid>
-                    </Container>
 
-                    {/* Posts */}
-                    <Container sx={{ py: 4 }} maxWidth="lg">
-                        <Typography variant="h6" gutterBottom>
-                            Your posts
-                        </Typography>
-                        {userPosts.length == 0 &&
-                            <>
-                                <Typography>You don't have any post yet.</Typography>
-                                <Button component={Link} to={'/create'}>Upload Now</Button>
-                            </>}
-                        <Grid container spacing={4}>
-                            {userPosts && userPosts.map((post, index) => (
-                                <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
-                                    <Card
-                                        sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
-                                    >
-                                        <CardMedia
-                                            component="div"
-                                            sx={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                height: '200px',
-                                                width: '100%',
-                                                background: `url(${post.coverImage}) center/cover no-repeat`,
-                                            }}
-                                        />
-                                        <CardContent sx={{ flexGrow: 1 }}>
-                                            <Typography variant="body1" component="div">
-                                                {post.title}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {post.author}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions>
-                                            <Button onClick={() => handleViewPost(post)} size="small">View</Button>
-                                            <Button onClick={handleEditPost} size="small">Edit</Button>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
+
+                        {/* Posts */}
+                        <Container sx={{ py: 4 }} maxWidth="lg">
+                            <Typography variant="h6" gutterBottom>
+                                Your posts
+                            </Typography>
+                            {userPosts.length === 0 &&
+                                <>
+                                    <Typography variant='body2'>You don't have any post yet.</Typography>
+                                    <Button variant="contained" component={Link} to={'/create'} sx={{ mt: 2 }}>Upload Now</Button>
+                                </>}
+                            <Grid container spacing={4}>
+                                {userPosts && userPosts.map((post, index) => (
+                                    <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
+                                        <Card
+                                            sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
+                                        >
+                                            {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
+                                            <CardMedia
+                                                component="div"
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    height: '200px',
+                                                    width: '100%',
+                                                    background: `url(${post.coverImage}) center/cover no-repeat`,
+                                                }}
+                                            />
+                                            <CardContent sx={{ flexGrow: 1 }}>
+                                                <Typography variant="body1" component="div">
+                                                    {post.title}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {post.author}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button onClick={() => handleViewPost(post)} size="small">View</Button>
+                                                <Button onClick={() => handleEditPost(post)} size="small">Edit</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Container>
                     </Container>
                 </>
             }

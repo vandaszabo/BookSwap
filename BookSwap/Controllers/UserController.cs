@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     // List all user
-    [HttpGet("User/List")]
+    [HttpGet("List")]
     public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAll()
     {
         try
@@ -32,7 +32,22 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
-
+    
+    // List all user locations
+    [HttpGet("Location/List")]
+    public async Task<ActionResult<IEnumerable<string>>> GetAllLocations()
+    {
+        try
+        {
+            var cityList = await _userService.GetAllUserLocations();
+            return Ok(cityList);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
+    
     // Update main User data
     [HttpPost("UpdateData")]
     public async Task<ActionResult<ApplicationUser>> UpdateUserData([FromBody] UpdateDataRequest request)
@@ -69,21 +84,18 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
-
-    // Add New Post to User object
-    [HttpPost("AddBookPost")]
-    public async Task<ActionResult<ApplicationUser>> AddBookPost([FromBody] AddBookPostRequest request)
+    
+    // Delete User by Id
+    [HttpDelete("Delete/{id}")]
+    public async Task<ActionResult<string>> DeleteUser(string id)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         try
         {
-            await _userService.AddBookPost(request.UserId, request.PostId);
+            var deletedUserEmail = await _userService.DeleteUser(id);
 
-            return Ok("Book post added successfully");
+            if (deletedUserEmail == null) return NotFound($"No user found with this id: {id}");
+
+            return Ok(deletedUserEmail);
         }
         catch (Exception ex)
         {

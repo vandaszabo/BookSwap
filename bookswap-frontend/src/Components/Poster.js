@@ -2,21 +2,12 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Typography } from "@mui/material";
 import PlaceIcon from '@mui/icons-material/Place';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Container, Box } from '@mui/material';
+import { Container} from '@mui/material';
 import { Avatar } from '@mui/material';
-import { IconButton } from '@mui/material';
 
 export default function Poster({ posterId }) {
 
-    const [viewPoster, setViewPoster] = useState(false);
     const [poster, setPoster] = useState({});
-
-    const handleViewPoster = () => {
-        setViewPoster((viewPoster) => !viewPoster);
-    };
 
     const fetchPosterData = async (id) => {
         try {
@@ -46,9 +37,7 @@ export default function Poster({ posterId }) {
     }, [posterId]);
 
     return (
-        <Container>
-            <Typography variant="body2" gutterBottom>Owner of this book:</Typography>
-            <IconButton onClick={handleViewPoster} sx={{ p: 0 }}>
+        <Container sx={{ display: 'flex', alignItems: 'center' }}>
                 <Avatar
                     alt={poster.userName}
                     src={poster && poster.profileImage
@@ -56,27 +45,13 @@ export default function Poster({ posterId }) {
                         : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
                     sx={{ width: 56, height: 56 }}
                 />
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="body2">
                     {poster.userName}
                 </Typography>
                 {poster.city &&
                     <>
-                        <PlaceIcon /> <Typography>{poster.city}</Typography>
+                        <PlaceIcon /> <Typography variant="body2">{poster.city}</Typography>
                     </>}
-            </IconButton>
-            {viewPoster &&
-                <Box>
-                    {poster.phoneNumber && (
-                        <>
-                            <PhoneIcon />
-                            {poster.phoneNumber}
-                        </>
-                    )}
-
-                    <EmailIcon /> {poster.email}
-                    {/* <LibraryBooksIcon /> {poster.bookPosts} */}
-                </Box>
-            }
         </Container>
 
     )

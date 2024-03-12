@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
+import { Alert } from '@mui/material';
 
 //*********-------main function for Upload Image file-------*********//
 export default function UploadCoverImage({ setCoverImage }) {
 
   const [selectedFile, setSelectedFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const handleFileChange = (event) => {
@@ -19,12 +21,12 @@ export default function UploadCoverImage({ setCoverImage }) {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile, selectedFile.name);
-      formData.append('imageCategory', 'CoverImage');
   
       // Set loading state to true before making the fetch request
       setLoading(true);
+      setError(null);
   
-      fetch('http://localhost:5029/api/File/Upload', {
+      fetch('http://localhost:5029/api/File/Upload?imageCategory=CoverImage', {
         method: 'POST',
         body: formData,
       })
@@ -43,6 +45,7 @@ export default function UploadCoverImage({ setCoverImage }) {
         })
         .catch((error) => {
           console.error('Error uploading file:', error);
+          setError("Accepted file formats: JPG, JPEG, PNG, GIF, BMP, TIF, TIFF, WEBP, SVG.");
         })
         .finally(() => {
           // Set loading state to false after the upload is complete (or in case of an error)
@@ -75,11 +78,12 @@ export default function UploadCoverImage({ setCoverImage }) {
           mt: 3,
           ml: 1,
           '&:hover': {
-            backgroundColor: (theme) => theme.palette.secondary.light,
+            backgroundColor: (theme) => theme.palette.secondary.main,
           },
         }}>
         Upload
       </Button>
+      {error && <Alert severity="error">{error}</Alert>}
 
     </div>
   );

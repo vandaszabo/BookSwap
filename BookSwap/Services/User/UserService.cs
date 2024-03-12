@@ -20,6 +20,11 @@ public class UserService : IUserService
         return await _userRepository.GetAll();
     }
 
+    public async Task<List<string?>> GetAllUserLocations()
+    {
+        return await _userRepository.GetAllLocations();
+    }
+
     public async Task<ApplicationUser?> GetUserById(string userId)
     {
         return await _userRepository.GetById(userId);
@@ -67,14 +72,5 @@ public class UserService : IUserService
         }
 
         return await _userRepository.Delete(user);
-    }
-
-    public async Task AddBookPost(string userId, Guid postId)
-    {
-        var bookPost = await _bookPostRepository.GetById(postId);
-        if (bookPost != null)
-        {
-            await _userRepository.AddBookPost(userId, bookPost);
-        }
     }
 }

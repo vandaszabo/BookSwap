@@ -20,37 +20,55 @@ import UploadCoverImage from '../Components/Forms/UploadCoverImage';
 const steps = ['Add information', 'Upload picture', 'Review'];
 
 //*********-------Steps for creating BookPost-------*********//
-function getStepContent(step, bookPostData, coverImage, setCoverImage) {
+function getStepContent(step, formProps) {
   switch (step) {
     case 0:
-      return <CreatePostForm />;
+      return <CreatePostForm formData={formProps.formData} setFormData={formProps.setFormData} />;
     case 1:
       return <>
+      {formProps.coverImage ? <img src={formProps.coverImage} width='30%' alt="Cover Image" /> :
         <h2>Please upload a cover image of your book</h2>
-        <UploadCoverImage setCoverImage={setCoverImage}/>
+      }
+        <UploadCoverImage setCoverImage={formProps.setCoverImage} />
       </>;
     case 2:
-      return <Review bookData={bookPostData} image={coverImage} />;
+      return <Review bookData={formProps.bookPostData} image={formProps.coverImage} />;
     default:
       throw new Error('Unknown step');
   }
 }
 
-//*********-------Main function for post creation-------*********//
-export default function CreatePost({setCreated}) {
 
+//*********-------Main function for post creation-------*********//
+export default function CreatePost({ setCreated }) {
+
+  const { authUser } = useAuth();
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const [bookPostData, setBookPostData] = useState({});
   const [error, setError] = useState("");
   const [coverImage, setCoverImage] = useState("");
-  const { authUser } = useAuth();
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    author: '',
+    description: '',
+    category: '',
+    pageCount: '',
+    language: '',
+  });
+
+  const formProps = {
+    formData,
+    setFormData,
+    bookPostData,
+    coverImage,
+    setCoverImage
+  };
 
   //*********-------Next or Back button handling-------*********//
   const handleNext = () => {
     if (activeStep === 0) {
-      const postData = CreatePostForm.getData();
-      setBookPostData(postData);
+      setBookPostData(formData);
     }
     if (activeStep === 1) {
       console.log("review: ", bookPostData, coverImage)
@@ -66,7 +84,7 @@ export default function CreatePost({setCreated}) {
     setActiveStep((activeStep) => activeStep - 1);
   };
 
-//*********-------API call for creating BookPost-------*********//
+  //*********-------API call for creating BookPost-------*********//
   async function handleCreatePost(data, image, userId) {
     try {
       const response = await fetch("http://localhost:5029/api/BookPost/Create", {
@@ -102,87 +120,87 @@ export default function CreatePost({setCreated}) {
   };
 
   return (
-      <React.Fragment>
-        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-            <Typography component="h1" variant="h4" align="center">
-              Create Post
-            </Typography>
-            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            {!error ? (
-              activeStep === steps.length ? (
-                <React.Fragment>
-                  <Typography variant="h5" gutterBottom>
-                    You created a new post.
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    View other posts to find your new book.
-                  </Typography>
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => navigate('/')}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
-                        },
-                      }}>
-                      Close
-                    </Button>
-                  </Box>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {getStepContent(activeStep, bookPostData, coverImage, setCoverImage)}
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    {activeStep !== 0 && (
-                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                        Back
-                      </Button>
-                    )}
-
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      disabled={activeStep === 1 && !coverImage ? true : false}
-                      sx={{
-                        mt: 3,
-                        ml: 1,
-                        '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
-                        },
-                      }}
-                    >
-                      {activeStep === steps.length - 1 ? 'Create' : 'Next'}
-                    </Button>
-                  </Box>
-                </React.Fragment>
-              )
-            ) : (
-              <>
-                <Typography variant='h6'>Creation failed.</Typography>
-                <Alert severity="error">{error}</Alert>
+    <React.Fragment>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <Typography component="h1" variant="h4" align="center">
+            Create Post
+          </Typography>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {!error ? (
+            activeStep === steps.length ? (
+              <React.Fragment>
+                <Typography variant="h5" gutterBottom>
+                  You created a new post.
+                </Typography>
+                <Typography variant="subtitle1">
+                  View other posts to find your new book.
+                </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button variant="contained" onClick={()=>window.location.reload()} sx={{
-                  mt: 3,
-                        '&:hover': {
-                          backgroundColor: (theme) => theme.palette.secondary.light,
-                        },
-                      }}>
-                 Try again
-                </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate('/')}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: (theme) => theme.palette.secondary.main,
+                      },
+                    }}>
+                    Close
+                  </Button>
                 </Box>
-              </>
-            )}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {getStepContent(activeStep, formProps)}
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                      Back
+                    </Button>
+                  )}
 
-          </Paper>
-        </Container>
-      </React.Fragment>
+                  <Button
+                    variant="contained"
+                    onClick={handleNext}
+                    disabled={activeStep === 1 && !coverImage ? true : false}
+                    sx={{
+                      mt: 3,
+                      ml: 1,
+                      '&:hover': {
+                        backgroundColor: (theme) => theme.palette.secondary.main,
+                      },
+                    }}
+                  >
+                    {activeStep === steps.length - 1 ? 'Create' : 'Next'}
+                  </Button>
+                </Box>
+              </React.Fragment>
+            )
+          ) : (
+            <>
+              <Typography variant='h6'>Creation failed.</Typography>
+              <Alert severity="error">{error}</Alert>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button variant="contained" onClick={() => window.location.reload()} sx={{
+                  mt: 3,
+                  '&:hover': {
+                    backgroundColor: (theme) => theme.palette.secondary.main,
+                  },
+                }}>
+                  Try again
+                </Button>
+              </Box>
+            </>
+          )}
+
+        </Paper>
+      </Container>
+    </React.Fragment>
   );
 }

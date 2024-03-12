@@ -60,4 +60,14 @@ public class BookService : IBookService
     {
         return await _bookPostRepository.GetAllFromUser(userId);
     }
+
+    public async Task<IEnumerable<BookPost?>?> GetPostsByLocation(string userId, string location)
+    {
+        return await _bookPostRepository.GetAllByLocation(userId, location);
+    }
+
+    public async Task<BookPost?> UpdatePost(BookPost bookPost)
+    {
+        return await _bookPostRepository.Update(bookPost);
+    }
 }

@@ -79,6 +79,44 @@ public class BookPostController : ControllerBase
         }
     }
 
+    // Update main User data
+    [HttpPost("Update")]
+    public async Task<ActionResult<ApplicationUser>> UpdateBookPost([FromBody] UpdatePostRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        // Retrieve the existing BookPost from the database
+        var bookPost = await _bookService.GetByPostId(request.PostId);
+
+        if (bookPost == null)
+        {
+            return NotFound();
+        }
+
+        // Merge the data from the DTO with the existing data
+        bookPost.Title = request.Title;
+        bookPost.Author = request.Author;
+        bookPost.Category = request.Category;
+        bookPost.Description = request.Description;
+        bookPost.Language = request.Language;
+        bookPost.PageCount = request.PageCount;
+        bookPost.CoverImage = request.CoverImage;
+        
+
+        // Update the BookPost in the database
+        var updatedPost = await _bookService.UpdatePost(bookPost);
+
+        if (updatedPost != null)
+        {
+            return Ok(updatedPost);
+        }
+
+        return NotFound("Post not found");
+    }
+    
     [HttpDelete("Delete/{id}")]
     public async Task<ActionResult<BookPost?>> DeletePost(Guid id)
     {
@@ -140,6 +178,22 @@ public class BookPostController : ControllerBase
         catch (Exception ex)
         {
             Console.WriteLine($"Error in GetUserPosts: {ex.Message}");
+
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
+    [HttpGet("User/{userId}/Location/{location}")]
+    public async Task<ActionResult<IEnumerable<BookPost>>> GetPostsByUserLocation(string userId, string location)
+    {
+        try
+        {
+            var books = await _bookService.GetPostsByLocation(userId, location);
+            return Ok(books);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAll: {ex.Message}");
 
             return StatusCode(500, "Internal Server Error");
         }

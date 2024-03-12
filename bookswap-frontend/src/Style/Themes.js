@@ -3,12 +3,17 @@ import { createTheme } from '@mui/material/styles';
 export const lightTheme = createTheme({
     palette: {
         primary: {
-            main: '#5bb450',
+            main: '#006D5B',
             light: '#FFFFFF',
         },
         secondary: {
-            main: '#003B4A',
-            light: '#acd8a7',
+            //main: '#9FCC4B',
+            main: '#00A388',
+            light: '#bfbfbf',
+            medium: '#f0cb84',
+            beige: '#E5DFD3',
+            grey: '#f6f6f6',
+            brown: "#7d593f"
         },
         background: {
             main: '#F2CCB6',
@@ -46,17 +51,17 @@ export const darkTheme = createTheme({
             },
         },
     },
-        palette: {
-            primary: {
-                main: '#5A5A5A',  //grey
-                light: '#000000',  //dark black
-            },
-            secondary: {
-                main: '#D3D3D3',  //light grey
-                light: '#4682B4',  //dark blue
-            },
-            background: {
-                main: '#121212',  //black
-            },
+    palette: {
+        primary: {
+            main: '#5A5A5A',  //grey
+            light: '#000000',  //dark black
         },
-    });
+        secondary: {
+            main: '#D3D3D3',  //light grey
+            light: '#4682B4',  //dark blue
+        },
+        background: {
+            main: '#121212',  //black
+        },
+    },
+});

@@ -1,10 +1,7 @@
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
 using System.Text;
 using BookSwap.Data;
 using BookSwap.Models;
 using BookSwap.Repositories;
-using BookSwap.Services;
 using BookSwap.Services.Authentication;
 using BookSwap.Services.Book;
 using BookSwap.Services.File;
@@ -24,7 +21,6 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         
         var connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_CONNECTIONSTRING");
-        
 
         AddServices();
         ConfigureSwagger();
@@ -80,6 +76,8 @@ public class Program
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            
+            builder.Services.AddLogging();
 
         }
 
@@ -230,6 +228,7 @@ public class Program
                 }
             }
         }
+        
         
 
     }

@@ -17,7 +17,15 @@ public class BookPostRepository : IBookPostRepository
     {
         return await _dbContext.BookPosts.ToListAsync();
     }
-
+    
+    public async Task<IEnumerable<BookPost?>> GetAllByLocation(string userId, string location)
+    {
+        return await _dbContext.BookPosts.Where(bp =>
+            bp.UserId != userId && 
+            bp.User.City.ToLower() == location.ToLower())
+            .ToListAsync();
+    }
+    
     public async Task<BookPost?> GetById(Guid postId)
     {
         return await _dbContext.BookPosts.FirstOrDefaultAsync(bp => bp.PostId == postId);
@@ -37,10 +45,12 @@ public class BookPostRepository : IBookPostRepository
         }
     }
 
-    public async Task Update(BookPost bookPost)
+    public async Task<BookPost?> Update(BookPost bookPost)
     {
         _dbContext.BookPosts.Update(bookPost);
         await _dbContext.SaveChangesAsync();
+        
+        return await GetById(bookPost.PostId);
     }
 
     public async Task<BookPost?> Delete(Guid postId)

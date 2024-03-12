@@ -23,7 +23,11 @@ function SearchInput({ books, onSearch }) {
                 <Autocomplete
                 sx={{
                     '& .MuiOutlinedInput-root': {
-                        padding: '0'
+                        padding: '0',
+                        borderRadius: '12px',
+                        '&:hover': {
+                            borderRadius: '12px',
+                          },
                     }
                 }}
                     {...defaultProps}
@@ -32,11 +36,11 @@ function SearchInput({ books, onSearch }) {
                     value={null}
                     onChange={handleChange}
                     renderInput={(params) => (
-                        <TextField {...params} label="Book Title" color='primary'
+                        <TextField {...params} label="Book Title" sx={{backgroundColor: theme => theme.palette.primary.light, borderRadius: '12px'}}
                         InputLabelProps={{
                             style: {
                                 color: '#333333',
-                                paddingLeft: '2px',
+                                paddingLeft: '2px', 
                                 fontSize: 'small'
                             },
                         }}

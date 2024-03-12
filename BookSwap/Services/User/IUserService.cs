@@ -6,8 +6,8 @@ namespace BookSwap.Services.User;
 public interface IUserService
 {
     Task<IEnumerable<ApplicationUser>> GetAllUser();
+    Task<List<string?>> GetAllUserLocations();
     Task<ApplicationUser?> GetUserById(string userId);
     Task<ApplicationUser?> UpdateUserData(UpdateDataRequest request);
-    Task AddBookPost(string userId, Guid postId);
     Task<string?> DeleteUser(string userId);
 }
