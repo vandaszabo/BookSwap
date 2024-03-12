@@ -26,7 +26,9 @@ function getStepContent(step, formProps) {
       return <CreatePostForm formData={formProps.formData} setFormData={formProps.setFormData} />;
     case 1:
       return <>
+      {formProps.coverImage ? <img src={formProps.coverImage} width='30%' alt="Cover Image" /> :
         <h2>Please upload a cover image of your book</h2>
+      }
         <UploadCoverImage setCoverImage={formProps.setCoverImage} />
       </>;
     case 2:

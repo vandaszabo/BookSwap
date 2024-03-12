@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
-import ListItem from '@mui/material/ListItem';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
 import { Dialog, DialogContent, Typography } from '@mui/material';
-import ListItemText from '@mui/material/ListItemText';
-import NavigateBack from '../Components/NavigateBack';
+import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
 
 
@@ -45,10 +41,15 @@ export default function SelectedPost({ book, backPath }) {
         <React.Fragment>
             {localBook &&
                 <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8}}>
+
+                    {/* Back button */}
                     <NavigateBack path={backPath} />
+
+                    {/* Post owner */}
                     <Card sx={{backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end'}}>
                         <Poster posterId={localBook.userId} />
                     </Card>
+                    
                     <Card sx={{backgroundColor: (theme) => theme.palette.secondary.grey}}>
                         <CardContent>
                             <Grid container spacing={2}>
@@ -90,6 +91,10 @@ export default function SelectedPost({ book, backPath }) {
                                            Category/Genre: {localBook.category}
                                         </Typography>
 
+                                        <Typography sx={{fontSize: '15px', mt: 1 }} >
+                                           Language: {localBook.language}
+                                        </Typography>
+
                                         <Typography sx={{fontSize: '15px'}} >
                                            Number of pages: {localBook.pageCount}
                                         </Typography>
@@ -98,9 +103,7 @@ export default function SelectedPost({ book, backPath }) {
                                         </Typography>
                                     
                                 </Grid>
-                               
                             </Grid>
-
                         </CardContent>
                     </Card>
                 </Container>

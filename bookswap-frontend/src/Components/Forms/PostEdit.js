@@ -7,6 +7,7 @@ import { CardContent } from '@mui/material';
 import { Alert } from '@mui/material';
 import UploadCoverImage from './UploadCoverImage';
 import { useNavigate } from 'react-router-dom';
+import NavigateBack from '../../Utils/NavigateBack';
 
 export default function PostEdit({ book }) {
 
@@ -65,6 +66,7 @@ export default function PostEdit({ book }) {
 
     return (
         <Container component="main" maxWidth="md">
+            <NavigateBack path={'/profile'} />
             <Card component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <CardContent>
                     <TextField

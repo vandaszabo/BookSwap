@@ -40,7 +40,7 @@ function SearchInput({ books, onSearch }) {
                         InputLabelProps={{
                             style: {
                                 color: '#333333',
-                                paddingLeft: '2px',
+                                paddingLeft: '2px', 
                                 fontSize: 'small'
                             },
                         }}

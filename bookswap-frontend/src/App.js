@@ -1,11 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Container } from '@mui/material';
-import Switch from '@mui/material/Switch';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import PostEdit from './Components/Forms/PostEdit';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
@@ -16,7 +13,7 @@ import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
 import ResponsiveNavbar from './Components/Navbar/ResponsiveNavbar';
 import { useAuth } from './Components/Authentication/AuthContext';
-import { lightTheme, darkTheme } from './Style/Themes';
+import { lightTheme } from './Style/Themes';
 
 function App() {
   const { authUser } = useAuth();
@@ -27,6 +24,8 @@ function App() {
   const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
 
+
+  //*********-------Filter out your own posts-------*********//
   useEffect(() => {
     if (authUser) {
       const updatedOthersList = bookList.filter(book => book.userId !== authUser.id);
@@ -34,15 +33,13 @@ function App() {
     }
   }, [authUser, bookList]);
 
-  const selectedTheme = darkMode ? darkTheme : lightTheme;
+
+    //*********-------Set theme-------*********//
+  const selectedTheme = lightTheme;
 
   const containerStyle = {
     backgroundColor: selectedTheme.palette.primary.light,
     minHeight: '100vh',
-  };
-
-  const toggleDarkMode = () => {
-    setDarkMode((prevDarkMode) => !prevDarkMode);
   };
 
   return (
@@ -54,13 +51,6 @@ function App() {
           setSelectedPost={setSelectedPost}
           setBookList={setBookList}
           created={created} />
-
-        {/* <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <FormControlLabel
-            control={<Switch checked={darkMode} onChange={toggleDarkMode} size='small' />}
-            label="Dark Mode"
-          />
-        </Container> */}
 
         <Routes>
           <Route path="/" element={<Home />} />

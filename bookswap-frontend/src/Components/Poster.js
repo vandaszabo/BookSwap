@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Typography } from "@mui/material";
 import PlaceIcon from '@mui/icons-material/Place';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Container, Box } from '@mui/material';
+import { Container} from '@mui/material';
 import { Avatar } from '@mui/material';
 
 export default function Poster({ posterId }) {

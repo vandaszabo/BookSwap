@@ -21,6 +21,7 @@ import Fab from '@mui/material/Fab';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
+import { fetchUserPosts } from '../Utils/FetchFunctions';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -28,26 +29,28 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
-        const fetchUserPosts = async () => {
-            try {
-                const response = await fetch(`http://localhost:5029/api/BookPost/User/${authUser.id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
 
-                setUserPosts(data || []);
-                setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: data || [] }));
+        const fetchPosts = async () => {
+            setLoading(true);
+            try {
+                const bookList = await fetchUserPosts(authUser.id);
+                if(bookList != null){
+                    setUserPosts(bookList || []);
+                    setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: bookList || [] }));
+                }
             } catch (error) {
-                console.error(`Error in fetchUserPosts: ${error.message}`);
+                console.error(`Error in fetchPosts: ${error.message}`);
+            }finally{
+                setLoading(false);
             }
         };
 
-        fetchUserPosts();
+        fetchPosts();
     }, [authUser.id, setAuthUser]);
 
     const handleEditPicture = () => {
@@ -65,31 +68,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
         setEditingPost(post)
         navigate('/edit-post');
     };
-
-    const handleDeletePost = async (postId) => {
-        const userConfirmed = window.confirm("Would you like to delete this post?");
-    
-        if (userConfirmed) {
-            try {
-                const response = await fetch(`http://localhost:5029/api/BookPost/Delete/${postId}`, {
-                    method: 'DELETE',
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-    
-                const data = await response.json();
-                console.log("Deleted post:", data);
-    
-            } catch (error) {
-                console.error(`Error in handleDeletePost: ${error.message}`);
-            }
-        } else {
-            console.log("Post deletion cancelled by the user.");
-        }
-    };
-    
     
 
     return (
