@@ -20,6 +20,12 @@ public class LikeRepository : ILikeRepository
         return likes.Select(l => l.LikerId).ToList();
     }
     
+    public async Task<IEnumerable<Guid>> GetAllByUserId(string userId)
+    {
+        var likes = await _dbContext.Likes.Where(l => l.LikerId == userId).ToListAsync();
+        return likes.Select(l => l.PostId).ToList();
+    }
+    
     public async Task<Like?> Create(Like like)
     {
         try

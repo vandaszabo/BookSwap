@@ -1,6 +1,7 @@
 using BookSwap.Contracts;
 using BookSwap.Repositories;
 
+
 namespace BookSwap.Services.Like;
 
 public class LikeService : ILikeService
@@ -41,4 +42,18 @@ public class LikeService : ILikeService
     {
         return await _likeRepository.GetAllByPostId(postId);
     }
+    
+    public async Task<IEnumerable<BookPostDto?>> GetPosts(string userId)
+    {
+        var postIds = await _likeRepository.GetAllByUserId(userId);
+    
+        var posts = new List<BookPostDto?>();
+        foreach (var id in postIds)
+        {
+            var post = await _bookPostRepository.GetDtoById(id);
+            posts.Add(post);
+        }
+        return posts;
+    }
+
 }

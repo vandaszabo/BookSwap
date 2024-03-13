@@ -57,4 +57,19 @@ public class LikeController : ControllerBase
         }
     }
     
+    // Find Liked Posts by a specific User
+    [HttpGet("Posts/{userId}")]
+    public async Task<ActionResult<IEnumerable<BookPostDto?>>> GetLikedPosts(string userId)
+    {
+        try
+        {
+            var bookPosts = await _likeService.GetPosts(userId);
+
+            return Ok(bookPosts);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
 }
