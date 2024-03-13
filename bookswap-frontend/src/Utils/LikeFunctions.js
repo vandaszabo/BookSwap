@@ -52,5 +52,31 @@ async function createLike(userId, postId){
     }
 }
 
+//*********-------API call for getting liked posts-------*********//
+async function fetchFavorites(userId) {
 
-export { fetchPostLikers, createLike };
+    try {
+        const response = await fetch(`${backendUrl}Like/Posts/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data !== null) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error(`Error in fetchFavorites: ${error.message}`);
+    }
+}
+
+
+
+export { fetchPostLikers, createLike, fetchFavorites };

@@ -22,6 +22,8 @@ import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
 import { fetchUserPosts } from '../Utils/FetchFunctions';
+import { fetchFavorites } from '../Utils/LikeFunctions';
+import Album from '../Components/Books/Album';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -29,6 +31,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const [favorites, setFavorites] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -52,6 +55,26 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
 
         fetchPosts();
     }, [authUser.id, setAuthUser]);
+
+        //*********-------Find all likes by user-------*********//
+        useEffect(() => {
+
+            const fetchLikes = async () => {
+                setLoading(true);
+                try {
+                    const bookList = await fetchFavorites(authUser.id);
+                    if(bookList != null){
+                        setFavorites(bookList);
+                    }
+                } catch (error) {
+                    console.error(`Error in fetchPosts: ${error.message}`);
+                }finally{
+                    setLoading(false);
+                }
+            };
+    
+            fetchLikes();
+        }, [authUser.id]);
 
     const handleEditPicture = () => {
         setEditingPhoto((prevEditing) => !prevEditing);
@@ -124,9 +147,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                     <DetailsEdit setEditingDetails={setEditingDetails} />
                                 )}
                             </Grid>
-
                         </Grid>
-
 
                         {/* Posts */}
                         <Container sx={{ py: 4 }} maxWidth="lg">
@@ -173,6 +194,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                 ))}
                             </Grid>
                         </Container>
+                        {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost}/>}
                     </Container>
                 </>
             }
