@@ -9,14 +9,42 @@ import { Dialog, DialogContent, Typography } from '@mui/material';
 import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
 import { useAuth } from '../Components/Authentication/AuthContext';
+import { createLike, fetchPostLikers } from '../Utils/LikeFunctions';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Box from '@mui/material/Box';
 
 
 //*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book, backPath }) {
     const [openModal, setOpenModal] = useState(false);
     const [localBook, setLocalBook] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const {authUser} = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeNumber, setLikeNumber] = useState(null);
+    const { authUser } = useAuth();
+
+
+    //*********-------Find all Likers for book -------*********//
+    useEffect(() => {
+
+        const fetchLikerIds = async () => {
+            try {
+                const userIds = await fetchPostLikers(book.postId);
+                if (userIds != null) {
+                    setLikeNumber(userIds.length);
+                    const liked = userIds.includes(authUser.id);
+                    setIsLiked(liked);
+                }
+            } catch (error) {
+                console.error(`Error in fetchPosts: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLikerIds();
+    }, [authUser.id, isLiked]);
+
 
     useEffect(() => {
         if (book.title) {
@@ -40,47 +68,66 @@ export default function SelectedPost({ book, backPath }) {
         setOpenModal(false);
     };
 
-    const handleLike = () => {
-        setLoading(true);
-        console.log(book);
-        
-        fetch("http://localhost:5029/api/Like/Add", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId: authUser.id, postId: book.postId}),
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                
-                console.log(responseData);
-            })
-            .catch((error) => {
-                console.error('Error saving like:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const handleRemoveLike = () => {
+        console.log("Remove like");
+    };
+
+    const handleLike = async () => {
+
+        try {
+            const result = await createLike(authUser.id, book.postId);
+            if (result) {
+                setIsLiked(true);
+            }
+        } catch (error) {
+            console.error(`Error in handleLike: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <React.Fragment>
             {localBook &&
-                <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8}}>
+                <Container component="main" maxWidth="lg" sx={{ mb: 4, mt: 8 }}>
 
                     {/* Back button */}
                     <NavigateBack path={backPath} />
 
                     {/* Post owner */}
-                    <Card sx={{backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end'}}>
+                    <Card sx={{ backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <Poster posterId={localBook.userId} />
+                        {!loading &&
+                            <Container sx={{display: 'flex', justifyContent: 'space-between'}}>
+                            <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
+                                {book.userId !== authUser.id && !isLiked &&
+                                    <Button
+                                        size="small"
+                                        onClick={handleLike}
+                                        variant='contained'>Like
+                                    </Button>
+                                }
+                                {isLiked &&
+                                    <Button
+                                        size="small"
+                                        onClick={handleRemoveLike}
+                                        variant='contained'>
+                                        Remove Like
+                                    </Button>
+                                }
+                                </Box>
+                                <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
+                                    {likeNumber}
+                                    <FavoriteIcon />
+                                </Box>
+                            </Container>
+                        }
                     </Card>
-                    
-                    <Card sx={{backgroundColor: (theme) => theme.palette.secondary.grey}}>
+
+                    <Card sx={{ backgroundColor: (theme) => theme.palette.secondary.grey }}>
                         <CardContent>
                             <Grid container spacing={2}>
-                            <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={4}>
                                     <Button onClick={handleViewImage}>
                                         <img
                                             src={localBook.coverImage}
@@ -105,34 +152,34 @@ export default function SelectedPost({ book, backPath }) {
                                     </Dialog>
                                 </Grid>
                                 <Grid item xs={12} md={8}>
-                                   
-                                        <Typography sx={{fontSize: '25px', mt: 1}} >
-                                            {localBook.title}
-                                        </Typography>
 
-                                        <Typography sx={{fontSize: '20px', mt: 1}} >
-                                            {localBook.author}
-                                        </Typography>
+                                    <Typography sx={{ fontSize: '25px', mt: 1 }} >
+                                        {localBook.title}
+                                    </Typography>
 
-                                        <Typography sx={{fontSize: '15px', mt: 1 }} >
-                                           Category/Genre: {localBook.category}
-                                        </Typography>
+                                    <Typography sx={{ fontSize: '20px', mt: 1 }} >
+                                        {localBook.author}
+                                    </Typography>
 
-                                        <Typography sx={{fontSize: '15px', mt: 1 }} >
-                                           Language: {localBook.language}
-                                        </Typography>
+                                    <Typography sx={{ fontSize: '15px', mt: 1 }} >
+                                        Category/Genre: {localBook.category}
+                                    </Typography>
 
-                                        <Typography sx={{fontSize: '15px'}} >
-                                           Number of pages: {localBook.pageCount}
-                                        </Typography>
-                                        <Typography sx={{fontSize: '15px', mt: 2,}} >
-                                            {localBook.description}
-                                        </Typography>
-                                    
+                                    <Typography sx={{ fontSize: '15px', mt: 1 }} >
+                                        Language: {localBook.language}
+                                    </Typography>
+
+                                    <Typography sx={{ fontSize: '15px' }} >
+                                        Number of pages: {localBook.pageCount}
+                                    </Typography>
+                                    <Typography sx={{ fontSize: '15px', mt: 2, }} >
+                                        {localBook.description}
+                                    </Typography>
+
                                 </Grid>
                             </Grid>
                         </CardContent>
-                        <Button onClick={handleLike} variant='contained'>Like</Button>
+
                     </Card>
                 </Container>
             }

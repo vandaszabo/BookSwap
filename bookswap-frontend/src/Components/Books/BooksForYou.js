@@ -33,9 +33,7 @@ export default function BooksForYou({onView}){
 
 return(
     <React.Fragment>
-         {!bookList && <Typography>There are no Books in your City right now.</Typography>}
         {bookList && <Album title='Books in Your City' books={bookList} onView={onView} />}
-
     </React.Fragment>
 )
 }

@@ -23,6 +23,7 @@ public class LikeController : ControllerBase
     [HttpPost("Add")]
     public async Task<IActionResult> AddLike([FromBody] LikeRequest request)
     {
+        _logger.LogInformation($"Recieved data: , {request.UserId}, {request.PostId}");
         {
             if (!ModelState.IsValid)
             {
@@ -30,7 +31,7 @@ public class LikeController : ControllerBase
             }
 
             var createdLike = await _likeService.CreateLike(request);
-
+            _logger.LogInformation($"createdLike: , {createdLike}");
             if (createdLike == null)
             {
                 return BadRequest("Error creating like.");
@@ -42,13 +43,11 @@ public class LikeController : ControllerBase
     
     // Find Likers for a specific BookPost
     [HttpGet("{postId:guid}")]
-    public async Task<ActionResult<IEnumerable<string>>> GetLikers(Guid postId)
+    public async Task<ActionResult<IEnumerable<string?>>> GetLikers(Guid postId)
     {
         try
         {
             var userIds = await _likeService.GetLikes(postId);
-
-            if (userIds.IsNullOrEmpty()) return NotFound($"No likers found for this post: {postId}");
 
             return Ok(userIds);
         }
