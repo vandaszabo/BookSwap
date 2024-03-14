@@ -5,24 +5,26 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
-import { Dialog, DialogContent, Typography } from '@mui/material';
+import { Dialog, DialogContent } from '@mui/material';
 import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import { createLike, fetchPostLikers, removeLike } from '../Utils/LikeFunctions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
+import BookInfo from '../Components/Forms/BookInfo';
+import ViewImage from '../Components/ViewImage';
 
 
 //*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book, backPath }) {
-    const [openModal, setOpenModal] = useState(false);
+
     const [localBook, setLocalBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
+    const [viewImage, setViewImage] = useState(false);
     const [likeNumber, setLikeNumber] = useState(null);
     const { authUser } = useAuth();
-
 
     //*********-------Find all Likers for book -------*********//
     useEffect(() => {
@@ -45,7 +47,7 @@ export default function SelectedPost({ book, backPath }) {
         fetchLikerIds();
     }, [authUser.id, isLiked]);
 
-
+    //*********-------Save book for avoiding disappearing at page refresh-------*********//
     useEffect(() => {
         if (book.title) {
             localStorage.setItem('book', JSON.stringify(book));
@@ -59,15 +61,23 @@ export default function SelectedPost({ book, backPath }) {
             setLocalBook(JSON.parse(storedBook));
         }
     }, []);
-
-    const handleViewImage = () => {
-        setOpenModal(true);
+    
+    //*********-------Handle like-------*********//
+    const handleLike = async () => {
+        
+        try {
+            const result = await createLike(authUser.id, book.postId);
+            if (result) {
+                setIsLiked(true);
+            }
+        } catch (error) {
+            console.error(`Error in handleLike: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
-
-    const handleCloseModal = () => {
-        setOpenModal(false);
-    };
-
+    
+    //*********-------Handle removing like-------*********//
     const handleRemoveLike = async () => {
         try {
             const result = await removeLike(authUser.id, book.postId);
@@ -76,20 +86,6 @@ export default function SelectedPost({ book, backPath }) {
             }
         } catch (error) {
             console.error(`Error in handleRemoveLike: ${error.message}`);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleLike = async () => {
-
-        try {
-            const result = await createLike(authUser.id, book.postId);
-            if (result) {
-                setIsLiked(true);
-            }
-        } catch (error) {
-            console.error(`Error in handleLike: ${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -137,7 +133,7 @@ export default function SelectedPost({ book, backPath }) {
                         <CardContent>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={4}>
-                                    <Button onClick={handleViewImage}>
+                                    <Button onClick={() => setViewImage(true) }>
                                         <img
                                             src={localBook.coverImage}
                                             alt="cover"
@@ -147,45 +143,10 @@ export default function SelectedPost({ book, backPath }) {
                                             }}
                                         />
                                     </Button>
-                                    <Dialog open={openModal} onClose={handleCloseModal}>
-                                        <DialogContent>
-                                            <img
-                                                src={localBook.coverImage}
-                                                alt="full-size-cover"
-                                                style={{
-                                                    width: '100%',
-                                                    height: 'auto',
-                                                }}
-                                            />
-                                        </DialogContent>
-                                    </Dialog>
+                                    {viewImage && <ViewImage image={localBook.coverImage} setViewImage={setViewImage} />}
                                 </Grid>
-                                <Grid item xs={12} md={8}>
-
-                                    <Typography sx={{ fontSize: '25px', mt: 1 }} >
-                                        {localBook.title}
-                                    </Typography>
-
-                                    <Typography sx={{ fontSize: '20px', mt: 1 }} >
-                                        {localBook.author}
-                                    </Typography>
-
-                                    <Typography sx={{ fontSize: '15px', mt: 1 }} >
-                                        Category/Genre: {localBook.category}
-                                    </Typography>
-
-                                    <Typography sx={{ fontSize: '15px', mt: 1 }} >
-                                        Language: {localBook.language}
-                                    </Typography>
-
-                                    <Typography sx={{ fontSize: '15px' }} >
-                                        Number of pages: {localBook.pageCount}
-                                    </Typography>
-                                    <Typography sx={{ fontSize: '15px', mt: 2, }} >
-                                        {localBook.description}
-                                    </Typography>
-
-                                </Grid>
+                                {/* Display book info */}
+                               <BookInfo book={localBook} />
                             </Grid>
                         </CardContent>
 
