@@ -39,4 +39,23 @@ public class LikeRepository : ILikeRepository
             return null;
         }
     }
+    
+    public async Task<Like?> Remove(Like like)
+    {
+        try
+        {
+            _dbContext.Likes.Remove(like);
+            await _dbContext.SaveChangesAsync();
+            return like;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    
+    public async Task<Like?> GetByIds(string userId, Guid postId)
+    {
+        return await _dbContext.Likes.FirstOrDefaultAsync(l => l.PostId == postId && l.LikerId == userId);
+    }
 }

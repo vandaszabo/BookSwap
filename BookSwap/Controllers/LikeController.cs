@@ -72,4 +72,26 @@ public class LikeController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
+    
+    
+    // Delete Like
+    [HttpDelete("Delete")]
+    public async Task<ActionResult<Like?>> RemoveLike([FromBody] LikeRequest request)
+    {
+        try
+        {
+            var like = await _likeService.Delete(request);
+            
+            if (like == null)
+            {
+                return NotFound("Couldn't find Like to delete");
+            }
+
+            return Ok(like);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
 }

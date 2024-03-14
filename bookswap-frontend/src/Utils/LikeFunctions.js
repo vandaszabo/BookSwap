@@ -52,6 +52,33 @@ async function createLike(userId, postId){
     }
 }
 
+//*********-------API call for Removing like-------*********//
+async function removeLike(userId, postId){
+
+    try {
+        const response = await fetch(`${backendUrl}Like/Delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, postId}),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data !== null) {
+            console.log("Deleted Like data ", data)
+            return data;
+        }
+
+    } catch (error) {
+        console.error(`Error in CreateLike: ${error.message}`);
+    }
+}
+
 //*********-------API call for getting liked posts-------*********//
 async function fetchFavorites(userId) {
 
@@ -79,4 +106,4 @@ async function fetchFavorites(userId) {
 
 
 
-export { fetchPostLikers, createLike, fetchFavorites };
+export { fetchPostLikers, createLike, fetchFavorites, removeLike };

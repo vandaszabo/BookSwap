@@ -9,7 +9,7 @@ import { Dialog, DialogContent, Typography } from '@mui/material';
 import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
 import { useAuth } from '../Components/Authentication/AuthContext';
-import { createLike, fetchPostLikers } from '../Utils/LikeFunctions';
+import { createLike, fetchPostLikers, removeLike } from '../Utils/LikeFunctions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
 
@@ -68,8 +68,17 @@ export default function SelectedPost({ book, backPath }) {
         setOpenModal(false);
     };
 
-    const handleRemoveLike = () => {
-        console.log("Remove like");
+    const handleRemoveLike = async () => {
+        try {
+            const result = await removeLike(authUser.id, book.postId);
+            if (result) {
+                setIsLiked(false);
+            }
+        } catch (error) {
+            console.error(`Error in handleRemoveLike: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleLike = async () => {

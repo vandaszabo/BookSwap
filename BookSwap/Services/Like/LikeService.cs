@@ -56,4 +56,14 @@ public class LikeService : ILikeService
         return posts;
     }
 
+    public async Task<Models.Like?> Delete(LikeRequest request)
+    {
+        var like = await _likeRepository.GetByIds(request.UserId, request.PostId);
+        if (like == null)
+        {
+            return null;
+        }
+        return await _likeRepository.Remove(like);
+    }
+
 }
