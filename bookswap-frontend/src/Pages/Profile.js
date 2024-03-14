@@ -17,6 +17,8 @@ import CardContent from '@mui/material/CardContent';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import Fab from '@mui/material/Fab';
+import Edit from '@mui/icons-material/Edit';
+import { Delete } from '@mui/icons-material';
 
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
@@ -187,9 +189,11 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
                                             {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
-                                            <CardMedia
+                                            <CardMedia 
+                                                onClick={() => handleViewPost(post)}
                                                 component="div"
                                                 sx={{
+                                                    cursor: 'pointer', 
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -207,9 +211,8 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button onClick={() => handleViewPost(post)} size="small">View</Button>
-                                                <Button onClick={() => handleEditPost(post)} size="small">Edit</Button>
-                                                <Button onClick={() => handleDeletePost(post.postId)} size="small">Delete</Button>
+                                                <Button onClick={() => handleEditPost(post)} size="small"><Edit/></Button>
+                                                <Button onClick={() => handleDeletePost(post.postId)} size="small"><Delete/></Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>
