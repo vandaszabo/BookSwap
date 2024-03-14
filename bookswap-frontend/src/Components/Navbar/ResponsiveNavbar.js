@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mui/material';
 import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip, Container, Box } from '@mui/material';
 import { useAuth } from '../Authentication/AuthContext';
 import SearchInput from './SearchInput';
-import { fetchBookListData } from '../../Utils/FetchFunctions';
+import { fetchBookListData } from '../../Utils/BookFunctions';
 
 //*********-------Main function for Navbar-------*********//
 function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {

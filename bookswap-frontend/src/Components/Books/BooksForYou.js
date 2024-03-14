@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../Authentication/AuthContext';
-import { fetchPostsByLocation } from '../../Utils/FetchFunctions';
+import { fetchPostsByLocation } from '../../Utils/BookFunctions';
 import Album from './Album';
-import { Typography } from '@mui/material';
 
 export default function BooksForYou({onView}){
 

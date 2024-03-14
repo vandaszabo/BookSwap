@@ -21,7 +21,7 @@ import Fab from '@mui/material/Fab';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
-import { fetchUserPosts } from '../Utils/FetchFunctions';
+import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
 import { fetchFavorites } from '../Utils/LikeFunctions';
 import Album from '../Components/Books/Album';
 
@@ -31,6 +31,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const [deleted, setDeleted] = useState(false);
     const [favorites, setFavorites] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -42,39 +43,39 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
             setLoading(true);
             try {
                 const bookList = await fetchUserPosts(authUser.id);
-                if(bookList != null){
+                if (bookList != null) {
                     setUserPosts(bookList || []);
                     setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: bookList || [] }));
                 }
             } catch (error) {
                 console.error(`Error in fetchPosts: ${error.message}`);
-            }finally{
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchPosts();
-    }, [authUser.id, setAuthUser]);
+    }, [authUser.id, setAuthUser, deleted]);
 
-        //*********-------Find all likes by user-------*********//
-        useEffect(() => {
+    //*********-------Find all likes by user-------*********//
+    useEffect(() => {
 
-            const fetchLikes = async () => {
-                setLoading(true);
-                try {
-                    const bookList = await fetchFavorites(authUser.id);
-                    if(bookList != null){
-                        setFavorites(bookList);
-                    }
-                } catch (error) {
-                    console.error(`Error in fetchPosts: ${error.message}`);
-                }finally{
-                    setLoading(false);
+        const fetchLikes = async () => {
+            setLoading(true);
+            try {
+                const bookList = await fetchFavorites(authUser.id);
+                if (bookList != null) {
+                    setFavorites(bookList);
                 }
-            };
-    
-            fetchLikes();
-        }, [authUser.id]);
+            } catch (error) {
+                console.error(`Error in fetchPosts: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLikes();
+    }, [authUser.id]);
 
     const handleEditPicture = () => {
         setEditingPhoto((prevEditing) => !prevEditing);
@@ -91,7 +92,27 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
         setEditingPost(post)
         navigate('/edit-post');
     };
+
+    const handleDeletePost = async (id) => {
+        const shouldDelete = window.confirm("Are you sure you want to delete this post?");
+        if (!shouldDelete) {
+            return; // User canceled the deletion
+        }
     
+        setLoading(true);
+        try {
+            const deleted = await deletePost(id);
+            if (deleted != null) {
+                setDeleted(true);
+            }
+        } catch (error) {
+            console.error(`Error in handleDeletePost: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+
 
     return (
         <React.Fragment>
@@ -161,7 +182,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                 </>}
                             <Grid container spacing={4}>
                                 {userPosts && userPosts.map((post, index) => (
-                                    <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
+                                    <Grid item key={`${post.postId}_${index}`} xs={12} sm={6} md={4} lg={3}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
@@ -188,13 +209,14 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                             <CardActions>
                                                 <Button onClick={() => handleViewPost(post)} size="small">View</Button>
                                                 <Button onClick={() => handleEditPost(post)} size="small">Edit</Button>
+                                                <Button onClick={() => handleDeletePost(post.postId)} size="small">Delete</Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>
                                 ))}
                             </Grid>
                         </Container>
-                        {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost}/>}
+                        {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
                     </Container>
                 </>
             }

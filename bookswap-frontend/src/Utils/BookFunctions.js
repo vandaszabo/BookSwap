@@ -1,4 +1,5 @@
 import backendUrl from "./BackendUrl";
+
 //*********-------API call for getting all existing Posts-------*********//
 async function fetchBookListData() {
     try {
@@ -23,6 +24,30 @@ async function fetchBookListData() {
     }
 };
 
+//*********-------API call for deleting Post-------*********//
+async function deletePost(id) {
+    try {
+        const response = await fetch(`${backendUrl}BookPost/Delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data !== null) {
+            return data;
+        }
+    } catch (error) {
+        console.error(`Error in deletePost: ${error.message}`);
+    }
+};
+
 //*********-------API call for getting Posts by User location-------*********//
 async function fetchPostsByLocation(userId, location) {
 
@@ -44,29 +69,7 @@ async function fetchPostsByLocation(userId, location) {
 
 };
 
-async function fetchAllLocations() {
-
-    try {
-        const response = await fetch(`${backendUrl}User/Location/List`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-    } catch (error) {
-        console.error(`Error in fetchAllLocations: ${error.message}`);
-    }
-};
-
+//*********-------API call for getting user posts-------*********//
 async function fetchUserPosts(id) {
 
     try {
@@ -91,4 +94,4 @@ async function fetchUserPosts(id) {
     }
 }
 
-export { fetchBookListData, fetchPostsByLocation, fetchAllLocations, fetchUserPosts };
+export { fetchBookListData, fetchPostsByLocation, fetchUserPosts, deletePost };

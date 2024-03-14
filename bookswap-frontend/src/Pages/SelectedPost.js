@@ -5,7 +5,6 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
-import { Dialog, DialogContent } from '@mui/material';
 import NavigateBack from '../Utils/NavigateBack';
 import Poster from '../Components/Poster';
 import { useAuth } from '../Components/Authentication/AuthContext';
@@ -143,8 +142,11 @@ export default function SelectedPost({ book, backPath }) {
                                             }}
                                         />
                                     </Button>
+
+                                    {/* View actual size of Image */}
                                     {viewImage && <ViewImage image={localBook.coverImage} setViewImage={setViewImage} />}
                                 </Grid>
+
                                 {/* Display book info */}
                                <BookInfo book={localBook} />
                             </Grid>

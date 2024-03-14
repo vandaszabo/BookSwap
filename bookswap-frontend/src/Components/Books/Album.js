@@ -5,14 +5,16 @@ import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
+import { Alert } from '@mui/material';
 
 export default function Album({ title, books, onView }) {
     return (
         <React.Fragment>
             <Container
-                sx={{ py: 8, color: (theme) => theme.palette.primary.main }}
+                sx={{ py: 2, color: (theme) => theme.palette.primary.main }}
                 maxWidth="lg">
                 <Typography variant='h6'>{title}</Typography>
+                {books && books.length === 0 && <Alert severity='info'> No match</Alert>}
                 <Grid container spacing={4}>
                     {books && books.map((book, index) => (
                         <Grid
