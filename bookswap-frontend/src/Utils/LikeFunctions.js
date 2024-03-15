@@ -25,6 +25,31 @@ async function fetchPostLikers(postId) {
     }
 }
 
+//*********-------API call for getting the most popular post(id)-------*********//
+async function fetchMostPopularBook() {
+
+    try {
+        const response = await fetch(`${backendUrl}Like/Popular/BookPost`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data !== null) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error(`Error in fetchPostLikers: ${error.message}`);
+    }
+}
+
 //*********-------API call for Adding Like to a post-------*********//
 async function createLike(userId, postId){
 
@@ -106,4 +131,4 @@ async function fetchFavorites(userId) {
 
 
 
-export { fetchPostLikers, createLike, fetchFavorites, removeLike };
+export { fetchPostLikers, createLike, fetchFavorites, removeLike, fetchMostPopularBook };

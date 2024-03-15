@@ -7,7 +7,7 @@ import { CardContent } from '@mui/material';
 import { Alert } from '@mui/material';
 import UploadCoverImage from './UploadCoverImage';
 import { useNavigate } from 'react-router-dom';
-import NavigateBack from '../../Utils/NavigateBack';
+import NavigateBack from '../Shared/NavigateBack';
 
 export default function PostEdit({ book }) {
 

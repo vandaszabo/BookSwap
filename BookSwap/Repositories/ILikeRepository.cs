@@ -9,4 +9,5 @@ public interface ILikeRepository
     Task<Like?> Create(Like like);
     Task<Like?> Remove(Like like);
     Task<Like?> GetByIds(string userId, Guid postId);
+    Task<Guid?> GetMostLiked();
 }

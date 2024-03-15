@@ -9,4 +9,5 @@ public interface ILikeService
     Task<IEnumerable<BookPostDto?>> GetPosts(string userId);
     Task<Models.Like?> CreateLike(LikeRequest request);
     Task<Models.Like?> Delete(LikeRequest request);
+    Task<Guid?> GetMostLikedPostId();
 }

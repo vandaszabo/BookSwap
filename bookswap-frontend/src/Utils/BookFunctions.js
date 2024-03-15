@@ -94,4 +94,29 @@ async function fetchUserPosts(id) {
     }
 }
 
-export { fetchBookListData, fetchPostsByLocation, fetchUserPosts, deletePost };
+//*********-------API call for get bookPost by id-------*********//
+async function fetchBookPostById(id) {
+
+    try {
+        const response = await fetch(`${backendUrl}BookPost/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data !== null) {
+            return data;
+        }
+
+    } catch (error) {
+        console.error(`Error in fetchBookPostById: ${error.message}`);
+    }
+}
+
+export { fetchBookListData, fetchPostsByLocation, fetchUserPosts, deletePost, fetchBookPostById };

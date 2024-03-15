@@ -1,4 +1,5 @@
 using BookSwap.Contracts;
+using BookSwap.Models;
 using BookSwap.Repositories;
 
 
@@ -65,5 +66,12 @@ public class LikeService : ILikeService
         }
         return await _likeRepository.Remove(like);
     }
+    
+    public async Task<Guid?> GetMostLikedPostId()
+    {
+        return await _likeRepository.GetMostLiked();
+    }
+    
+    
 
 }

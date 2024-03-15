@@ -177,7 +177,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                             <Typography variant="h6" gutterBottom>
                                 Your posts
                             </Typography>
-                            {userPosts.length === 0 &&
+                            {userPosts.length === 0 && !loading &&
                                 <>
                                     <Typography variant='body2'>You don't have any post yet.</Typography>
                                     <Button variant="contained" component={Link} to={'/create'} sx={{ mt: 2 }}>Upload Now</Button>

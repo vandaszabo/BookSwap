@@ -94,4 +94,24 @@ public class LikeController : ControllerBase
             return StatusCode(500, $"An error occurred: {ex.Message}");
         }
     }
+    
+    // Get Most Liked Post
+    [HttpGet("Popular/BookPost")]
+    public async Task<ActionResult<Guid?>> GetMostPopularPost()
+    {
+        try
+        {
+            var postId = await _likeService.GetMostLikedPostId();
+            
+            if (postId == null)
+            {
+                return NotFound("Couldn't find the most popular post");
+            }
+            return Ok(postId);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred: {ex.Message}");
+        }
+    }
 }

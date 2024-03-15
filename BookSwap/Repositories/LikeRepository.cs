@@ -58,4 +58,16 @@ public class LikeRepository : ILikeRepository
     {
         return await _dbContext.Likes.FirstOrDefaultAsync(l => l.PostId == postId && l.LikerId == userId);
     }
+    
+    public async Task<Guid?> GetMostLiked()
+    {
+        var likesGrouped = await _dbContext.Likes
+            .GroupBy(l => l.PostId)
+            .ToListAsync();
+
+        var mostLikedGroup = likesGrouped.MaxBy(g => g.Count());
+
+        return mostLikedGroup?.Key;
+
+    }
 }

@@ -5,14 +5,14 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
-import NavigateBack from '../Utils/NavigateBack';
-import Poster from '../Components/Poster';
+import NavigateBack from '../Components/Shared/NavigateBack';
+import Poster from '../Components/Shared/Poster';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import { createLike, fetchPostLikers, removeLike } from '../Utils/LikeFunctions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
 import BookInfo from '../Components/Forms/BookInfo';
-import ViewImage from '../Components/ViewImage';
+import ViewImage from '../Components/Shared/ViewImage';
 
 
 //*********-------Main function for Review data for Creating new Post-------*********//
