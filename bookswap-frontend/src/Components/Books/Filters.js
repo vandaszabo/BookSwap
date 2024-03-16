@@ -76,15 +76,14 @@ export default function Filters({ books, setFilteredBooks }) {
                 pt: [2, 3],
                 pb: [1, 2],
                 color: (theme) => theme.palette.primary.main,
-                backgroundColor: (theme) => theme.palette.secondary.medium,
-
+                backgroundColor: (theme) => theme.palette.secondary.medium
             }}
             direction={['column', 'row']}
             spacing={2}
             justifyContent="center"
         >
             <FormControl
-                sx={{ m: 1, minWidth: 120 }}
+                sx={{ minWidth: 120 }}
                 size="small"
             >
                 <InputLabel

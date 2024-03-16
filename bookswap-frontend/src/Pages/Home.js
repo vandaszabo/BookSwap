@@ -46,7 +46,7 @@ const Home = ({ setSelectedPost }) => {
                 title={"Do you have a book you don't read anymore?"}
                 description={"Upload it to our site and check out the offer."}
                 buttonText={"Upload Your Book"}
-                image={"https://img.freepik.com/premium-vector/stack-old-books-vector-illustration_995012-322.jpg"}
+                image={"https://i.pinimg.com/736x/76/0a/ac/760aac017a832de893fed657fb6c111c--book-wallpaper-open-book.jpg"}
                 path={'/create'}
               />
               {/* Second Card */}
@@ -62,7 +62,7 @@ const Home = ({ setSelectedPost }) => {
                 title={"Get a Book for Free!"}
                 description={"Swap without delivery fee"}
                 buttonText={"View Books in your City"}
-                image={"https://th.bing.com/th/id/OIP.zeRUPDh5XP4J2vd4vtlAmQHaGQ?rs=1&pid=ImgDetMain"}
+                image={"https://www.scalebloom.com/wp-content/uploads/2022/07/blog220723webdes-1-1.png"}
                 path={'/books'}
               />
               {/* Third Card */}

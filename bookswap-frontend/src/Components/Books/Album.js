@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
+import {Box} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Alert } from '@mui/material';
@@ -10,10 +11,10 @@ import { Alert } from '@mui/material';
 export default function Album({ title, books, onView }) {
     return (
         <React.Fragment>
-            <Container
-                sx={{ py: 2, color: (theme) => theme.palette.primary.main }}
+            <Box
+                sx={{ mt: 2, py: 2, color: (theme) => theme.palette.secondary.darkGrey }}
                 maxWidth="lg">
-                <Typography variant='h6'>{title}</Typography>
+                <Typography variant='h6' sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>{title}</Typography>
                 {books && books.length === 0 && <Alert severity='info'> No match</Alert>}
                 <Grid container spacing={4}>
                     {books && books.map((book, index) => (
@@ -50,7 +51,7 @@ export default function Album({ title, books, onView }) {
                         </Grid>
                     ))}
                 </Grid>
-            </Container>
+            </Box>
         </React.Fragment>
     )
 }

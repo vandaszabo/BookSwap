@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Fab from '@mui/material/Fab';
 import Edit from '@mui/icons-material/Edit';
 import { Delete } from '@mui/icons-material';
-
+import { Box } from '@mui/material';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
@@ -100,7 +100,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
         if (!shouldDelete) {
             return; // User canceled the deletion
         }
-    
+
         setLoading(true);
         try {
             const deleted = await deletePost(id);
@@ -113,7 +113,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
             setLoading(false);
         }
     };
-    
+
 
 
     return (
@@ -173,8 +173,9 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                         </Grid>
 
                         {/* Posts */}
-                        <Container sx={{ py: 4 }} maxWidth="lg">
-                            <Typography variant="h6" gutterBottom>
+                        <Box sx={{ mt: 2, mb: 4, py: 2, color: "#000000" }}
+                            maxWidth="lg">
+                            <Typography variant="h6" gutterBottom sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>
                                 Your posts
                             </Typography>
                             {userPosts.length === 0 && !loading &&
@@ -189,11 +190,11 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
                                             {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
-                                            <CardMedia 
+                                            <CardMedia
                                                 onClick={() => handleViewPost(post)}
                                                 component="div"
                                                 sx={{
-                                                    cursor: 'pointer', 
+                                                    cursor: 'pointer',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -211,14 +212,14 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button onClick={() => handleEditPost(post)} size="small"><Edit/></Button>
-                                                <Button onClick={() => handleDeletePost(post.postId)} size="small"><Delete/></Button>
+                                                <Button onClick={() => handleEditPost(post)} size="small"><Edit /></Button>
+                                                <Button onClick={() => handleDeletePost(post.postId)} size="small"><Delete /></Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>
                                 ))}
                             </Grid>
-                        </Container>
+                        </Box>
                         {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
                     </Container>
                 </>
