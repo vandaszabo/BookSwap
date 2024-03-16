@@ -10,11 +10,11 @@ Users can like their favorite books, and maintain their profile page.
 - docker: The project is Dockerized for easy deployment and management
 - CI: github actions for test and build
 
-### Prequisites
+## Prequisites
 - PostgreSQL database
 - AWS S3 bucket 
 
-#### Start the application
+## Start the application
 - Clone the repository
 - Add environment variables in launchSettings (ConnectionString, AWS secret keys...)
 - Run the following command in root directory(BookSwap): docker-compose up -d
