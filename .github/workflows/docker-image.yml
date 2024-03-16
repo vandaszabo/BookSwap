@@ -1,4 +1,4 @@
-name: Backend Docker Image CI
+name: Composed Docker Image CI
 
 on:
   push:
@@ -8,11 +8,19 @@ on:
 
 jobs:
 
-  build:
+  build-composed:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Build the Backend Docker image
-      run: docker build -t bookswap:latest ./BookSwap 
+      run: docker build -t bookswap:latest ./BookSwap
+
+    - name: Build the Frontend Docker image
+      run: docker build -t bookswap-frontend:latest ./bookswap-frontend
+
+    - name: Docker Compose
+      run: docker-compose up -d
+
