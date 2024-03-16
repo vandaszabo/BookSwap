@@ -1,8 +1,6 @@
 using System.Net;
 using Amazon;
 using Amazon.S3;
-using BookSwap.Enums;
-using BookSwap.Services;
 using BookSwap.Services.File;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,10 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using BookSwap.Contracts;
 using BookSwap.Data;
 using BookSwap.Models;
 using Microsoft.EntityFrameworkCore;
+using JsonSerializerOptions = Amazon.Util.Internal.JsonSerializerOptions;
 
 namespace BookSwap.Repositories;
 
@@ -30,6 +34,22 @@ public class BookPostRepository : IBookPostRepository
     {
         return await _dbContext.BookPosts.FirstOrDefaultAsync(bp => bp.PostId == postId);
     }
+    
+    public async Task<BookPostDto?> GetDtoById(Guid postId)
+    {
+        var bookPost = await _dbContext.BookPosts.FirstOrDefaultAsync(bp => bp.PostId == postId);
+        if (bookPost == null)
+        {
+            return null;
+        }
+
+        var bpDto = new BookPostDto(bookPost.PostId, bookPost.Title, bookPost.Author, bookPost.Description, bookPost.Category,
+            bookPost.Language, bookPost.PageCount, bookPost.CoverImage, bookPost.UserId);
+        
+        return bpDto;
+    }
+    
+    
 
     public async Task<BookPost?> Create(BookPost bookPost)
     {

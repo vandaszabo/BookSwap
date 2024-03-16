@@ -53,7 +53,7 @@ function App() {
           created={created} />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setSelectedPost={setSelectedPost}/>} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/books" element={<AllBooks books={othersList} setSelectedPost={setSelectedPost} />} />

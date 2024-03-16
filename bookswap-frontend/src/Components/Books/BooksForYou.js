@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../Authentication/AuthContext';
-import { fetchPostsByLocation } from '../../Utils/FetchFunctions';
+import { fetchPostsByLocation } from '../../Utils/BookFunctions';
 import Album from './Album';
-import { Typography } from '@mui/material';
 
 export default function BooksForYou({onView}){
 
@@ -33,9 +32,7 @@ export default function BooksForYou({onView}){
 
 return(
     <React.Fragment>
-         {!bookList && <Typography>There are no Books in your City right now.</Typography>}
         {bookList && <Album title='Books in Your City' books={bookList} onView={onView} />}
-
     </React.Fragment>
 )
 }

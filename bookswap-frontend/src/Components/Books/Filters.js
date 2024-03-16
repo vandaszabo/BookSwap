@@ -6,7 +6,8 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { InputLabel } from '@mui/material';
 import { FormControl } from '@mui/material';
-import { fetchAllLocations, fetchPostsByLocation } from '../../Utils/FetchFunctions';
+import { fetchAllLocations } from '../../Utils/UserFunctions';
+import { fetchPostsByLocation } from '../../Utils/BookFunctions';
 import { useAuth } from '../Authentication/AuthContext';
 
 export default function Filters({ books, setFilteredBooks }) {

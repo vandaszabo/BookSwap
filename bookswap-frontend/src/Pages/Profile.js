@@ -17,11 +17,15 @@ import CardContent from '@mui/material/CardContent';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import Fab from '@mui/material/Fab';
+import Edit from '@mui/icons-material/Edit';
+import { Delete } from '@mui/icons-material';
 
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
-import { fetchUserPosts } from '../Utils/FetchFunctions';
+import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
+import { fetchFavorites } from '../Utils/LikeFunctions';
+import Album from '../Components/Books/Album';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -29,6 +33,8 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
     const [editingDetails, setEditingDetails] = useState(false);
+    const [deleted, setDeleted] = useState(false);
+    const [favorites, setFavorites] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -39,19 +45,39 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
             setLoading(true);
             try {
                 const bookList = await fetchUserPosts(authUser.id);
-                if(bookList != null){
+                if (bookList != null) {
                     setUserPosts(bookList || []);
                     setAuthUser((prevAuthUser) => ({ ...prevAuthUser, bookPosts: bookList || [] }));
                 }
             } catch (error) {
                 console.error(`Error in fetchPosts: ${error.message}`);
-            }finally{
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchPosts();
-    }, [authUser.id, setAuthUser]);
+    }, [authUser.id, setAuthUser, deleted]);
+
+    //*********-------Find all likes by user-------*********//
+    useEffect(() => {
+
+        const fetchLikes = async () => {
+            setLoading(true);
+            try {
+                const bookList = await fetchFavorites(authUser.id);
+                if (bookList != null) {
+                    setFavorites(bookList);
+                }
+            } catch (error) {
+                console.error(`Error in fetchPosts: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLikes();
+    }, [authUser.id]);
 
     const handleEditPicture = () => {
         setEditingPhoto((prevEditing) => !prevEditing);
@@ -68,7 +94,27 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
         setEditingPost(post)
         navigate('/edit-post');
     };
+
+    const handleDeletePost = async (id) => {
+        const shouldDelete = window.confirm("Are you sure you want to delete this post?");
+        if (!shouldDelete) {
+            return; // User canceled the deletion
+        }
     
+        setLoading(true);
+        try {
+            const deleted = await deletePost(id);
+            if (deleted != null) {
+                setDeleted(true);
+            }
+        } catch (error) {
+            console.error(`Error in handleDeletePost: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+
 
     return (
         <React.Fragment>
@@ -124,30 +170,30 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                     <DetailsEdit setEditingDetails={setEditingDetails} />
                                 )}
                             </Grid>
-
                         </Grid>
-
 
                         {/* Posts */}
                         <Container sx={{ py: 4 }} maxWidth="lg">
                             <Typography variant="h6" gutterBottom>
                                 Your posts
                             </Typography>
-                            {userPosts.length === 0 &&
+                            {userPosts.length === 0 && !loading &&
                                 <>
                                     <Typography variant='body2'>You don't have any post yet.</Typography>
                                     <Button variant="contained" component={Link} to={'/create'} sx={{ mt: 2 }}>Upload Now</Button>
                                 </>}
                             <Grid container spacing={4}>
                                 {userPosts && userPosts.map((post, index) => (
-                                    <Grid item key={`${post.id}_${index}`} xs={6} sm={4} md={3} lg={2}>
+                                    <Grid item key={`${post.postId}_${index}`} xs={12} sm={6} md={4} lg={3}>
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
                                             {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
-                                            <CardMedia
+                                            <CardMedia 
+                                                onClick={() => handleViewPost(post)}
                                                 component="div"
                                                 sx={{
+                                                    cursor: 'pointer', 
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -165,14 +211,15 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button onClick={() => handleViewPost(post)} size="small">View</Button>
-                                                <Button onClick={() => handleEditPost(post)} size="small">Edit</Button>
+                                                <Button onClick={() => handleEditPost(post)} size="small"><Edit/></Button>
+                                                <Button onClick={() => handleDeletePost(post.postId)} size="small"><Delete/></Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>
                                 ))}
                             </Grid>
                         </Container>
+                        {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
                     </Container>
                 </>
             }
