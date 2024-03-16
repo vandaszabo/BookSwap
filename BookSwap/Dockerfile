@@ -1,20 +1,27 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+﻿# Use the .NET SDK image as the base image
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+
+# Set the working directory inside the container
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["BookSwap/BookSwap.csproj", "BookSwap/"]
-RUN dotnet restore "BookSwap/BookSwap.csproj"
-COPY . .
-WORKDIR "/src/BookSwap"
-RUN dotnet build "BookSwap.csproj" -c Release -o /app/build
+# Copy the backend project file and restore dependencies
+COPY BookSwap.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "BookSwap.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Copy the entire backend project
+COPY . ./
 
-FROM base AS final
+# Build the backend application
+RUN dotnet publish -c Release -o out
+
+# Create a new image with the .NET runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Copy the built application from the build environment
+COPY --from=build-env /app/out .
+
+ENV ASPNETCORE_URLS=http://+:5029
+EXPOSE 5029
+# Set the entry point for the container
 ENTRYPOINT ["dotnet", "BookSwap.dll"]
