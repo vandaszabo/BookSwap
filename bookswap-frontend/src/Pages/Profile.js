@@ -24,8 +24,9 @@ import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadProfileImage from '../Components/Forms/UploadProfileImage';
 import DetailsEdit from '../Components/Forms/DetailsEdit';
 import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
-import { fetchFavorites } from '../Utils/LikeFunctions';
+import { fetchFavorites, fetchPostLikers } from '../Utils/LikeFunctions';
 import Album from '../Components/Books/Album';
+import Matches from '../Components/Matches';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -35,8 +36,23 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     const [editingDetails, setEditingDetails] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [favorites, setFavorites] = useState(null);
+    const [swapOptions, setSwapOptions] = useState(null);
+
+    const [likedUsers, setLikedUsers] = useState(null);
+    const [likers, setLikers] = useState(null);
+
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (likedUsers && likers) {           
+            const intersection = new Set([...likedUsers].filter(userId => likers.has(userId)));
+
+            if (intersection.size > 0) {
+                setSwapOptions(Array.from(intersection));
+            }
+        }
+    }, [likedUsers, likers]);
 
     //*********-------Find all bookPosts from user-------*********//
     useEffect(() => {
@@ -61,12 +77,16 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
 
     //*********-------Find all likes by user-------*********//
     useEffect(() => {
-
         const fetchLikes = async () => {
             setLoading(true);
             try {
                 const bookList = await fetchFavorites(authUser.id);
                 if (bookList != null) {
+                    const userIds = new Set(); 
+                    bookList.forEach(book => {
+                        userIds.add(book.userId);
+                    });
+                    setLikedUsers(userIds);
                     setFavorites(bookList);
                 }
             } catch (error) {
@@ -78,6 +98,31 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
 
         fetchLikes();
     }, [authUser.id]);
+
+    //*********-------Find all likers of all user posts-------*********//
+    useEffect(() => {
+        const fetchLikers = async () => {
+            setLoading(true);
+            try {
+                if (userPosts !== null) {
+                    const uniqueUserIds = new Set(); // Create a Set to store unique user IDs
+                    const postLikersPromises = userPosts.map(async post => {
+                        const postLikers = await fetchPostLikers(post.postId);
+                        postLikers.forEach(userId => uniqueUserIds.add(userId)); // Add each userId to the Set
+                    });
+                    await Promise.all(postLikersPromises);
+                    setLikers(uniqueUserIds); // Set the Set directly
+                }
+            } catch (error) {
+                console.error(`Error in fetchPosts: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLikers();
+    }, [authUser.id, userPosts]);
+
 
     const handleEditPicture = () => {
         setEditingPhoto((prevEditing) => !prevEditing);
@@ -221,6 +266,8 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                             </Grid>
                         </Box>
                         {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
+                        
+                        {swapOptions && <Matches userIds={swapOptions}/>}
                     </Container>
                 </>
             }
