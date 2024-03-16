@@ -7,24 +7,17 @@ Users can like their favorite books, and maintain their profile page.
 ## Technologies
 - backend: Asp.Net Core with EF and C#
 - frontend: React.js with MUI and JavaScript
+- docker: The project is Dockerized for easy deployment and management
+- CI: github actions for test and build
 
-### Database Setup with Entity Framework and PostgreSQL
+### Prequisites
+- PostgreSQL database
+- AWS S3 bucket 
 
-1. **Create Migrations:**
-   - Open a terminal or command prompt.
-   - Navigate to the project's backend directory. (BookSwap)
-   - Run the following commands to create migrations:
-       - dotnet ef migrations add InitialCreate --context BookDbContext
-2. **Apply the migrations to update the databases:**
-   - Run the following commands to update your database:
-       - dotnet ef database update --context BookDbContext
-     
 #### Start the application
+- Clone the repository
+- Add environment variables in launchSettings (ConnectionString, AWS secret keys...)
+- Run the following command in root directory(BookSwap): docker-compose up -d
+- Access the frontend page at http://localhost:3000
 
-3. **Running the Project**
-   - Start the backend server by running the following command:
-       - dotnet run
-   - Open a new terminal or command prompt.
-   - Navigate to the project's frontend directory.
-   - Start the frontend application:
-       - npm start
+   
