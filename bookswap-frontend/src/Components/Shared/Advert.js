@@ -42,7 +42,11 @@ export default function Advert({ title, description, buttonText, image, path }) 
                 <CardActions>
                     <Button
                         onClick={handleClick}
-                        sx={{ textTransform: 'none', width: '100%' }} variant='contained'>
+                        sx={{ textTransform: 'none', width: '100%', color: (theme)=> theme.palette.secondary.black , backgroundColor: (theme)=> theme.palette.secondary.medium,
+                        '&:hover': {
+                            backgroundColor: (theme) => theme.palette.primary.main,
+                            color: (theme)=> theme.palette.primary.light
+                        } }} variant='contained'>
                         {buttonText}
                     </Button>
                 </CardActions>
