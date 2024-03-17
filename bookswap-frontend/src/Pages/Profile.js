@@ -26,6 +26,7 @@ import DetailsEdit from '../Components/Forms/DetailsEdit';
 import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
 import { fetchFavorites } from '../Utils/LikeFunctions';
 import Album from '../Components/Books/Album';
+import Join from '../Components/Join';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -220,6 +221,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                             </Grid>
                         </Container>
                         {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
+                        <Join />
                     </Container>
                 </>
             }

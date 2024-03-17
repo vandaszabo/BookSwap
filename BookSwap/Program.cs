@@ -1,5 +1,6 @@
 using System.Text;
 using BookSwap.Data;
+using BookSwap.Hubs;
 using BookSwap.Models;
 using BookSwap.Repositories;
 using BookSwap.Services.Authentication;
@@ -28,6 +29,8 @@ public class Program
         AddAuthentication();
         AddIdentity();
 
+        builder.Services.AddSignalR();
+        
         var app = builder.Build();
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Testing")
@@ -58,6 +61,8 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapHub<ChatHub>("/Chat");
+        
         app.Run();
 
         void AddServices()

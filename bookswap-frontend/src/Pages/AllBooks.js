@@ -29,6 +29,7 @@ export default function AllBooks({ books, setSelectedPost }) {
 
     return (
         <React.Fragment>
+            {authUser &&
             <Container
                 component="main"
                 maxWidth="lg"
@@ -121,7 +122,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                     </Button>
                 </Box>
 
-            </Container>
+            </Container>}
         </React.Fragment>
     );
 }
