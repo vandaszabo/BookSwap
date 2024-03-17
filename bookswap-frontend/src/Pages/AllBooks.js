@@ -34,7 +34,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                 component="main"
                 maxWidth="lg"
                 sx={{ mb: 4, mt: 4 }}>
-                <Box>
+                <Container>
                     <Box
                         sx={{
                             display: 'flex',
@@ -50,7 +50,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                         }}
 
                     >
-                        <Container>
+                        <Box sx={{m: 2}}>
                             <Typography
                                 component="h5"
                                 variant="body1"
@@ -59,7 +59,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 sx={{
                                     fontSize: {
                                         xs: '1.5rem',
-                                        sm: '2rem',
+                                        sm: '1.5rem',
                                         md: '2rem',
                                         lg: '2.2rem',
                                     },
@@ -74,26 +74,42 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 sx={{
                                     fontSize: {
                                         xs: '1rem',
-                                        sm: '1.1rem',
+                                        sm: '1rem',
                                         md: '1.1rem',
                                         lg: '1.1rem',
                                     },
                                 }}>
                                 Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                             </Typography>
-                        </Container>
-                        <Container>
+                        </Box>
+                        <Box>
                             <img
                                 src="https://cdn.dribbble.com/users/486498/screenshots/11951875/media/ba889cb7336c75a8cfa54656dc912bd9.jpg?compress=1&resize=700x525&vertical=center"
                                 alt="reading-woman"
+                                // style={{
+                                //     maxHeight: '40vh',
+                                //     height: 'auto',
+                                //     display: 'block',
+                                // }}
                                 style={{
-                                    maxHeight: '40vh',
-                                    maxWidth: 'auto',
+                                    width: '80%',
                                     height: 'auto',
                                     display: 'block',
+                                    '@media (min-width:0px) and (orientation: landscape)': {
+                                        maxHeight: '30vh', // Adjust as needed for xs landscape
+                                    },
+                                    '@media (min-width:600px)': {
+                                        maxHeight: '40vh', // Increase size for sm screens
+                                    },
+                                    '@media (min-width:960px)': {
+                                        maxHeight: '40vh',
+                                    },
+                                    '@media (min-width:1280px)': {
+                                        maxHeight: '40vh',
+                                    },
                                 }}
                             />
-                        </Container>
+                        </Box>
                     </Box>
 
                     {/* Filtering options */}
@@ -110,7 +126,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                     {/* All post */}
                     <Album title='All Book Posts' books={books} onView={handleView} />
 
-                </Box>
+                </Container>
 
                 {/* Footer */}
                 <Box

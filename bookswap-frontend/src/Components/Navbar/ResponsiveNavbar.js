@@ -124,8 +124,6 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                                 sx={{
                                     mr: 2,
                                     display: 'flex',
-                                    fontFamily: 'monospace',
-                                    fontWeight: 700,
                                     letterSpacing: '.3rem',
                                     color: 'inherit',
                                     textDecoration: 'none',
@@ -189,8 +187,7 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                     >
                         {authUser &&
                             <Typography variant='h6' sx={{
-                                borderBottom: (theme) => `2px solid ${theme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center', fontFamily: 'monospace', fontWeight: 700,
-                            }}>{authUser.userName}</Typography>}
+                                borderBottom: (theme) => `2px solid ${theme.palette.primary.main}`, textAlign: 'center', justifySelf: 'center'}}>{authUser.userName}</Typography>}
                         <MenuItem component={Link} to={'/create'} onClick={() => setAnchorElUser(null)}>Create new post</MenuItem>
                         <MenuItem component={Link} to={'/profile'} onClick={() => setAnchorElUser(null)}>Profile</MenuItem>
                         <MenuItem onClick={logOut}>Logout</MenuItem>
