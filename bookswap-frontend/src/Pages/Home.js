@@ -47,7 +47,7 @@ const Home = ({ setSelectedPost }) => {
                   title={"Do you have a book you don't read anymore?"}
                   description={"Upload it to our site and check out the offer."}
                   buttonText={"Upload Your Book"}
-                  image={"https://i.pinimg.com/736x/76/0a/ac/760aac017a832de893fed657fb6c111c--book-wallpaper-open-book.jpg"}
+                  image={""}
                   path={'/create'}
                 />
                 {/* Second Card */}
