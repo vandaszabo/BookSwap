@@ -1,5 +1,6 @@
 using System.Text;
 using BookSwap.Data;
+using BookSwap.DataService;
 using BookSwap.Hubs;
 using BookSwap.Models;
 using BookSwap.Repositories;
@@ -101,6 +102,7 @@ public class Program
             builder.Services.AddScoped<ITokenService, TokenService>();
             
             builder.Services.AddLogging();
+            builder.Services.AddSingleton<SharedDb>();
 
         }
 

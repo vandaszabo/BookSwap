@@ -19,8 +19,7 @@ export default function Album({ title, books, onView }) {
                 <Grid container spacing={4}>
                     {books && books.map((book, index) => (
                         <Grid
-                            item
-                            key={`${book.postId}_${index}`}
+                            item key={`${book.postId}_${index}`}
                             xs={6}
                             sm={4}
                             md={3}
