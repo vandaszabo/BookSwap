@@ -42,12 +42,20 @@ export default function JoinChat() {
         }
     };
 
+    const sendMessage = async(message) => {
+        try {
+            await conn.invoke("SendMessage", message);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     return (
         <Box sx={{mt: 4}}>
             {!conn 
             ? <WaitingRoom joinChatRoom={joinChatRoom}/>
-            : <ChatRoom messages={messages}/>
+            : <ChatRoom messages={messages} sendMessage={sendMessage}/>
             }
         </Box>
     )
