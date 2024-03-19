@@ -12,8 +12,11 @@ export default function JoinChat() {
     const [messages, setMessages] = useState([]);
     const { authUser } = useAuth();
 
-    const joinChatRoom = async (userId, chatRoom) => {
+    const joinChatRoom = async (chatRoom) => {
         try {
+            const userName = authUser.userName;
+            const userImage = authUser.profileImage;
+
             //initiate connection
             const conn = new HubConnectionBuilder()
                 .withUrl("http://localhost:5029/Chat")
@@ -21,20 +24,20 @@ export default function JoinChat() {
                 .build();
 
             //set up handler
-            conn.on("JoinSpecificChatRoom", (userId, msg) => {
-                console.log("userID, msg: ", userId, msg);
+            conn.on("JoinSpecificChatRoom", (userName, msg) => {
+                console.log("user, msg: ", userName, msg);
 
-                setMessages((messages) => [...messages, { userId, msg }]);
+                setMessages((messages) => [...messages, { userName, msg }]);
             });
 
-            conn.on("ReceiveSpecificMessage", (userId, msg) => {
-                console.log("Spec msg: ", userId, msg);
+            conn.on("ReceiveSpecificMessage", (userImage, msg) => {
+                console.log("Spec msg: ", userImage, msg);
 
-                setMessages((messages) => [...messages, { userId, msg }]);
+                setMessages((messages) => [...messages, { userImage, msg }]);
             });
 
             await conn.start();
-            await conn.invoke("JoinSpecificChatRoom", { userId, chatRoom });
+            await conn.invoke("JoinSpecificChatRoom", { userName, userImage, chatRoom });
             setConnection(conn);
 
         } catch (error) {
