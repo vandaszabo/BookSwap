@@ -2,42 +2,35 @@ import React from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { useState } from 'react';
 import { useAuth } from '../Authentication/AuthContext';
-import ChatRoom from './ChatRoom';
-import { Box } from '@mui/material';
+import { Box, Alert, Button } from '@mui/material';
 import WaitingRoom from './WaitingRoom';
+import PrivateChat from './PrivateChat';
 
 export default function JoinChat() {
 
     const [conn, setConnection] = useState();
     const [messages, setMessages] = useState([]);
+    const [connectionId, setConnectionId] = useState(null);
     const { authUser } = useAuth();
 
-    const joinChatRoom = async (chatRoom) => {
+    const joinPrivateChat = async () => {
         try {
-            const userName = authUser.userName;
-            const userImage = authUser.profileImage;
-
             //initiate connection
             const conn = new HubConnectionBuilder()
                 .withUrl("http://localhost:5029/Chat")
                 .configureLogging(LogLevel.Information)
                 .build();
 
-            //set up handler
-            conn.on("JoinSpecificChatRoom", (userName, msg) => {
-                console.log("user, msg: ", userName, msg);
-
-                setMessages((messages) => [...messages, { userName, msg }]);
-            });
-
-            conn.on("ReceiveSpecificMessage", (userImage, msg) => {
-                console.log("Spec msg: ", userImage, msg);
+            conn.on("ReceivePrivateMessage", (userImage, msg) =>{
+                console.log("Private msg: ", userImage, msg);
 
                 setMessages((messages) => [...messages, { userImage, msg }]);
             });
 
             await conn.start();
-            await conn.invoke("JoinSpecificChatRoom", { userName, userImage, chatRoom });
+            const connId = await conn.invoke("GetConnectionId");
+
+            setConnectionId(connId);
             setConnection(conn);
 
         } catch (error) {
@@ -45,9 +38,24 @@ export default function JoinChat() {
         }
     };
 
-    const sendMessage = async(message) => {
+    const sendToUser = async(receiverConnId, msg)=>{
+        const userImage = authUser.profileImage;
         try {
-            await conn.invoke("SendMessage", message);
+            await conn.invoke("SendToUser", userImage, receiverConnId, msg);
+            setMessages((messages) => [...messages, { userImage, msg }]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const exitChat = async () => {
+        try {
+            if (conn) {
+                await conn.stop();
+                setConnection(null);
+                setConnectionId(null);
+                setMessages([]);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -56,9 +64,14 @@ export default function JoinChat() {
 
     return (
         <Box sx={{mt: 4}}>
+            {connectionId && <Alert severity="success">Your connection ID: {connectionId}</Alert>}
             {!conn 
-            ? <WaitingRoom joinChatRoom={joinChatRoom}/>
-            : <ChatRoom messages={messages} sendMessage={sendMessage}/>
+            ? 
+            <WaitingRoom joinPrivateChat={joinPrivateChat} /> :
+            <>
+                <PrivateChat messages={messages} sendToUser={sendToUser} />
+                <Button onClick={exitChat} variant="contained" color="secondary">Exit Chat</Button>
+            </>
             }
         </Box>
     )

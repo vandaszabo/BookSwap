@@ -1,26 +1,15 @@
-import { useState } from "react";
-import { Box, Typography } from "@mui/material";
-import {TextField} from "@mui/material";
+import { Box } from "@mui/material";
 import {Button} from "@mui/material";
 
-export default function WaitingRoom({joinChatRoom}){
-
-    const [chatroom, setChatroom] = useState();
+export default function WaitingRoom({joinPrivateChat}){
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        joinChatRoom(chatroom);
+        joinPrivateChat();
     }
 
     return(
         <Box component="form" onSubmit={handleSubmit}>
-        <Typography>Create Chatroom: </Typography>
-          <TextField
-            onChange={e => setChatroom(e.target.value)}
-            label="chatroom"
-            name="chatroom"
-            id="chatroom"
-          />
           <Button
             type="submit"
             variant="contained"
@@ -34,7 +23,7 @@ export default function WaitingRoom({joinChatRoom}){
               },
             }}
           >
-            Join
+            Chat
           </Button>
         </Box>
     )

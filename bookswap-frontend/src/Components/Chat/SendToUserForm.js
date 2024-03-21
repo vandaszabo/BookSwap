@@ -3,18 +3,21 @@ import { React, useState} from 'react';
 import {Box} from '@mui/material';
 import {Button} from '@mui/material';
 
-const SendMessageForm = ({sendMessage}) =>{
+const SendToUserForm = ({sendToUser}) =>{
     const [msg, setMessage] = useState('');
+    const [receiverConnId, setReceiverConnId] = useState('');
 
     const handleSend = (e) =>{
         e.preventDefault();
-        sendMessage(msg);
+        sendToUser(receiverConnId, msg);
         setMessage('');
+        setReceiverConnId('');
     };
 
 
     return(
         <Box component="form" onSubmit={handleSend}>
+        <TextField onChange={ (e) => setReceiverConnId(e.target.value) } type='text' value={receiverConnId} placeholder="Add receiver connection ID" ></TextField>
         <TextField onChange={ (e) => setMessage(e.target.value) } type='text' value={msg} placeholder="Enter a message" fullWidth></TextField>
         <Button
             type="submit"
@@ -34,4 +37,4 @@ const SendMessageForm = ({sendMessage}) =>{
         )
 }
 
-export default SendMessageForm;
+export default SendToUserForm;
