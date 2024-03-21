@@ -52,7 +52,7 @@ function App() {
           setBookList={setBookList}
           created={created} />
 
-        <PrivateChat messages={messages} sendToUser={sendToUser} />
+        {authUser && <PrivateChat messages={messages} sendToUser={sendToUser} />}
 
         <Routes>
           <Route path="/" element={<Home setSelectedPost={setSelectedPost}/>} />

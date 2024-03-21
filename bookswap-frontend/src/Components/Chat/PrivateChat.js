@@ -1,6 +1,6 @@
 import React from 'react';
 import MessageContainer from './MessageContainer';
-import { Typography, Box, Container } from '@mui/material';
+import { Typography, Container } from '@mui/material';
 import SendToUserForm from './SendToUserForm';
 
 export default function PrivateChat({messages, sendToUser}){

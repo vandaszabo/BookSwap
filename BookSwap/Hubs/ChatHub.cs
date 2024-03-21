@@ -33,9 +33,9 @@ public class ChatHub : Hub
     //     }
     // }
 
-    public async Task SendToUser(string user, string receiverConnId, string msg)
+    public async Task SendToUser(string userImage, string receiverConnId, string msg)
     {
-        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", user, msg);
+        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", userImage, msg);
     }
 
     public string GetConnectionId()

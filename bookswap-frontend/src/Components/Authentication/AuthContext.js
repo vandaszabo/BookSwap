@@ -53,8 +53,7 @@ function AuthProvider(props) {
         } catch (error) {
             console.error(error);
         }
-
-    }
+    };
 
     const closeChatConnection = async () => {
         try {
@@ -71,8 +70,12 @@ function AuthProvider(props) {
 
     const sendToUser = async(userImage, receiverConnId, msg)=>{
         try {
+            if (conn) {
             await conn.invoke("SendToUser", userImage, receiverConnId, msg);
+            
             setMessages((messages) => [...messages, { userImage, msg }]);
+            console.log(messages);
+            }
         } catch (error) {
             console.error(error);
         }
