@@ -55,12 +55,12 @@ function AuthProvider(props) {
         }
     };
 
-    const closeChatConnection = async () => {
+    const closeChatConnection = async (userId) => {
         try {
             if (conn) {
                 await conn.stop();
                 setConnection(null);
-                await updateConnID(null);
+                await updateConnID(userId, null);
                 setMessages([]);
             }
         } catch (error) {

@@ -19,7 +19,7 @@ const SendToUserForm = ({sendToUser}) =>{
 
     return(
         <Box component="form" onSubmit={handleSend}>
-        <TextField onChange={ (e) => setReceiverConnId(e.target.value) } type='text' value={receiverConnId} placeholder="Add receiver connection ID" ></TextField>
+        <TextField onChange={ (e) => setReceiverConnId(e.target.value) } type='text' value={receiverConnId} placeholder="Add receiver connection ID" fullWidth></TextField>
         <TextField onChange={ (e) => setMessage(e.target.value) } type='text' value={msg} placeholder="Enter a message" fullWidth></TextField>
         <Button
             type="submit"

@@ -46,12 +46,12 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
 
     //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {
+        closeChatConnection(authUser.id);
         setIsLoggedIn(false);
         setAnchorElUser(null);
         setAuthUser(null);
         localStorage.removeItem('authUser');
         localStorage.removeItem('book');
-        closeChatConnection();
         navigate('/login');
     };
 

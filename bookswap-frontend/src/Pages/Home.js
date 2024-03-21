@@ -6,11 +6,15 @@ import Grid from '@mui/material/Grid';
 import Advert from '../Components/Shared/Advert';
 import { fetchMostPopularBook } from '../Utils/LikeFunctions';
 import { fetchBookPostById } from '../Utils/BookFunctions';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Components/Authentication/AuthContext';
 
 const Home = ({ setSelectedPost }) => {
 
   const [popularBook, setPopularBook] = useState(null);
   const [loading, setLoading] = useState(true);
+  const {authUser} = useAuth();
+  const navigate = useNavigate();
 
   //*********-------Find most popular post-------*********//
   useEffect(() => {
@@ -37,7 +41,8 @@ const Home = ({ setSelectedPost }) => {
 
   return (
     <React.Fragment>
-      <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
+    {!authUser ? (navigate('/login')):(
+        <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
         <Container sx={{ backgroundColor: (theme) => theme.palette.secondary.beige, minHeight: '100vh' }}>
           <Box>
             {popularBook && !loading &&
@@ -79,6 +84,7 @@ const Home = ({ setSelectedPost }) => {
           </Box>
         </Container>
       </Container>
+      )}
     </React.Fragment>
   );
 }
