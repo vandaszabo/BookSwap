@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { fetchUserById } from '../Utils/UserFunctions';
-import { Card, CardContent, CardMedia, Button, Paper, Box } from '@mui/material';
+import { Button, Paper, Box } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';

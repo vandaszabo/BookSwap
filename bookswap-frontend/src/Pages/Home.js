@@ -35,7 +35,7 @@ const Home = ({ setSelectedPost }) => {
     };
 
     findMostPopular();
-  }, []);
+  }, [setSelectedPost]);
 
 
 

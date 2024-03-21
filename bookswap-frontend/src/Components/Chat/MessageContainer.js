@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { Typography, Avatar, Box } from '@mui/material';
+import { useAuth } from '../Authentication/AuthContext';
 
-export default function MessageContainer({ messages }) {
+export default function MessageContainer() {
+
+    const {messages, setMessages} = useAuth();
+
+    useEffect(()=>{
+        if(messages.length > 5){
+            setMessages((messages) => messages.slice(-5));
+        }
+    },[messages, setMessages]);
+
     return (
         <div>
             <Grid>

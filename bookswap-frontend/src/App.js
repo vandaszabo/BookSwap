@@ -17,7 +17,7 @@ import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 
 function App() {
-  const { authUser, messages, sendToUser } = useAuth();
+  const { authUser, sendToUser } = useAuth();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -52,7 +52,7 @@ function App() {
           setBookList={setBookList}
           created={created} />
 
-        {authUser && <PrivateChat messages={messages} sendToUser={sendToUser} />}
+        {authUser && <PrivateChat sendToUser={sendToUser} />}
 
         <Routes>
           <Route path="/" element={<Home setSelectedPost={setSelectedPost}/>} />

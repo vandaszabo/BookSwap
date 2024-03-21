@@ -90,7 +90,8 @@ function AuthProvider(props) {
         openChatConnection,
         closeChatConnection,
         sendToUser,
-        messages
+        messages,
+        setMessages
     }
 
     //*********-------Wrapping the children components with AuthContext.Provider, passing the 'value' object-------*********//
