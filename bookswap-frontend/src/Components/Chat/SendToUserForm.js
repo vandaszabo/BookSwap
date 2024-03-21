@@ -2,14 +2,16 @@ import { TextField } from '@mui/material';
 import { React, useState} from 'react';
 import {Box} from '@mui/material';
 import {Button} from '@mui/material';
+import { useAuth } from '../Authentication/AuthContext';
 
 const SendToUserForm = ({sendToUser}) =>{
     const [msg, setMessage] = useState('');
     const [receiverConnId, setReceiverConnId] = useState('');
+    const {authUser} = useAuth();
 
     const handleSend = (e) =>{
         e.preventDefault();
-        sendToUser(receiverConnId, msg);
+        sendToUser(authUser.profileImage, receiverConnId, msg);
         setMessage('');
         setReceiverConnId('');
     };

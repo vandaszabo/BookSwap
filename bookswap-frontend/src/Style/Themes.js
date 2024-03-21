@@ -16,7 +16,8 @@ export const lightTheme = createTheme({
             grey: '#f6f6f6',
             darkGrey: "#737373",
             brown: "#7d593f",
-            black: "#000000"
+            black: "#000000",
+            green: "#00d200"
         },
         background: {
             main: '#F2CCB6',

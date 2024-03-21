@@ -14,12 +14,12 @@ import SignUp from './Components/Authentication/SignUp';
 import ResponsiveNavbar from './Components/Navbar/ResponsiveNavbar';
 import { useAuth } from './Components/Authentication/AuthContext';
 import { lightTheme } from './Style/Themes';
+import PrivateChat from './Components/Chat/PrivateChat';
 
 function App() {
-  const { authUser } = useAuth();
+  const { authUser, messages, sendToUser } = useAuth();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
@@ -51,6 +51,8 @@ function App() {
           setSelectedPost={setSelectedPost}
           setBookList={setBookList}
           created={created} />
+
+        <PrivateChat messages={messages} sendToUser={sendToUser} />
 
         <Routes>
           <Route path="/" element={<Home setSelectedPost={setSelectedPost}/>} />

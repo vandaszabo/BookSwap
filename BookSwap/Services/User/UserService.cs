@@ -30,6 +30,21 @@ public class UserService : IUserService
         return await _userRepository.GetById(userId);
     }
 
+    public async Task<ApplicationUser?> UpdateConnectionId(string userId, string? connectionId)
+    {
+        var user = await _userRepository.GetById(userId);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        await _userRepository.UpdateConnectionId(user, connectionId);
+
+        var updatedUser = await _userRepository.GetById(userId);
+        return updatedUser;
+    }
+    
     public async Task<ApplicationUser?> UpdateUserData(UpdateDataRequest request)
     {
         var user = await _userRepository.GetById(request.UserId);

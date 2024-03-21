@@ -59,6 +59,12 @@ public class UserRepository : IUserRepository
         user.ProfileImage = newProfileImage;
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task UpdateConnectionId(ApplicationUser user, string? connectionId)
+    {
+        user.ConnectionID = connectionId;
+        await _dbContext.SaveChangesAsync();
+    }
     
     public async Task<string?> Delete(ApplicationUser user)
     {

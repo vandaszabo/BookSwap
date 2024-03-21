@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import { useAuth } from './AuthContext';
 //*********-------main function for Login-------*********//
 export default function SignIn() {
 
-  const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
+  const { setAuthUser, setIsLoggedIn, openChatConnection } = useAuth();
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -53,6 +53,7 @@ export default function SignIn() {
         setAuthUser(responseData.user);
         localStorage.setItem('authUser', JSON.stringify(responseData.user));
         setIsLoggedIn(true);
+        openChatConnection(responseData.user.id);
         navigate('/');
       }
       else {

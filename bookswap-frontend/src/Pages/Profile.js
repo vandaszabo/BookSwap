@@ -27,7 +27,6 @@ import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
 import { fetchFavorites, fetchPostLikers } from '../Utils/LikeFunctions';
 import Album from '../Components/Books/Album';
 import Matches from '../Components/Matches';
-import JoinChat from '../Components/Chat/JoinChat';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost }) {
@@ -270,7 +269,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                         
                         {swapOptions && <Matches userIds={swapOptions}/>}
 
-                        <JoinChat />
                     </Container>
                 </>
             }
