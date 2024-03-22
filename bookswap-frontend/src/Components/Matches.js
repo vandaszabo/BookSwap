@@ -6,11 +6,13 @@ import { Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { useAuth } from './Authentication/AuthContext';
 
 export default function Matches({ userIds }) {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const {messages} = useAuth();
 
     useEffect(() => {
         const findUsers = async () => {
@@ -30,7 +32,7 @@ export default function Matches({ userIds }) {
         };
 
         findUsers();
-    }, [userIds]);
+    }, [userIds, messages]);
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text)
