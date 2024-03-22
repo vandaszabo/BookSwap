@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Button, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import PostEdit from './Components/Forms/PostEdit';
 import Home from './Pages/Home';
@@ -23,6 +23,7 @@ function App() {
   const [selectedPost, setSelectedPost] = useState({});
   const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
+  const [hideChat, setHideChat] = useState(false);
 
 
   //*********-------Filter out your own posts-------*********//
@@ -34,7 +35,7 @@ function App() {
   }, [authUser, bookList]);
 
 
-    //*********-------Set theme-------*********//
+  //*********-------Set theme-------*********//
   const selectedTheme = lightTheme;
 
   const containerStyle = {
@@ -52,17 +53,22 @@ function App() {
           setBookList={setBookList}
           created={created} />
 
-        {authUser && <PrivateChat sendToUser={sendToUser} />}
+        {authUser &&
+          <Box sx={{ textAlign: 'center' }}>
+            {!hideChat && <PrivateChat sendToUser={sendToUser} />}
+            <Button onClick={ () => setHideChat(!hideChat) } > {!hideChat ? "Hide chat" : "Show chat" }</Button>
+          </Box>
+        }
 
         <Routes>
-          <Route path="/" element={<Home setSelectedPost={setSelectedPost}/>} />
+          <Route path="/" element={<Home setSelectedPost={setSelectedPost} />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/books" element={<AllBooks books={othersList} setSelectedPost={setSelectedPost} />} />
-          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost} setEditingPost={setEditingPost}/>} />
+          <Route path="/profile" element={<Profile setSelectedPost={setSelectedPost} setEditingPost={setEditingPost} />} />
           <Route path="/post" element={<SelectedPost book={selectedPost} backPath='/books' />} />
           <Route path="/your-post" element={<SelectedPost book={selectedPost} backPath='/profile' />} />
-          <Route path="/edit-post" element={<PostEdit book={editingPost} /> } />
+          <Route path="/edit-post" element={<PostEdit book={editingPost} />} />
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 

@@ -6,7 +6,7 @@ import SendToUserForm from './SendToUserForm';
 export default function PrivateChat({ sendToUser}){
 
 return(
-    <Container component="main" maxWidth="xs" sx={{ mb: 4, backgroundColor: (theme) => theme.palette.secondary.grey }}>
+    <Container component="main" maxWidth="xs" sx={{ backgroundColor: (theme) => theme.palette.secondary.grey }}>
         <Typography sx={{display: 'flex', justifyContent:'center'}}>Chat</Typography>
         <MessageContainer />
         <SendToUserForm sendToUser={sendToUser}/>

@@ -108,10 +108,11 @@ export default function Filters({ books, setFilteredBooks }) {
                         <em>None</em>
                     </MenuItem>
                     <MenuItem value={"fantasy"}>Fantasy</MenuItem>
-                    <MenuItem value={"scifi"}>Sci-fi</MenuItem>
-                    <MenuItem value={"romantic"}>Romantic</MenuItem>
-                    <MenuItem value={"adventure"}>Adventure</MenuItem>
+                    <MenuItem value={"novel"}>Novel</MenuItem>
                     <MenuItem value={"drama"}>Drama</MenuItem>
+                    <MenuItem value={"scifi"}>Sci-fi</MenuItem>
+                    <MenuItem value={"adventure"}>Adventure</MenuItem>
+                    <MenuItem value={"romantic"}>Romantic</MenuItem>
                     <MenuItem value={"crime"}>Crime</MenuItem>
                     <MenuItem value={"thriller"}>Thriller</MenuItem>
                     <MenuItem value={"biography"}>Biography</MenuItem>
