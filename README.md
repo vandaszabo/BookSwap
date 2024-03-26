@@ -8,7 +8,7 @@ It provides a platform where users can post their books for swapping, browse ava
 - **Book Search**: Browse and search for available books based on location, language, genre, etc.
 - **Book Like**: Users can express interest in books by liking them. Liked books are displayed at their profile.
 - **Mutual Swapping**: Users can swap books with others who have mutually liked each other's posts. Matches also displayed at their profile.
-- **Editable posts and profile**: Users can update details about their books and personal information, or change their pictures.
+- **Post and Profile Editing**: Users can update details about their books and personal information, or change their pictures.
 - **Real-Time Chat**: Integrated chat functionality using SignalR for users to communicate and arrange book exchanges.
 - **Image Storage**: Profile images and book cover photos are stored in AWS S3 bucket for efficient storage and retrieval.
 - **Responsive Design**: Mobile-friendly interface for seamless browsing and interaction across devices.
@@ -25,11 +25,15 @@ It provides a platform where users can post their books for swapping, browse ava
 
 ## Prerequisites
 Before running BookSwap, ensure you have the following:
-Database: Set up a PostgreSQL database to store book and user information. You can host the database on a cloud platform like Render or Amazon RDS.
-AWS S3 Bucket: Create an AWS S3 bucket for storing profile images and book cover photos. Obtain the necessary AWS credentials to access the bucket from your application.
+- **Database**:
+  Set up a PostgreSQL database to store book and user information.
+  You can host the database on a cloud platform like Render or Amazon RDS.
+- **AWS S3 Bucket**:
+  Create an AWS S3 bucket for storing profile images and book cover photos.
+  Obtain the necessary AWS credentials to access the bucket from your application.
 
 ## Configuration
-Environment Variables: 
+- **Environment Variables**: 
 Set up environment variables for database connection string, JWT secret key, AWS secret key, etc., as required in the launchSettings.json file.
 
 ## To run BookSwap locally, follow these steps:
