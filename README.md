@@ -3,15 +3,16 @@ BookSwap is a web application for book enthusiasts to exchange and discover new 
 It provides a platform where users can post their books for swapping, browse available books from other users, and connect with fellow readers for book exchanges.
 
 # Features
-- **User Authentication**: Secure user authentication system using JWT tokens.
-- **Book Posting**: Users can post books they own and are willing to swap.
-- **Book Search**: Browse and search for available books based on location, language, genre, etc.
-- **Book Like**: Users can express interest in books by liking them. Liked books are displayed at their profile.
-- **Mutual Swapping**: Users can swap books with others who have mutually liked each other's posts. Matches also displayed at their profile.
-- **Post and Profile Editing**: Users can update details about their books and personal information, or change their pictures.
-- **Real-Time Chat**: Integrated chat functionality using SignalR for users to communicate and arrange book exchanges.
-- **Image Storage**: Profile images and book cover photos are stored in AWS S3 bucket for efficient storage and retrieval.
-- **Responsive Design**: Mobile-friendly interface for seamless browsing and interaction across devices.
+
+- **User Authentication**: Register and login to access personalized features.
+- **Book Posting**: Users can create and share their book posts with the community.
+- **Book Search**: Browse and search for available books based on various criteria such as location, language, and genre.
+- **Book Like**: Express interest in any book post by liking it. Liked books are conveniently displayed on the user's profile.
+- **Find Match**: Discover potential book swaps with other users who have mutually liked each other's posts.
+- **Post and Profile Editing**: Easily update book posts and personal information, or change profile pictures as needed.
+- **Real-Time Chat**: Seamlessly communicate and arrange book exchanges with matched users through real-time chat functionality.
+- **Image Upload**: Upload profile images and book cover photos to personalize your profile and book posts.
+- **Responsive Design**: Enjoy a consistent and optimized experience across devices, ensuring usability on desktops, tablets, and mobile phones.
 
 # Technologies Used
 - **Backend**: ASP.NET Core Web API with Entity Framework (EF) for data access.
