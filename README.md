@@ -15,12 +15,12 @@ It provides a platform where users can post their books for swapping, browse ava
 - **Responsive Design**: Enjoy a consistent and optimized experience across devices, ensuring usability on desktops, tablets, and mobile phones.
 
 # Technologies Used
-- **Backend**: ASP.NET Core Web API with Entity Framework (EF) for data access.
-- **Database**: PostgreSQL database hosted on the cloud for storing book and user information.
-- **Real-Time Communication**: SignalR for real-time chat functionality.
-- **Frontend**: React.js with Material-UI for building the user interface.
-- **Image Storage**: AWS S3 bucket for storing profile images and book cover photos.
-- **Dockerization**: Dockerized setup for easy deployment and scalability.
+- Backend: **ASP.NET Core Web API** with **Entity Framework** (EF) for data access.
+- Database: **PostgreSQL** database hosted on the cloud for storing book and user information.
+- Real-Time Communication: **SignalR** for real-time chat functionality.
+- Frontend: **React.js** with **Material-UI** for building the user interface.
+- Image Storage: **AWS S3** bucket for storing profile images and book cover photos.
+- Dockerization: **Dockerized** setup for easy deployment and scalability.
 
 # Getting Started
 
