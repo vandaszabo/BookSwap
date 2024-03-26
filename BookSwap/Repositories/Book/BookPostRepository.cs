@@ -1,12 +1,9 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using BookSwap.Contracts;
 using BookSwap.Data;
 using BookSwap.Models;
 using Microsoft.EntityFrameworkCore;
-using JsonSerializerOptions = Amazon.Util.Internal.JsonSerializerOptions;
 
-namespace BookSwap.Repositories;
+namespace BookSwap.Repositories.Book;
 
 public class BookPostRepository : IBookPostRepository
 {

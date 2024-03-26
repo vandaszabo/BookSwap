@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { Typography, Avatar, Box } from '@mui/material';
-import { useAuth } from '../Authentication/AuthContext';
+import { useChat } from './ChatContext';
 
 export default function MessageContainer() {
 
-    const {messages, setMessages} = useAuth();
+    const {messages, setMessages} = useChat();
 
     useEffect(()=>{
+        console.log(messages);
         if(messages.length > 5){
             setMessages((messages) => messages.slice(-5));
         }

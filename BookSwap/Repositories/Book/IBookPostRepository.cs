@@ -1,7 +1,7 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 
-namespace BookSwap.Repositories;
+namespace BookSwap.Repositories.Book;
 
 public interface IBookPostRepository
 {

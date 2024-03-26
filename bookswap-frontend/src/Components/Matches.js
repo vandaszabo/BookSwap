@@ -6,13 +6,13 @@ import { Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { useAuth } from './Authentication/AuthContext';
+import { useChat } from './Chat/ChatContext';
 
 export default function Matches({ userIds }) {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const {messages} = useAuth();
+    const {messages} = useChat();
 
     useEffect(() => {
         const findUsers = async () => {
@@ -85,8 +85,12 @@ export default function Matches({ userIds }) {
                             </Typography>
                             {user.connectionID && (
                                 <Box>
-                                    Copy ID
+                                    Copy ConnectionID
                                     <Button sx={{cursor: 'pointer'}} onClick={() => copyToClipboard(user.connectionID)}>
+                                        <ContentCopyIcon />
+                                    </Button>
+                                    Copy UserID
+                                    <Button sx={{cursor: 'pointer'}} onClick={() => copyToClipboard(user.id)}>
                                         <ContentCopyIcon />
                                     </Button>
                                 </Box>

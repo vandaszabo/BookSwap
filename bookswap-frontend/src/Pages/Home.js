@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Advert from '../Components/Shared/Advert';
@@ -43,9 +43,40 @@ const Home = ({ setSelectedPost }) => {
     <React.Fragment>
       {!authUser ? (navigate('/login')) : (
         <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
-          <Container sx={{ backgroundColor: (theme) => theme.palette.secondary.beige, minHeight: '100vh' }}>
+          <Container sx={{ backgroundColor: (theme) => theme.palette.secondary.grey, minHeight: '100vh' }}>
             <Box>
-              {popularBook && !loading &&
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  minHeight: '50vh',
+                  color: (theme) => theme.palette.primary.main,
+                  py: 8, 
+                  px: 4, 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                <Typography variant='h3' sx={{ color: (theme) => theme.palette.secondary.main, mb: 2 }}>
+                  Book Swap
+                </Typography>
+                <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 4 }}>
+                  Your premier destination for sharing the magic of literature!
+                </Typography>
+                <Typography variant='body1' sx={{ mb: 4 }}>
+                  Our platform connects book lovers worldwide, facilitating the exchange of beloved books among enthusiasts. Whether you're seeking a thrilling mystery, a heartwarming romance, or an insightful memoir, Book Swap offers a diverse array of titles waiting to find new homes.
+                </Typography>
+                <Typography variant='body1' sx={{ mb: 4 }}>
+                  Say goodbye to cluttered bookshelves and hello to new literary adventures. Join our community today and embark on a journey of discovery through the pages of your next favorite read.
+                </Typography>
+                <Typography variant='body1'>
+                  Happy swapping!
+                </Typography>
+              </Box>
+
+              {!loading &&
                 <Grid container spacing={4}>
                   {/* Card 1*/}
                   <Advert
@@ -56,13 +87,14 @@ const Home = ({ setSelectedPost }) => {
                     path={'/create'}
                   />
                   {/* Card 2*/}
+                  {popularBook && 
                   <Advert
                     title={"Most Popular"}
                     description={`${popularBook.title} - ${popularBook.author}`}
                     buttonText={"View"}
                     image={popularBook.coverImage}
                     path={'/post'}
-                  />
+                  />}
                   {/* Card 3*/}
                   <Advert
                     title={"Get a Book for Free!"}

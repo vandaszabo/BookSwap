@@ -1,9 +1,21 @@
+using BookSwap.Contracts;
+using BookSwap.Models;
+using BookSwap.Repositories.Messages;
+using BookSwap.Services.Messages;
 using Microsoft.AspNetCore.SignalR;
 
 namespace BookSwap.Hubs;
 
 public class ChatHub : Hub
 {
+
+    private readonly IMessageService _messageService;
+
+    public ChatHub(IMessageService messageService)
+    {
+        _messageService = messageService;
+    }
+    
     //private readonly SharedDb _shared;
     //public ChatHub(SharedDb shared) => _shared = shared;
     
@@ -33,9 +45,11 @@ public class ChatHub : Hub
     //     }
     // }
 
-    public async Task SendToUser(string userImage, string receiverConnId, string msg)
+    public async Task SendToUser(string userId, string userImage, string receiverConnId, string receiverId, string msg)
     {
         await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", userImage, msg);
+        var message = new Message{SenderId = userId, ReceiverId = receiverId, MessageText = msg};
+        await _messageService.CreateMessage(message);
     }
 
     public string GetConnectionId()

@@ -1,6 +1,6 @@
 using BookSwap.Models;
 
-namespace BookSwap.Repositories;
+namespace BookSwap.Repositories.User;
 
 public interface IUserRepository
 {

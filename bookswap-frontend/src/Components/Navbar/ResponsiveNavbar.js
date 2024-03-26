@@ -8,6 +8,7 @@ import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip
 import { useAuth } from '../Authentication/AuthContext';
 import SearchInput from './SearchInput';
 import { fetchBookListData } from '../../Utils/BookFunctions';
+import { useChat } from '../Chat/ChatContext';
 
 //*********-------Main function for Navbar-------*********//
 function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
@@ -16,7 +17,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
 
-    const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn, closeChatConnection } = useAuth();
+    const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
+    const {closeChatConnection} = useChat();
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const navigate = useNavigate();
 

@@ -15,9 +15,11 @@ import ResponsiveNavbar from './Components/Navbar/ResponsiveNavbar';
 import { useAuth } from './Components/Authentication/AuthContext';
 import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
+import { useChat } from './Components/Chat/ChatContext';
 
 function App() {
-  const { authUser, sendToUser } = useAuth();
+  const { authUser } = useAuth();
+  const {sendToUser} = useChat();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -28,7 +30,7 @@ function App() {
 
   //*********-------Filter out your own posts-------*********//
   useEffect(() => {
-    if (authUser) {
+    if (authUser && bookList) {
       const updatedOthersList = bookList.filter(book => book.userId !== authUser.id);
       setOthersList(updatedOthersList);
     }

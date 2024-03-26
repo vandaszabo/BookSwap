@@ -3,7 +3,7 @@ using BookSwap.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookSwap.Repositories;
+namespace BookSwap.Repositories.User;
 
 public class UserRepository : IUserRepository
 {
@@ -20,6 +20,11 @@ public class UserRepository : IUserRepository
     {
         return await _userManager.FindByIdAsync(userId);
     }
+    
+    // public async Task<ApplicationUser?> FindByImage(string userImage)
+    // {
+    //     return await _dbContext.AppUsers.FirstOrDefaultAsync(appUser => appUser.ProfileImage == userImage);
+    // }
     
     public async Task<IEnumerable<ApplicationUser>> GetAll()
     {

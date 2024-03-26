@@ -1,6 +1,8 @@
 using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Repositories;
+using BookSwap.Repositories.Book;
+using BookSwap.Repositories.User;
 
 
 namespace BookSwap.Services.Like;

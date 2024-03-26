@@ -1,4 +1,4 @@
-import { React, useState} from 'react';
+import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -10,11 +10,13 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from './AuthContext';
+import { useChat } from '../Chat/ChatContext';
 
 //*********-------main function for Login-------*********//
 export default function SignIn() {
 
-  const { setAuthUser, setIsLoggedIn, openChatConnection } = useAuth();
+  const { setAuthUser, setIsLoggedIn } = useAuth();
+  const { openChatConnection } = useChat();
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -49,7 +51,7 @@ export default function SignIn() {
       if (responseData.user && responseData.user.id) {
         setError(null);
         console.log("login user: ", responseData.user, "token: ", responseData.token);
-        
+
         setAuthUser(responseData.user);
         localStorage.setItem('authUser', JSON.stringify(responseData.user));
         setIsLoggedIn(true);

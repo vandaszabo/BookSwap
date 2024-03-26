@@ -7,19 +7,22 @@ import { useAuth } from '../Authentication/AuthContext';
 const SendToUserForm = ({sendToUser}) =>{
     const [msg, setMessage] = useState('');
     const [receiverConnId, setReceiverConnId] = useState('');
+    const [receiverId, setReceiverId] = useState('');
     const {authUser} = useAuth();
 
     const handleSend = (e) =>{
         e.preventDefault();
-        sendToUser(authUser.profileImage, receiverConnId, msg);
+        sendToUser(authUser.id, authUser.profileImage, receiverConnId, receiverId, msg);
         setMessage('');
-        setReceiverConnId('');
+        // setReceiverConnId('');
+        // setReceiverId('');
     };
 
 
     return(
         <Box component="form" onSubmit={handleSend}>
         <TextField onChange={ (e) => setReceiverConnId(e.target.value) } type='text' value={receiverConnId} placeholder="Add receiver connection ID" fullWidth></TextField>
+        <TextField onChange={ (e) => setReceiverId(e.target.value) } type='text' value={receiverId} placeholder="Add receiver Id" fullWidth></TextField>
         <TextField onChange={ (e) => setMessage(e.target.value) } type='text' value={msg} placeholder="Enter a message" fullWidth></TextField>
         <Button
             type="submit"

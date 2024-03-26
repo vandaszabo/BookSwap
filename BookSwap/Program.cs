@@ -3,10 +3,14 @@ using BookSwap.Data;
 using BookSwap.Hubs;
 using BookSwap.Models;
 using BookSwap.Repositories;
+using BookSwap.Repositories.Book;
+using BookSwap.Repositories.Messages;
+using BookSwap.Repositories.User;
 using BookSwap.Services.Authentication;
 using BookSwap.Services.Book;
 using BookSwap.Services.File;
 using BookSwap.Services.Like;
+using BookSwap.Services.Messages;
 using BookSwap.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -92,10 +96,13 @@ public class Program
             builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<ILikeService, LikeService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
