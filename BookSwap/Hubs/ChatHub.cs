@@ -2,6 +2,8 @@ using BookSwap.Contracts;
 using BookSwap.Models;
 using BookSwap.Repositories.Messages;
 using BookSwap.Services.Messages;
+using BookSwap.Services.User;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.SignalR;
 
 namespace BookSwap.Hubs;
@@ -10,10 +12,12 @@ public class ChatHub : Hub
 {
 
     private readonly IMessageService _messageService;
+    private readonly IUserService _userService;
 
-    public ChatHub(IMessageService messageService)
+    public ChatHub(IMessageService messageService, IUserService userService)
     {
         _messageService = messageService;
+        _userService = userService;
     }
     
     //private readonly SharedDb _shared;
@@ -45,10 +49,17 @@ public class ChatHub : Hub
     //     }
     // }
 
-    public async Task SendToUser(string userId, string userImage, string receiverConnId, string receiverId, string msg)
+    public async Task GetClientConnectionId(MessageRequest request)
     {
-        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", userImage, msg);
-        var message = new Message{SenderId = userId, ReceiverId = receiverId, MessageText = msg};
+        var user = await _userService.GetUserById(request.ReceiverId);
+        await Clients.All
+            .SendAsync("GetConnectionId", "admin", $"Client Id: {user?.ConnectionID}");
+    }
+    
+    public async Task SendToUser(MessageRequest request)
+    {
+        await Clients.Client(request.ReceiverConnId).SendAsync("ReceivePrivateMessage", request.UserImage, request.Msg);
+        var message = new Message{SenderId = request.UserId, ReceiverId = request.ReceiverId, MessageText = request.Msg};
         await _messageService.CreateMessage(message);
     }
 
