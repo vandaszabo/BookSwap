@@ -57,7 +57,8 @@ function App() {
 
         {messages.length > 0 || receiverId || receiverName ? (
           <Box sx={{ textAlign: 'center' }}>
-            <PrivateChat sendToUser={sendToUser} />
+            {!hideChat && 
+            <PrivateChat sendToUser={sendToUser} />}
             <Button onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
           </Box>
         ) : null}

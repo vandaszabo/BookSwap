@@ -58,7 +58,7 @@ public class ChatHub : Hub
     
     public async Task SendToUser(MessageRequest request, string receiverConnId)
     {
-        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", request.UserImage, request.Msg);
+        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", request.UserImage, request.UserName, request.Msg);
         var message = new Message{SenderId = request.UserId, ReceiverId = request.ReceiverId, MessageText = request.Msg};
         await _messageService.CreateMessage(message);
     }

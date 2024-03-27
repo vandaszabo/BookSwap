@@ -15,13 +15,13 @@ function ChatProvider(props) {
     const [receiverId, setReceiverId] = useState('');
     const [receiverName, setReceiverName] = useState('');
     const { authUser } = useAuth();
-    const userId = authUser.id;
+    
 
     useEffect(() => {
         const storedConnectionId = localStorage.getItem('senderConnectionId');
         if (storedConnectionId) {
             const initializeConnection = async () => {
-                await createConnection(userId);
+                await createConnection(authUser.id);
             };
 
             initializeConnection();
@@ -36,9 +36,9 @@ function ChatProvider(props) {
                 .build();
 
             //Handle message sending-receiving
-            newConn.on("ReceivePrivateMessage", (userImage, msg) => {
+            newConn.on("ReceivePrivateMessage", (senderImage, senderName, msg) => {
                 console.log("Received message:", msg);
-                setMessages((messages) => [...messages, { userImage, msg }]);
+                setMessages((messages) => [...messages, { senderImage, senderName, msg }]);
             });
 
             //Get Receiver connection Id from db
@@ -94,7 +94,7 @@ function ChatProvider(props) {
         }
     };
 
-    const sendToUser = async (requestData, detailData) => {
+    const sendToUser = async (requestData) => {
         try {
             if (conn) {
                 await conn.invoke("GetClientConnectionId", requestData.receiverId)
@@ -103,11 +103,11 @@ function ChatProvider(props) {
                 setMessages((messages) => 
                 [...messages, 
                 {
-                    userId: requestData.userId, 
-                    userImage: requestData.userImage,
-                    userName: detailData.userName,
-                    receiverName: detailData.receiverName,
-                    receiverId: detailData.receiverId,
+                    senderId: requestData.userId, 
+                    senderName: requestData.userName,
+                    senderImage: requestData.userImage,
+                    receiverId: requestData.receiverId,
+                    receiverName: requestData.receiverName,
                     msg: requestData.msg 
                 }]);
             }

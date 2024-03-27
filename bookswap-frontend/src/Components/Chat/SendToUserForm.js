@@ -14,19 +14,15 @@ const SendToUserForm = ({ sendToUser }) => {
     try {
       const requestData = {
         userId: authUser.id,
+        userName: authUser.userName,
         userImage: authUser.profileImage,
         receiverId: receiverId,
-        msg: msg
-      };
-
-      const detailData = {
-        userName: authUser.userName,
         receiverName: receiverName,
-        receiverId: receiverId,
+        msg: msg,
       };
 
       e.preventDefault();
-      sendToUser(requestData, detailData);
+      sendToUser(requestData);
       setMessage('');
 
     } catch (error) {

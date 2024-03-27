@@ -37,11 +37,14 @@ const Home = ({ setSelectedPost }) => {
     findMostPopular();
   }, [setSelectedPost]);
 
-
+useEffect(()=>{
+if(!authUser){
+  navigate('/login');
+}
+},[authUser]);
 
   return (
     <React.Fragment>
-      {!authUser ? (navigate('/login')) : (
         <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
           <Container sx={{ backgroundColor: (theme) => theme.palette.secondary.grey, minHeight: '100vh' }}>
             <Box>
@@ -85,7 +88,6 @@ const Home = ({ setSelectedPost }) => {
             </Box>
           </Container>
         </Container>
-      )}
     </React.Fragment>
   );
 }
