@@ -16,6 +16,7 @@ import { useAuth } from './Components/Authentication/AuthContext';
 import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 import { useChat } from './Components/Chat/ChatContext';
+import { chatBoxStyle, containerStyle } from './Style/Styles';
 
 function App() {
   const { authUser } = useAuth();
@@ -36,25 +37,8 @@ function App() {
     }
   }, [authUser, bookList]);
 
-
-  //*********-------Set theme-------*********//
-  const selectedTheme = lightTheme;
-
-  const containerStyle = {
-    backgroundColor: selectedTheme.palette.primary.light,
-    minHeight: '100vh',
-  };
-
-  const chatBoxStyle = {
-    position: 'fixed',
-    bottom: 0,
-    right: 0,
-    textAlign: 'center',
-    zIndex: 1000,
-  };
-
   return (
-    <ThemeProvider theme={selectedTheme}>
+    <ThemeProvider theme={lightTheme}>
       <div style={containerStyle}>
         <CssBaseline />
 
