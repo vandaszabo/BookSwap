@@ -6,7 +6,6 @@ import { useAuth } from '../Authentication/AuthContext';
 
 const SendToUserForm = ({ sendToUser }) => {
   const [msg, setMessage] = useState('');
-  const [receiverConnId, setReceiverConnId] = useState('');
   const [receiverId, setReceiverId] = useState('');
   const { authUser } = useAuth();
 
@@ -15,7 +14,6 @@ const SendToUserForm = ({ sendToUser }) => {
       const requestData = {
         userId: authUser.id,
         userImage: authUser.profileImage,
-        receiverConnId: receiverConnId,
         receiverId: receiverId,
         msg: msg
       };
@@ -24,7 +22,6 @@ const SendToUserForm = ({ sendToUser }) => {
       e.preventDefault();
       sendToUser(requestData);
       setMessage('');
-      // setReceiverConnId('');
       // setReceiverId('');
 
     } catch (error) {
@@ -35,7 +32,6 @@ const SendToUserForm = ({ sendToUser }) => {
 
   return (
     <Box component="form" onSubmit={handleSend}>
-      <TextField onChange={(e) => setReceiverConnId(e.target.value)} type='text' value={receiverConnId} placeholder="Add receiver connection ID" fullWidth></TextField>
       <TextField onChange={(e) => setReceiverId(e.target.value)} type='text' value={receiverId} placeholder="Add receiver Id" fullWidth></TextField>
       <TextField onChange={(e) => setMessage(e.target.value)} type='text' value={msg} placeholder="Enter a message" fullWidth></TextField>
       <Button

@@ -49,21 +49,21 @@ public class ChatHub : Hub
     //     }
     // }
 
-    public async Task GetClientConnectionId(MessageRequest request)
+    public async Task GetClientConnectionId(string receiverId)
     {
-        var user = await _userService.GetUserById(request.ReceiverId);
+        var user = await _userService.GetUserById(receiverId);
         await Clients.All
-            .SendAsync("GetConnectionId", "admin", $"Client Id: {user?.ConnectionID}");
+            .SendAsync("GetConnectionId", "admin", user?.ConnectionID);
     }
     
-    public async Task SendToUser(MessageRequest request)
+    public async Task SendToUser(MessageRequest request, string receiverConnId)
     {
-        await Clients.Client(request.ReceiverConnId).SendAsync("ReceivePrivateMessage", request.UserImage, request.Msg);
+        await Clients.Client(receiverConnId).SendAsync("ReceivePrivateMessage", request.UserImage, request.Msg);
         var message = new Message{SenderId = request.UserId, ReceiverId = request.ReceiverId, MessageText = request.Msg};
         await _messageService.CreateMessage(message);
     }
 
-    public string GetConnectionId()
+    public string GetOwnConnectionId()
     {
        return Context.ConnectionId;
     }

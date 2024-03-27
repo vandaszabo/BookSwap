@@ -15,66 +15,56 @@ function ChatProvider(props) {
     const { authUser } = useAuth();
 
     useEffect(() => {
-        const storedConnectionId = localStorage.getItem('connectionId');
+        const storedConnectionId = localStorage.getItem('senderConnectionId');
         if (storedConnectionId) {
-            const conn = new HubConnectionBuilder()
+            const userId = authUser.id;
+            const initializeConnection = async () => {
+                await createConnection(userId);
+            };
+
+            initializeConnection();
+        }
+    }, []);
+
+    const createConnection = async (userId) => {
+        try {
+            const newConn = new HubConnectionBuilder()
                 .withUrl("http://localhost:5029/Chat")
                 .configureLogging(LogLevel.Information)
                 .build();
 
-            conn.on("ReceivePrivateMessage", (userImage, msg) => {
+            //Handle message sending-receiving
+            newConn.on("ReceivePrivateMessage", (userImage, msg) => {
                 console.log("Private msg: ", userImage, msg);
                 setMessages((messages) => [...messages, { userImage, msg }]);
-
-            conn.on("GetConnectionId", (user, connectionId) => {
-                console.log("GetClientConnId: ", user, connectionId);
-                });
             });
-            conn.start()
-                .then(() => {
-                    setConnection(conn)
-                })
-                .then(async () => {
-                    const userId = authUser.id;
-                    try {
-                        const connId = await conn.invoke("GetConnectionId");
-                        localStorage.setItem('connectionId', connId);
-                        console.log("connectionid: ", connId);
-                        updateConnID(userId, connId);
-                    } catch (error) {
-                        console.error(error);
-                    }
-                }).catch((error) => {
-                    console.error(error);
-                });
+
+            //Get Receiver connection Id from db
+            newConn.on("GetConnectionId", (user, connectionId) => {
+                console.log("GetClientConnId: ", user, connectionId);
+                localStorage.setItem("receiverConnectionId", connectionId);
+            });
+
+            //Start connection
+            await newConn.start();
+
+            //Get own connection Id and Update it in db
+            const connId = await newConn.invoke("GetOwnConnectionId");
+            console.log("own connectionid: ", connId);
+            await updateConnID(userId, connId);
+            localStorage.setItem('senderConnectionId', connId);
+            setConnection(newConn);
+        } catch (error) {
+            console.error(error);
         }
-    }, []);
+    };
+
 
     const openChatConnection = async (userId) => {
         try {
             if (!conn) {
-                const newConn = new HubConnectionBuilder()
-                    .withUrl("http://localhost:5029/Chat")
-                    .configureLogging(LogLevel.Information)
-                    .build();
-
-                newConn.on("ReceivePrivateMessage", (userImage, msg) => {
-                    console.log("Private msg: ", userImage, msg);
-                    setMessages((messages) => [...messages, { userImage, msg }]);
-                });
-                
-                newConn.on("GetConnectionId", (user, connectionId) => {
-                    console.log("GetClientConnId: ", user, connectionId);
-                });
-
-                await newConn.start();
-                const connId = await newConn.invoke("GetConnectionId");
-                console.log("connectionid: ", connId);
-                await updateConnID(userId, connId);
-                setConnection(newConn);
-                localStorage.setItem('connectionId', connId);
+                await createConnection(userId);
             }
-
         } catch (error) {
             console.error(error);
         }
@@ -97,7 +87,8 @@ function ChatProvider(props) {
                 setConnection(null);
                 await updateConnID(userId, null);
                 setMessages([]);
-                localStorage.removeItem('connectionId');
+                localStorage.removeItem('senderConnectionId');
+                localStorage.removeItem('receiverConnectionId');
             }
         } catch (error) {
             console.error(error);
@@ -107,9 +98,9 @@ function ChatProvider(props) {
     const sendToUser = async (data) => {
         try {
             if (conn) {
-                await conn.invoke("GetClientConnectionId", data)
-                await conn.invoke("SendToUser", data);
-
+                await conn.invoke("GetClientConnectionId", data.receiverId)
+                const receiverConnId = localStorage.getItem("receiverConnectionId");
+                await conn.invoke("SendToUser", data, receiverConnId);
                 setMessages((messages) => [...messages, { userImage: data.userImage, msg: data.msg }]);
             }
         } catch (error) {
