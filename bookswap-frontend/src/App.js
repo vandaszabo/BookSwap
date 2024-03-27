@@ -19,7 +19,7 @@ import { useChat } from './Components/Chat/ChatContext';
 import { chatBoxStyle, containerStyle } from './Style/Styles';
 
 function App() {
-  const { authUser } = useAuth();
+  const { authUser, isLoggedIn } = useAuth();
   const { sendToUser, receiverId, receiverName, messages } = useChat();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
@@ -59,9 +59,9 @@ function App() {
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
-        {messages.length > 0 || receiverId || receiverName ? (
+        {messages.length > 0 || receiverName ? (
           <Box sx={chatBoxStyle}>
-            {!hideChat && 
+            {!hideChat && isLoggedIn &&
             <PrivateChat sendToUser={sendToUser} />}
             <Button variant='outlined' sx={{backgroundColor: (theme)=> theme.palette.primary.fair, minWidth: '100%'}} onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
           </Box>

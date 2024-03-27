@@ -6,24 +6,42 @@ import { useChat } from './ChatContext';
 import { useAuth } from '../Authentication/AuthContext';
 
 export default function PrivateChat({ sendToUser }) {
-    const { setReceiverId, messages, receiverName, setReceiverName } = useChat();
+    const { setReceiverId, messages, setMessages, receiverName, setReceiverName } = useChat();
     const { authUser } = useAuth();
     const clientNameRef = useRef(receiverName);
 
+    //clientNameRef gets updated whenever receiverName changes
     useEffect(() => {
-        if (messages.length > 0) {
-            const clientId = messages[messages.length - 1].senderId;
-            const clientName = messages[messages.length - 1].senderName;
-            console.log("Client id: ", clientId);
-            console.log("Clientname: ", clientName);
-            console.log("ReceiverName: ", receiverName);
-            if (clientId !== authUser.id) {
-                setReceiverId(clientId);
-                setReceiverName(clientName);
-                clientNameRef.current = clientName; // Update the ref with new value
+        clientNameRef.current = receiverName;
+    }, [receiverName]);
+
+    useEffect(() => {
+        // Filter out the user's own messages
+        const filtered = messages.filter(message => message.senderId !== authUser.id);
+    
+        if (filtered.length > 1) { // Check if there are at least 2 non-user messages
+            const lastSenderId = filtered[filtered.length - 1].senderId;
+            const secondLastSenderId = filtered[filtered.length - 2].senderId;
+    
+            if (lastSenderId !== secondLastSenderId) { // Check if last two messages are from different senders
+                const currentSenderId = filtered[filtered.length - 1].senderId;
+                // Filter out all messages except the last one from the current sender
+                const clearedMessages = filtered.filter(message => message.senderId === currentSenderId);
+                setMessages(clearedMessages);
+                setReceiverId(currentSenderId);
+                setReceiverName(filtered[filtered.length - 1].senderName);
+                clientNameRef.current = filtered[filtered.length - 1].senderName;
             }
+        } else if (filtered.length === 1) { // If there's only one non-user message
+            const clientId = filtered[0].senderId;
+            const clientName = filtered[0].senderName;
+            setReceiverId(clientId);
+            setReceiverName(clientName);
+            clientNameRef.current = clientName;
         }
-    }, [messages, authUser.id, setReceiverId, receiverName, setReceiverName]);
+    }, [messages, authUser.id, setReceiverId, setReceiverName, setMessages]);
+    
+    
 
     return (
         <Container component="main" maxWidth="xs" sx={{ backgroundColor: (theme) => theme.palette.primary.fair }}>
