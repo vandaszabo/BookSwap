@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { updateUserConnection } from '../../Utils/UserFunctions';
 import { useAuth } from '../Authentication/AuthContext';
@@ -16,19 +16,7 @@ function ChatProvider(props) {
     const [receiverName, setReceiverName] = useState('');
     const { authUser } = useAuth();
     
-
-    useEffect(() => {
-        const storedConnectionId = localStorage.getItem('senderConnectionId');
-        if (storedConnectionId) {
-            const initializeConnection = async () => {
-                await createConnection(authUser.id);
-            };
-
-            initializeConnection();
-        }
-    }, []);
-
-    const createConnection = async (userId) => {
+    const createConnection = useCallback(async (userId) => {
         try {
             const newConn = new HubConnectionBuilder()
                 .withUrl("http://localhost:5029/Chat")
@@ -57,7 +45,18 @@ function ChatProvider(props) {
         } catch (error) {
             console.error(error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        const storedConnectionId = localStorage.getItem('senderConnectionId');
+        if (authUser && authUser.id && storedConnectionId) {
+            const initializeConnection = async () => {
+                await createConnection(authUser.id);
+            };
+
+            initializeConnection();
+        }
+    }, [authUser, createConnection]);
 
 
     const openChatConnection = async (userId) => {
