@@ -20,7 +20,7 @@ import { chatBoxStyle, containerStyle } from './Style/Styles';
 
 function App() {
   const { authUser, isLoggedIn } = useAuth();
-  const { sendToUser, receiverId, receiverName, messages } = useChat();
+  const { sendToUser, receiverName, messages } = useChat();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -36,6 +36,10 @@ function App() {
       setOthersList(updatedOthersList);
     }
   }, [authUser, bookList]);
+
+  useEffect(()=>{
+    setHideChat(false);
+  },[messages]);
 
   return (
     <ThemeProvider theme={lightTheme}>
