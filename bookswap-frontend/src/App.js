@@ -45,6 +45,14 @@ function App() {
     minHeight: '100vh',
   };
 
+  const chatBoxStyle = {
+    position: 'fixed',
+    bottom: 0,
+    right: 0,
+    textAlign: 'center',
+    zIndex: 1000,
+  };
+
   return (
     <ThemeProvider theme={selectedTheme}>
       <div style={containerStyle}>
@@ -54,15 +62,6 @@ function App() {
           setSelectedPost={setSelectedPost}
           setBookList={setBookList}
           created={created} />
-
-        {messages.length > 0 || receiverId || receiverName ? (
-          <Box sx={{ textAlign: 'center' }}>
-            {!hideChat && 
-            <PrivateChat sendToUser={sendToUser} />}
-            <Button onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
-          </Box>
-        ) : null}
-
 
         <Routes>
           <Route path="/" element={<Home setSelectedPost={setSelectedPost} />} />
@@ -76,6 +75,13 @@ function App() {
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
+        {messages.length > 0 || receiverId || receiverName ? (
+          <Box sx={chatBoxStyle}>
+            {!hideChat && 
+            <PrivateChat sendToUser={sendToUser} />}
+            <Button variant='outlined' sx={{backgroundColor: (theme)=> theme.palette.secondary.grey, minWidth: '100%'}} onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
+          </Box>
+        ) : null}
       </div>
     </ThemeProvider>
   );

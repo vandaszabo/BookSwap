@@ -1,27 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Grid } from '@mui/material';
 import { Typography, Avatar, Box } from '@mui/material';
 import { useChat } from './ChatContext';
+import { useAuth } from '../Authentication/AuthContext';
 
 export default function MessageContainer() {
+    const { messages } = useChat();
+    const messagesEndRef = useRef(null);
+    const {authUser} = useAuth();
 
-    const {messages, setMessages} = useChat();
+    // Scroll to the bottom of the container when messages change
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
-    useEffect(()=>{
-        console.log(messages);
-        if(messages.length > 5){
-            setMessages((messages) => messages.slice(-5));
-        }
-    },[messages, setMessages]);
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     return (
-        <div>
+        <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
             <Grid>
                 {messages && messages.map((msg, index) => (
                     <Grid item key={index}>
-                        {msg.senderName && !msg.senderImage ?
-                            <Typography>{msg.senderName} - {msg.msg} </Typography>
-                            :
+                        {msg.senderId === authUser.id ? (
+                            <Box display="flex" alignItems="center" justifyContent="flex-end">
+                                <Avatar
+                                    alt="user"
+                                    src={msg.senderImage
+                                        ? msg.senderImage
+                                        : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
+                                />
+                                <Box sx={{ backgroundColor: (theme) => theme.palette.primary.main, color: (theme) => theme.palette.primary.light, pr: '10px', pl: '10px', ml: '5px', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
+                                    <Typography>{msg.msg}</Typography>
+                                </Box>
+                            </Box>
+                        ) : (
                             <Box display="flex" alignItems="center">
                                 <Avatar
                                     alt="user"
@@ -29,11 +43,14 @@ export default function MessageContainer() {
                                         ? msg.senderImage
                                         : "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"}
                                 />
-                                <Box sx={{ backgroundColor: (theme) => theme.palette.primary.main, color: (theme) => theme.palette.primary.light, pr: '10px', pl: '10px', ml:'5px', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}><Typography>  {msg.msg} </Typography></Box>
-                                
-                            </Box>}
+                                <Box sx={{ backgroundColor: (theme) => theme.palette.primary.main, color: (theme) => theme.palette.primary.light, pr: '10px', pl: '10px', ml: '5px', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
+                                    <Typography>{msg.msg}</Typography>
+                                </Box>
+                            </Box>
+                        )}
                     </Grid>
                 ))}
+                <div ref={messagesEndRef} />
             </Grid>
         </div>
     );

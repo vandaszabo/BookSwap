@@ -38,6 +38,7 @@ const SendToUserForm = ({ sendToUser }) => {
         type="submit"
         variant="contained"
         color="primary"
+        fullWidth
         disabled={!msg}
         sx={{
           mt: 3,

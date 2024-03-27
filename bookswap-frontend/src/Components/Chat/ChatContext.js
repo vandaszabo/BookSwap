@@ -36,9 +36,9 @@ function ChatProvider(props) {
                 .build();
 
             //Handle message sending-receiving
-            newConn.on("ReceivePrivateMessage", (senderImage, senderName, msg) => {
+            newConn.on("ReceivePrivateMessage", (senderImage, senderName, senderId, msg) => {
                 console.log("Received message:", msg);
-                setMessages((messages) => [...messages, { senderImage, senderName, msg }]);
+                setMessages((messages) => [...messages, { senderImage, senderName, senderId, msg }]);
             });
 
             //Get Receiver connection Id from db

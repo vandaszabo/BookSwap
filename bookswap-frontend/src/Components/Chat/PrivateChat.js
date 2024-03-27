@@ -14,9 +14,10 @@ export default function PrivateChat({ sendToUser}){
     useEffect(()=>{
         if(messages.length > 0){
             const clientId = messages[messages.length-1].senderId;
-            console.log("Clientname: ",clientName);
-            console.log("ReceiverName: ",receiverName);
             clientName = messages[messages.length-1].senderName;
+                console.log("Client id: ", clientId);
+                console.log("Clientname: ", clientName);
+                console.log("ReceiverName: ", receiverName);
             if(clientId !== authUser.id){
                 setReceiverId(clientId)
                 setReceiverName(clientName);
