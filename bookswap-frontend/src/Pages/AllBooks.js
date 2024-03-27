@@ -42,7 +42,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                             color: (theme) => theme.palette.primary.main,
                             backgroundColor: (theme) => theme.palette.secondary.beige,
                             alignItems: 'center',
-                            '@media (max-width: 600px)': {
+                            '@media (maxWidth: 600px)': {
                                 flexDirection: 'column-reverse', // Stack image below text on smaller screens
                                 height: 'auto',
                             },
@@ -94,16 +94,16 @@ export default function AllBooks({ books, setSelectedPost }) {
                                     width: '80%',
                                     height: 'auto',
                                     display: 'block',
-                                    '@media (min-width:0px) and (orientation: landscape)': {
+                                    '@media (minWidth:0px) and (orientation: landscape)': {
                                         maxHeight: '30vh', // Adjust as needed for xs landscape
                                     },
-                                    '@media (min-width:600px)': {
+                                    '@media (minWidth:600px)': {
                                         maxHeight: '40vh', // Increase size for sm screens
                                     },
-                                    '@media (min-width:960px)': {
+                                    '@media (minWidth:960px)': {
                                         maxHeight: '40vh',
                                     },
-                                    '@media (min-width:1280px)': {
+                                    '@media (minWidth:1280px)': {
                                         maxHeight: '40vh',
                                     },
                                 }}

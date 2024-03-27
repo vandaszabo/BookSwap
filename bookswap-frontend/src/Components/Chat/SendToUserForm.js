@@ -3,10 +3,11 @@ import { React, useState } from 'react';
 import { Box } from '@mui/material';
 import { Button } from '@mui/material';
 import { useAuth } from '../Authentication/AuthContext';
+import { useChat } from './ChatContext';
 
 const SendToUserForm = ({ sendToUser }) => {
   const [msg, setMessage] = useState('');
-  const [receiverId, setReceiverId] = useState('');
+  const { receiverId, receiverName } = useChat();
   const { authUser } = useAuth();
 
   const handleSend = (e) => {
@@ -17,12 +18,16 @@ const SendToUserForm = ({ sendToUser }) => {
         receiverId: receiverId,
         msg: msg
       };
-      console.log("request data:", requestData);
+
+      const detailData = {
+        userName: authUser.userName,
+        receiverName: receiverName,
+        receiverId: receiverId,
+      };
 
       e.preventDefault();
-      sendToUser(requestData);
+      sendToUser(requestData, detailData);
       setMessage('');
-      // setReceiverId('');
 
     } catch (error) {
       console.error("Cannot send message");
@@ -32,7 +37,6 @@ const SendToUserForm = ({ sendToUser }) => {
 
   return (
     <Box component="form" onSubmit={handleSend}>
-      <TextField onChange={(e) => setReceiverId(e.target.value)} type='text' value={receiverId} placeholder="Add receiver Id" fullWidth></TextField>
       <TextField onChange={(e) => setMessage(e.target.value)} type='text' value={msg} placeholder="Enter a message" fullWidth></TextField>
       <Button
         type="submit"

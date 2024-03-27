@@ -19,7 +19,7 @@ import { useChat } from './Components/Chat/ChatContext';
 
 function App() {
   const { authUser } = useAuth();
-  const {sendToUser} = useChat();
+  const { sendToUser, receiverId, receiverName, messages } = useChat();
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -55,12 +55,13 @@ function App() {
           setBookList={setBookList}
           created={created} />
 
-        {authUser &&
+        {messages.length > 0 || receiverId || receiverName ? (
           <Box sx={{ textAlign: 'center' }}>
-            {!hideChat && <PrivateChat sendToUser={sendToUser} />}
-            <Button onClick={ () => setHideChat(!hideChat) } > {!hideChat ? "Hide chat" : "Show chat" }</Button>
+            <PrivateChat sendToUser={sendToUser} />
+            <Button onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
           </Box>
-        }
+        ) : null}
+
 
         <Routes>
           <Route path="/" element={<Home setSelectedPost={setSelectedPost} />} />

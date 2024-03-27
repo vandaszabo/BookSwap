@@ -19,7 +19,7 @@ export default function MessageContainer() {
             <Grid>
                 {messages && messages.map((msg, index) => (
                     <Grid item key={index}>
-                        {msg.userName ?
+                        {msg.userName && !msg.userImage ?
                             <Typography>{msg.userName} - {msg.msg} </Typography>
                             :
                             <Box display="flex" alignItems="center">

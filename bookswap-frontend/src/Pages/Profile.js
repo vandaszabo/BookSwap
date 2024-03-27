@@ -29,7 +29,7 @@ import Album from '../Components/Books/Album';
 import Matches from '../Components/Matches';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile({ setSelectedPost, setEditingPost }) {
+export default function Profile({ setSelectedPost, setEditingPost}) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
@@ -160,7 +160,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     };
 
 
-
     return (
         <React.Fragment>
             {authUser &&
@@ -234,7 +233,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
-                                            {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
                                             <CardMedia
                                                 onClick={() => handleViewPost(post)}
                                                 component="div"

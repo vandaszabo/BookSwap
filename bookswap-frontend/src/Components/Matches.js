@@ -5,14 +5,14 @@ import { Button, Paper, Box } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useChat } from './Chat/ChatContext';
+import ChatIcon from '@mui/icons-material/Chat';
 
 export default function Matches({ userIds }) {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const {messages} = useChat();
+    const { messages, setReceiverId, setReceiverName } = useChat();
 
     useEffect(() => {
         const findUsers = async () => {
@@ -34,12 +34,12 @@ export default function Matches({ userIds }) {
         findUsers();
     }, [userIds, messages]);
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text)
-            .then(() => console.log('Connection ID copied to clipboard'))
-            .catch(err => console.error('Failed to copy connection ID: ', err));
+    const handleChatClick = (userId, userName) => {
+        console.log("received id ",userId);
+        setReceiverId(userId);
+        console.log("received name ",userName);
+        setReceiverName(userName);
     };
-
 
     return (
         <React.Fragment>
@@ -77,7 +77,7 @@ export default function Matches({ userIds }) {
                                 />
                             </div>
                             <Typography variant="body1" component="div">
-                            {user.connectionID && <CircleIcon sx={{ color: (theme) => theme.palette.secondary.green }} />}
+                                {user.connectionID && <CircleIcon sx={{ color: (theme) => theme.palette.secondary.green }} />}
                                 {user.userName}
                             </Typography>
                             <Typography variant="body2" component="div">
@@ -85,13 +85,8 @@ export default function Matches({ userIds }) {
                             </Typography>
                             {user.connectionID && (
                                 <Box>
-                                    Copy ConnectionID
-                                    <Button sx={{cursor: 'pointer'}} onClick={() => copyToClipboard(user.connectionID)}>
-                                        <ContentCopyIcon />
-                                    </Button>
-                                    Copy UserID
-                                    <Button sx={{cursor: 'pointer'}} onClick={() => copyToClipboard(user.id)}>
-                                        <ContentCopyIcon />
+                                    <Button sx={{ cursor: 'pointer' }} onClick={() => handleChatClick(user.id, user.userName)}>
+                                        <ChatIcon />
                                     </Button>
                                 </Box>
                             )}
