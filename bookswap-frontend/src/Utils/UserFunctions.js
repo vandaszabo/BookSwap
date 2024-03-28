@@ -1,51 +1,37 @@
-import backendUrl from "./BackendUrl";
+import { backendUrl, fetchData } from "./ApiHelper";
 
-//*********-------API call for getting all user locations-------*********//
 async function fetchAllLocations() {
-
-    try {
-        const response = await fetch(`${backendUrl}User/Location/List`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}User/Location/List`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        const data = await response.json();
+    };
+    return await fetchData(url, options);
+}
 
-        if (data !== null) {
-            return data;
-        }
-    } catch (error) {
-        console.error(`Error in fetchAllLocations: ${error.message}`);
-    }
-};
-
-//*********-------API call for getting user by id-------*********//
 async function fetchUserById(id) {
-
-    try {
-        const response = await fetch(`${backendUrl}User/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}User/${id}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        const data = await response.json();
+    };
+    return await fetchData(url, options);
+}
 
-        if (data !== null) {
-            return data;
-        }
-    } catch (error) {
-        console.error(`Error in fetchUserById: ${error.message}`);
-    }
-};
+async function updateUserConnection(userId, connectionId) {
+    const url = `${backendUrl}User/UpdateConnection`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, connectionId })
+    };
+    return await fetchData(url, options);
+}
 
-export { fetchAllLocations, fetchUserById };
+export { fetchAllLocations, fetchUserById, updateUserConnection };

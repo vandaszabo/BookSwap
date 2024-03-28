@@ -10,6 +10,7 @@ export default function BooksForYou({onView}){
     const {authUser} = useAuth();
     const [loading, setLoading] = useState(false);
 
+    // Get book posts from user's city
     useEffect(()=>{
 
         const fetchLocation = async (id, city) => {
@@ -32,7 +33,7 @@ export default function BooksForYou({onView}){
 
 return(
     <React.Fragment>
-        {bookList && <Album title='Books in Your City' books={bookList} onView={onView} />}
+        {bookList && !loading && <Album title='Books in Your City' books={bookList} onView={onView} />}
     </React.Fragment>
 )
 }

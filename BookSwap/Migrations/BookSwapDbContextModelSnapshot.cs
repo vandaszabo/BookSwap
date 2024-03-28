@@ -81,6 +81,29 @@ namespace BookSwap.Migrations
                     b.ToTable("Likes");
                 });
 
+            modelBuilder.Entity("BookSwap.Models.Message", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -292,7 +315,10 @@ namespace BookSwap.Migrations
                     b.Property<string>("City")
                         .HasColumnType("text");
 
-                    b.Property<string>("profileImage")
+                    b.Property<string>("ConnectionID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfileImage")
                         .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");

@@ -13,10 +13,12 @@ export default function DetailsEdit({ setEditingDetails }) {
     const [loading, setLoading] = useState(false);
     const { authUser, setAuthUser } = useAuth();
 
+    // Change User information
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log("authuser: ", authUser);
 
+        // New data
         const dataEditRequest = {
             userId: authUser.id,
             newEmail: event.target.email.value,
@@ -26,6 +28,7 @@ export default function DetailsEdit({ setEditingDetails }) {
         };
 
         try {
+            // Perform only if new data is different than original
             if (dataEditRequest.newEmail !== authUser.email ||
                 dataEditRequest.newPhoneNumber !== authUser.phoneNumber ||
                 dataEditRequest.newUsername !== authUser.userName ||
@@ -38,6 +41,7 @@ export default function DetailsEdit({ setEditingDetails }) {
         }
     };
 
+    // Update data in Db and AuthContext
     const saveUserData = (data) => {
         setLoading(true);
 

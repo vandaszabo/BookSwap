@@ -66,6 +66,26 @@ public class UserController : ControllerBase
 
         return NotFound("User not found");
     }
+    
+    // Update Connection
+    [HttpPost("UpdateConnection")]
+    public async Task<ActionResult<ApplicationUser>> UpdateUserConnection([FromBody] ConnectionRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var user = await _userService.UpdateConnectionId(request.UserId, request.ConnectionId);
+
+        if (user != null)
+        {
+            return Ok(user);
+        }
+
+        return NotFound("User not found");
+    }
+
 
     // Find User by Id
     [HttpGet("{id}")]

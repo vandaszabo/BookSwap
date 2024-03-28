@@ -15,13 +15,14 @@ function AuthProvider(props) {
 
     const [authUser, setAuthUser] = useState(userObject);
     const [isLoggedIn, setIsLoggedIn] = useState(!!userObject);
+   
 
     //*********-------Creating an object 'value' to be passed as the value prop to AuthContext.Provider-------*********//
     const value = {
         authUser,
         setAuthUser,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
     }
 
     //*********-------Wrapping the children components with AuthContext.Provider, passing the 'value' object-------*********//

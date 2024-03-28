@@ -1,11 +1,16 @@
 using System.Text;
 using BookSwap.Data;
+using BookSwap.Hubs;
 using BookSwap.Models;
 using BookSwap.Repositories;
+using BookSwap.Repositories.Book;
+using BookSwap.Repositories.Messages;
+using BookSwap.Repositories.User;
 using BookSwap.Services.Authentication;
 using BookSwap.Services.Book;
 using BookSwap.Services.File;
 using BookSwap.Services.Like;
+using BookSwap.Services.Messages;
 using BookSwap.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +32,8 @@ public class Program
         AddDbContext();
         AddAuthentication();
         AddIdentity();
-
+        builder.Services.AddSignalR();
+        
         var app = builder.Build();
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Testing")
@@ -43,21 +49,30 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-// Add CORS middleware here
-        app.UseCors(builder =>
-        {
-            builder.WithOrigins("http://localhost:3000")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-
+        
         app.UseHttpsRedirection();
 
 //Authentication and Authorization
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        
+        //WebSocket
+        app.MapHub<ChatHub>("/Chat");
+        
+        //Cors
+        app.UseCors("reactApp");
+        
+        var webSocketOptions = new WebSocketOptions
+        {
+            KeepAliveInterval = TimeSpan.FromMinutes(2)
+        };
+
+        webSocketOptions.AllowedOrigins.Add("http://localhost:3000");
+        
+        app.UseWebSockets(webSocketOptions);
+        
+        //Run
         app.Run();
 
         void AddServices()
@@ -65,14 +80,29 @@ public class Program
             builder.Services.AddHttpClient();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("reactApp",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
 
             builder.Services.AddScoped<IBookPostRepository, BookPostRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<ILikeService, LikeService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();

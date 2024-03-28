@@ -2,7 +2,6 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import CardMedia from '@mui/material/CardMedia';
-import Container from '@mui/material/Container';
 import {Box} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
@@ -14,13 +13,19 @@ export default function Album({ title, books, onView }) {
             <Box
                 sx={{ mt: 2, py: 2, color: (theme) => theme.palette.secondary.darkGrey }}
                 maxWidth="lg">
+
+                {/* Album title */}
                 <Typography variant='h6' sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>{title}</Typography>
+
+                {/* Handle empty album */}
                 {books && books.length === 0 && <Alert severity='info'> No match</Alert>}
+
                 <Grid container spacing={4}>
+
+                    {/* Iterating through books */}
                     {books && books.map((book, index) => (
                         <Grid
-                            item
-                            key={`${book.postId}_${index}`}
+                            item key={`${book.postId}_${index}`}
                             xs={6}
                             sm={4}
                             md={3}

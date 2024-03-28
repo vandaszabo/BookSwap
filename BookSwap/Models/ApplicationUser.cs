@@ -7,5 +7,6 @@ public class ApplicationUser : IdentityUser
 {
     public string? ProfileImage { get; set; }
     public string? City { get; set; }
+    public string? ConnectionID { get; set; }
     public ICollection<BookPost> BookPosts { get; set; }
 }

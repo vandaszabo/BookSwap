@@ -10,7 +10,8 @@ public class BookSwapDbContext : IdentityDbContext<IdentityUser, IdentityRole, s
     public DbSet<ApplicationUser> AppUsers { get; set; }
     public DbSet<BookPost> BookPosts { get; set; }
     public DbSet<Like> Likes { get; set; }
-
+    public DbSet<Message> Messages { get; set; }
+    
     public BookSwapDbContext(DbContextOptions<BookSwapDbContext> options)
         : base(options)
     {

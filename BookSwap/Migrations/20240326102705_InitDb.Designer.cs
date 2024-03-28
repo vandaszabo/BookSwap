@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookSwap.Migrations
 {
     [DbContext(typeof(BookSwapDbContext))]
-    [Migration("20240229081214_InitMigrateBookSwapDb")]
-    partial class InitMigrateBookSwapDb
+    [Migration("20240326102705_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,29 @@ namespace BookSwap.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("BookSwap.Models.Message", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -295,7 +318,10 @@ namespace BookSwap.Migrations
                     b.Property<string>("City")
                         .HasColumnType("text");
 
-                    b.Property<string>("profileImage")
+                    b.Property<string>("ConnectionID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfileImage")
                         .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");

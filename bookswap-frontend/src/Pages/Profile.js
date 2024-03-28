@@ -29,7 +29,7 @@ import Album from '../Components/Books/Album';
 import Matches from '../Components/Matches';
 
 //*********-------Main function for User profile-------*********//
-export default function Profile({ setSelectedPost, setEditingPost }) {
+export default function Profile({ setSelectedPost, setEditingPost}) {
     const { authUser, setAuthUser } = useAuth();
     const [userPosts, setUserPosts] = useState([]);
     const [editingPhoto, setEditingPhoto] = useState(false);
@@ -160,7 +160,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
     };
 
 
-
     return (
         <React.Fragment>
             {authUser &&
@@ -217,7 +216,7 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                             </Grid>
                         </Grid>
 
-                        {/* Posts */}
+                        {/* Own Posts */}
                         <Box sx={{ mt: 2, mb: 4, py: 2, color: "#000000" }}
                             maxWidth="lg">
                             <Typography variant="h6" gutterBottom sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>
@@ -234,7 +233,6 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                         <Card
                                             sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
                                         >
-                                            {/* <Button onClick={() => handleDeletePost(post.id)} size="small">Delete</Button> */}
                                             <CardMedia
                                                 onClick={() => handleViewPost(post)}
                                                 component="div"
@@ -265,9 +263,13 @@ export default function Profile({ setSelectedPost, setEditingPost }) {
                                 ))}
                             </Grid>
                         </Box>
+
+                        {/* Liked Books */}
                         {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
                         
+                        {/* Matched Users */}
                         {swapOptions && <Matches userIds={swapOptions}/>}
+
                     </Container>
                 </>
             }

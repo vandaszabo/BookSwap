@@ -42,7 +42,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                             color: (theme) => theme.palette.primary.main,
                             backgroundColor: (theme) => theme.palette.secondary.beige,
                             alignItems: 'center',
-                            '@media (max-width: 600px)': {
+                            '@media (maxWidth: 600px)': {
                                 flexDirection: 'column-reverse', // Stack image below text on smaller screens
                                 height: 'auto',
                             },
@@ -85,25 +85,20 @@ export default function AllBooks({ books, setSelectedPost }) {
                             <img
                                 src="https://cdn.dribbble.com/users/486498/screenshots/11951875/media/ba889cb7336c75a8cfa54656dc912bd9.jpg?compress=1&resize=700x525&vertical=center"
                                 alt="reading-woman"
-                                // style={{
-                                //     maxHeight: '40vh',
-                                //     height: 'auto',
-                                //     display: 'block',
-                                // }}
                                 style={{
                                     width: '80%',
                                     height: 'auto',
                                     display: 'block',
-                                    '@media (min-width:0px) and (orientation: landscape)': {
+                                    '@media (minWidth:0px) and (orientation: landscape)': {
                                         maxHeight: '30vh', // Adjust as needed for xs landscape
                                     },
-                                    '@media (min-width:600px)': {
+                                    '@media (minWidth:600px)': {
                                         maxHeight: '40vh', // Increase size for sm screens
                                     },
-                                    '@media (min-width:960px)': {
+                                    '@media (minWidth:960px)': {
                                         maxHeight: '40vh',
                                     },
-                                    '@media (min-width:1280px)': {
+                                    '@media (minWidth:1280px)': {
                                         maxHeight: '40vh',
                                     },
                                 }}

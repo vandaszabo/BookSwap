@@ -13,13 +13,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
 import BookInfo from '../Components/Forms/BookInfo';
 import ViewImage from '../Components/Shared/ViewImage';
+import { CircularProgress } from '@mui/material';
 
 
 //*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book, backPath }) {
 
     const [localBook, setLocalBook] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [likeLoading, setLikeLoading] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
     const [viewImage, setViewImage] = useState(false);
     const [likeNumber, setLikeNumber] = useState(null);
@@ -39,12 +41,12 @@ export default function SelectedPost({ book, backPath }) {
             } catch (error) {
                 console.error(`Error in fetchPosts: ${error.message}`);
             } finally {
-                setLoading(false);
+                setLikeLoading(false);
             }
         };
 
         fetchLikerIds();
-    }, [authUser.id, isLiked]);
+    }, [authUser.id, isLiked, book.postId]);
 
     //*********-------Save book for avoiding disappearing at page refresh-------*********//
     useEffect(() => {
@@ -60,11 +62,12 @@ export default function SelectedPost({ book, backPath }) {
             setLocalBook(JSON.parse(storedBook));
         }
     }, []);
-    
+
     //*********-------Handle like-------*********//
     const handleLike = async () => {
-        
+
         try {
+            setLoading(true);
             const result = await createLike(authUser.id, book.postId);
             if (result) {
                 setIsLiked(true);
@@ -75,10 +78,11 @@ export default function SelectedPost({ book, backPath }) {
             setLoading(false);
         }
     };
-    
+
     //*********-------Handle removing like-------*********//
     const handleRemoveLike = async () => {
         try {
+            setLoading(true);
             const result = await removeLike(authUser.id, book.postId);
             if (result) {
                 setIsLiked(false);
@@ -101,30 +105,42 @@ export default function SelectedPost({ book, backPath }) {
                     {/* Post owner */}
                     <Card sx={{ backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <Poster posterId={localBook.userId} />
-                        {!loading &&
-                            <Container sx={{display: 'flex', justifyContent: 'space-between'}}>
-                            <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
-                                {book.userId !== authUser.id && !isLiked &&
-                                    <Button
-                                        size="small"
-                                        onClick={handleLike}
-                                        variant='contained'>Like
-                                    </Button>
-                                }
-                                {isLiked &&
-                                    <Button
-                                        size="small"
-                                        onClick={handleRemoveLike}
-                                        variant='contained'>
-                                        Remove Like
-                                    </Button>
-                                }
-                                </Box>
-                                <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
-                                    {likeNumber}
-                                    <FavoriteIcon />
-                                </Box>
-                            </Container>
+                        {!likeLoading ? (
+                            <>
+                                <Container sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
+
+                                        {/* Like button */}
+                                        {book.userId !== authUser.id && !isLiked &&
+                                            <Button
+                                                size="small"
+                                                onClick={handleLike}
+                                                disabled={loading}
+                                                variant='contained'>Like
+                                            </Button>
+                                        }
+                                        {/* Remove Like button */}
+                                        {isLiked &&
+                                            <Button
+                                                size="small"
+                                                onClick={handleRemoveLike}
+                                                disabled={loading}
+                                                variant='contained'>
+                                                Remove Like
+                                            </Button>
+                                        }
+                                    </Box>
+
+                                    {/* Number of likes on post */}
+                                    <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
+                                        {likeNumber}
+                                        <FavoriteIcon />
+                                    </Box>
+                                </Container>
+                            </>
+                            ) : (
+                            <CircularProgress sx={{ color: '#006D5B', marginRight: 1 }} />
+                        )
                         }
                     </Card>
 
@@ -132,7 +148,7 @@ export default function SelectedPost({ book, backPath }) {
                         <CardContent>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={4}>
-                                    <Button onClick={() => setViewImage(true) }>
+                                    <Button onClick={() => setViewImage(true)}>
                                         <img
                                             src={localBook.coverImage}
                                             alt="cover"
@@ -148,7 +164,7 @@ export default function SelectedPost({ book, backPath }) {
                                 </Grid>
 
                                 {/* Display book info */}
-                               <BookInfo book={localBook} />
+                                <BookInfo book={localBook} />
                             </Grid>
                         </CardContent>
 

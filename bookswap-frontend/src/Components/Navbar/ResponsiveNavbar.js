@@ -8,6 +8,7 @@ import { Typography, AppBar, Button, Avatar, IconButton, Menu, MenuItem, Tooltip
 import { useAuth } from '../Authentication/AuthContext';
 import SearchInput from './SearchInput';
 import { fetchBookListData } from '../../Utils/BookFunctions';
+import { useChat } from '../Chat/ChatContext';
 
 //*********-------Main function for Navbar-------*********//
 function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
@@ -17,6 +18,7 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
 
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
+    const {closeChatConnection, setReceiverName} = useChat();
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const navigate = useNavigate();
 
@@ -46,9 +48,11 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
 
     //*********-------Handle click on Navbar Logout menu option-------*********//
     const logOut = () => {
+        closeChatConnection(authUser.id);
         setIsLoggedIn(false);
         setAnchorElUser(null);
         setAuthUser(null);
+        setReceiverName(null);
         localStorage.removeItem('authUser');
         localStorage.removeItem('book');
         navigate('/login');
@@ -78,6 +82,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
         <>
             <AppBar position="static" elevation={0} color='primary' >
                 <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                    {/* Menu */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         <Tooltip title="Menu">
                             <IconButton
@@ -114,6 +120,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                             <MenuItem component={Link} to={'/books'} onClick={() => setAnchorElBooks(null)}>Books</MenuItem>
                         </Menu>
                     </Box>
+
+                    {/* Logo */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         {isSmallScreen ? null : (
                             <Typography
@@ -136,11 +144,14 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                         )}
                     </Box>
 
+                    {/* Search */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         {isSmallScreen ? null : (
                             <SearchInput onSearch={handleSearch} books={books} />
                         )}
                     </Box>
+
+                    {/* SignIn / SignUp */}
                     <Box sx={{ flexGrow: 0, display: 'flex' }}>
                         {!isLoggedIn ? (
                             <>
@@ -156,6 +167,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                                 </Button>
                             </>
                         ) : (
+
+                            // User's Avatar
                             <>
                                 <Tooltip title={authUser.userName}>
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -170,6 +183,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                             </>
                         )}
                     </Box>
+
+                    {/* Profile Menu */}
                     <Menu
                         id="menu-user"
                         anchorEl={anchorElUser}

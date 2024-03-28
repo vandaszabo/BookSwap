@@ -1,6 +1,6 @@
 using BookSwap.Models;
 
-namespace BookSwap.Repositories;
+namespace BookSwap.Repositories.User;
 
 public interface IUserRepository
 {
@@ -11,5 +11,6 @@ public interface IUserRepository
     Task UpdatePhoneNumber(ApplicationUser user, string newPhoneNumber);
     Task UpdateCity(ApplicationUser user, string newCity);
     Task UpdateProfileImage(ApplicationUser user, string newProfileImage);
+    Task UpdateConnectionId(ApplicationUser user, string? connectionId);
     Task<string?> Delete(ApplicationUser user);
 }

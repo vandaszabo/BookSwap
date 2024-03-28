@@ -1,122 +1,63 @@
-import backendUrl from "./BackendUrl";
+import { backendUrl, fetchData } from "./ApiHelper";
 
 //*********-------API call for getting all existing Posts-------*********//
 async function fetchBookListData() {
-    try {
-        const response = await fetch(`${backendUrl}BookPost/List`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}BookPost/List`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-    } catch (error) {
-        console.error(`Error in fetchBookListData: ${error.message}`);
-    }
+    };
+    return await fetchData(url, options);
 };
 
 //*********-------API call for deleting Post-------*********//
 async function deletePost(id) {
-    try {
-        const response = await fetch(`${backendUrl}BookPost/Delete/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}BookPost/Delete/${id}`;
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
         }
-
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-    } catch (error) {
-        console.error(`Error in deletePost: ${error.message}`);
-    }
+    };
+    return await fetchData(url, options);
 };
 
 //*********-------API call for getting Posts by User location-------*********//
 async function fetchPostsByLocation(userId, location) {
-
-    try {
-        const response = await fetch(`${backendUrl}BookPost/User/${userId}/Location/${location}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}BookPost/User/${userId}/Location/${location}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-
-    } catch (error) {
-        console.error(`Error in fetchPostsByLocation: ${error.message}`);
-    }
-
+    };
+    return await fetchData(url, options);
 };
 
 //*********-------API call for getting user posts-------*********//
 async function fetchUserPosts(id) {
-
-    try {
-        const response = await fetch(`${backendUrl}BookPost/User/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}BookPost/User/${id}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-
-    } catch (error) {
-        console.error(`Error in fetchUserPosts: ${error.message}`);
-    }
+    };
+    return await fetchData(url, options);
 }
 
 //*********-------API call for get bookPost by id-------*********//
 async function fetchBookPostById(id) {
-
-    try {
-        const response = await fetch(`${backendUrl}BookPost/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    const url = `${backendUrl}BookPost/${id}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        const data = await response.json();
-
-        if (data !== null) {
-            return data;
-        }
-
-    } catch (error) {
-        console.error(`Error in fetchBookPostById: ${error.message}`);
-    }
+    };
+    return await fetchData(url, options);
 }
 
 export { fetchBookListData, fetchPostsByLocation, fetchUserPosts, deletePost, fetchBookPostById };
