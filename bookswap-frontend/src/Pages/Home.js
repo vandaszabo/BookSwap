@@ -41,7 +41,7 @@ useEffect(()=>{
 if(!authUser){
   navigate('/login');
 }
-},[authUser]);
+},[authUser, navigate]);
 
   return (
     <React.Fragment>

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { fetchUserById } from '../Utils/UserFunctions';
+import { fetchUserById } from '../../Utils/UserFunctions';
 import { Button, Paper, Box } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
-import { useChat } from './Chat/ChatContext';
+import { useChat } from '../Chat/ChatContext';
 import ChatIcon from '@mui/icons-material/Chat';
 
 export default function Matches({ userIds }) {

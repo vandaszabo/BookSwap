@@ -26,7 +26,7 @@ import DetailsEdit from '../Components/Forms/DetailsEdit';
 import { deletePost, fetchUserPosts } from '../Utils/BookFunctions';
 import { fetchFavorites, fetchPostLikers } from '../Utils/LikeFunctions';
 import Album from '../Components/Books/Album';
-import Matches from '../Components/Matches';
+import Matches from '../Components/Users/Matches';
 
 //*********-------Main function for User profile-------*********//
 export default function Profile({ setSelectedPost, setEditingPost}) {
