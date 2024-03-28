@@ -85,11 +85,6 @@ export default function AllBooks({ books, setSelectedPost }) {
                             <img
                                 src="https://cdn.dribbble.com/users/486498/screenshots/11951875/media/ba889cb7336c75a8cfa54656dc912bd9.jpg?compress=1&resize=700x525&vertical=center"
                                 alt="reading-woman"
-                                // style={{
-                                //     maxHeight: '40vh',
-                                //     height: 'auto',
-                                //     display: 'block',
-                                // }}
                                 style={{
                                     width: '80%',
                                     height: 'auto',

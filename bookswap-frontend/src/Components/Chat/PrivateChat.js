@@ -15,6 +15,9 @@ export default function PrivateChat({ sendToUser }) {
         clientNameRef.current = receiverName;
     }, [receiverName]);
 
+    // Handle chat with multiple users 
+    // For now It is removing the previous conversation when a message comes from a different user, 
+    // Planned to handle it with multiple chat windows int the future
     useEffect(() => {
         // Filter out the user's own messages
         const filtered = messages.filter(message => message.senderId !== authUser.id);
@@ -27,7 +30,11 @@ export default function PrivateChat({ sendToUser }) {
                 const currentSenderId = filtered[filtered.length - 1].senderId;
                 // Filter out all messages except the last one from the current sender
                 const clearedMessages = filtered.filter(message => message.senderId === currentSenderId);
+
+                // Update Messages array with the new messages
                 setMessages(clearedMessages);
+
+                // Update Receiver
                 setReceiverId(currentSenderId);
                 setReceiverName(filtered[filtered.length - 1].senderName);
                 clientNameRef.current = filtered[filtered.length - 1].senderName;

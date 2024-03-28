@@ -14,6 +14,7 @@ export default function Matches({ userIds }) {
     const [loading, setLoading] = useState(true);
     const { messages, setReceiverId, setReceiverName } = useChat();
 
+    // Find Users to Swap with
     useEffect(() => {
         const findUsers = async () => {
             try {
@@ -34,6 +35,7 @@ export default function Matches({ userIds }) {
         findUsers();
     }, [userIds, messages]);
 
+    // Open chat
     const handleChatClick = (userId, userName) => {
         console.log("received id ",userId);
         setReceiverId(userId);

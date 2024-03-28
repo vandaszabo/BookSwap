@@ -37,6 +37,7 @@ function App() {
     }
   }, [authUser, bookList]);
 
+  // Show chat if message received
   useEffect(()=>{
     setHideChat(false);
   },[messages]);

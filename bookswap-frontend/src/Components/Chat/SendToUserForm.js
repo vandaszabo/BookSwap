@@ -12,6 +12,7 @@ const SendToUserForm = ({ sendToUser }) => {
 
   const handleSend = (e) => {
     try {
+      // MessageRequest in backend code
       const requestData = {
         userId: authUser.id,
         userName: authUser.userName,

@@ -14,9 +14,16 @@ export default function Album({ title, books, onView }) {
             <Box
                 sx={{ mt: 2, py: 2, color: (theme) => theme.palette.secondary.darkGrey }}
                 maxWidth="lg">
+
+                {/* Album title */}
                 <Typography variant='h6' sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>{title}</Typography>
+
+                {/* Handle empty album */}
                 {books && books.length === 0 && <Alert severity='info'> No match</Alert>}
+
                 <Grid container spacing={4}>
+
+                    {/* Iterating through books */}
                     {books && books.map((book, index) => (
                         <Grid
                             item key={`${book.postId}_${index}`}

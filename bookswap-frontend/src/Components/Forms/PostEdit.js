@@ -16,9 +16,11 @@ export default function PostEdit({ book }) {
     const [newCoverImage, setNewCoverImage] = useState(book.coverImage ?? "")
     const navigate = useNavigate();
 
+    // Update Post information
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // New data
         const newPost = {
             postId: book.postId,
             title: event.target.title.value,
@@ -31,6 +33,7 @@ export default function PostEdit({ book }) {
         };
 
         try {
+            // Perform only if new data is different than original
             if (newPost !== null && newPost !== book) {
                 console.log(newPost);
                 savePostData(newPost);
@@ -41,6 +44,7 @@ export default function PostEdit({ book }) {
         }
     };
 
+    // Update new post data in Db
     const savePostData = (data) => {
         setLoading(true);
 

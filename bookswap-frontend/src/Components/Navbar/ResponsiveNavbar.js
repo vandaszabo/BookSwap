@@ -82,6 +82,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
         <>
             <AppBar position="static" elevation={0} color='primary' >
                 <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                    {/* Menu */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         <Tooltip title="Menu">
                             <IconButton
@@ -118,6 +120,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                             <MenuItem component={Link} to={'/books'} onClick={() => setAnchorElBooks(null)}>Books</MenuItem>
                         </Menu>
                     </Box>
+
+                    {/* Logo */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         {isSmallScreen ? null : (
                             <Typography
@@ -140,11 +144,14 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                         )}
                     </Box>
 
+                    {/* Search */}
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>
                         {isSmallScreen ? null : (
                             <SearchInput onSearch={handleSearch} books={books} />
                         )}
                     </Box>
+
+                    {/* SignIn / SignUp */}
                     <Box sx={{ flexGrow: 0, display: 'flex' }}>
                         {!isLoggedIn ? (
                             <>
@@ -160,6 +167,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                                 </Button>
                             </>
                         ) : (
+
+                            // User's Avatar
                             <>
                                 <Tooltip title={authUser.userName}>
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -174,6 +183,8 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
                             </>
                         )}
                     </Box>
+
+                    {/* Profile Menu */}
                     <Menu
                         id="menu-user"
                         anchorEl={anchorElUser}

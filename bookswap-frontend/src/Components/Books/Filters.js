@@ -48,6 +48,7 @@ export default function Filters({ books, setFilteredBooks }) {
         setLoading(false);
     };
 
+    // Retrieve all distinct locations from all Users to Display at filter options
     useEffect(() => {
         const fetchLocations = async () => {
 
@@ -82,6 +83,8 @@ export default function Filters({ books, setFilteredBooks }) {
             spacing={2}
             justifyContent="center"
         >
+
+            {/* Genres  */}
             <FormControl
                 sx={{ minWidth: 120 }}
                 size="small"
@@ -120,6 +123,8 @@ export default function Filters({ books, setFilteredBooks }) {
                     <MenuItem value={"children"}>Children's Literature</MenuItem>
                 </Select>
             </FormControl>
+
+            {/* Languages */}
             <FormControl
                 sx={{
                     m: 1,
@@ -150,6 +155,8 @@ export default function Filters({ books, setFilteredBooks }) {
                     <MenuItem value={"hu"}>Hungarian</MenuItem>
                 </Select>
             </FormControl>
+
+            {/* Locations */}
             <FormControl
                 sx={{
                     m: 1,
@@ -186,6 +193,8 @@ export default function Filters({ books, setFilteredBooks }) {
                     ))}
                 </Select>
             </FormControl>
+
+            {/* Submit */}
             <Button
                 onClick={handleFilter}
                 variant="contained"
@@ -194,6 +203,8 @@ export default function Filters({ books, setFilteredBooks }) {
             >
                 Filter
             </Button>
+
+            {/* Clear */}
             <Button
                 onClick={() => (setSelectedGenre(""), setSelectedLanguage(""), setSelectedLocation(""), setFilteredBooks(null))}
                 variant="outline"

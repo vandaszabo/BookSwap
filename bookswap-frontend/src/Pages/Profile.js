@@ -216,7 +216,7 @@ export default function Profile({ setSelectedPost, setEditingPost}) {
                             </Grid>
                         </Grid>
 
-                        {/* Posts */}
+                        {/* Own Posts */}
                         <Box sx={{ mt: 2, mb: 4, py: 2, color: "#000000" }}
                             maxWidth="lg">
                             <Typography variant="h6" gutterBottom sx={{ mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>
@@ -263,8 +263,11 @@ export default function Profile({ setSelectedPost, setEditingPost}) {
                                 ))}
                             </Grid>
                         </Box>
+
+                        {/* Liked Books */}
                         {favorites && <Album title='Your favorites' books={favorites} onView={handleViewPost} />}
                         
+                        {/* Matched Users */}
                         {swapOptions && <Matches userIds={swapOptions}/>}
 
                     </Container>

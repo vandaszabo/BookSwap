@@ -23,6 +23,8 @@ export default function MessageContainer() {
             <Grid>
                 {messages && messages.map((msg, index) => (
                     <Grid item key={index}>
+                        
+                        {/* Own messages */}
                         {msg.senderId === authUser.id ? (
                             <Box display="flex" alignItems="center" justifyContent="flex-end">
                                 <Box sx={{ backgroundColor: (theme) => theme.palette.secondary.darkGrey, color: (theme) => theme.palette.primary.light, pr: '10px', pl: '10px', ml: '5px', mb: '5px', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
@@ -30,6 +32,8 @@ export default function MessageContainer() {
                                 </Box>
                             </Box>
                         ) : (
+
+                            // Received messages
                             <Box display="flex" alignItems="center">
                                 <Avatar
                                     alt="user"

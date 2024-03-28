@@ -9,6 +9,7 @@ export default function Poster({ posterId }) {
 
     const [poster, setPoster] = useState({});
 
+    // Get Poster information by userId
     const fetchPosterData = async (id) => {
         try {
             const response = await fetch(`http://localhost:5029/api/User/${posterId}`, {

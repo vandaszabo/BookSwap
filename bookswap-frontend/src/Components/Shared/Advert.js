@@ -22,6 +22,7 @@ export default function Advert({ title, description, buttonText, image, path }) 
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column', maxWidth: '100%' }}
             >
+                {/* Image */}
                 <CardMedia
                     component="div"
                     sx={{
@@ -34,12 +35,19 @@ export default function Advert({ title, description, buttonText, image, path }) 
                     }}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
+
+                    {/* Advert title */}
                     <Typography variant="h6" component="div">
                         {title}
                     </Typography>
+
+                    {/* Description */}
                     <Typography variant="body2">{description}</Typography>
                 </CardContent>
+
                 <CardActions>
+
+                    {/* Action button */}
                     <Button
                         onClick={handleClick}
                         sx={{ textTransform: 'none', width: '100%', color: (theme)=> theme.palette.secondary.black , backgroundColor: (theme)=> theme.palette.secondary.medium,

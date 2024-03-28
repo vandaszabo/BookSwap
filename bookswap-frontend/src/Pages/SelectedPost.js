@@ -101,9 +101,12 @@ export default function SelectedPost({ book, backPath }) {
                     {/* Post owner */}
                     <Card sx={{ backgroundColor: (theme) => theme.palette.secondary.beige, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <Poster posterId={localBook.userId} />
+
                         {!loading &&
                             <Container sx={{display: 'flex', justifyContent: 'space-between'}}>
                             <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
+                                
+                                {/* Like button */}
                                 {book.userId !== authUser.id && !isLiked &&
                                     <Button
                                         size="small"
@@ -111,6 +114,7 @@ export default function SelectedPost({ book, backPath }) {
                                         variant='contained'>Like
                                     </Button>
                                 }
+                                {/* Remove Like button */}
                                 {isLiked &&
                                     <Button
                                         size="small"
@@ -120,6 +124,8 @@ export default function SelectedPost({ book, backPath }) {
                                     </Button>
                                 }
                                 </Box>
+
+                                {/* Number of likes on post */}
                                 <Box sx={{ justifyContent: 'center', display: 'flex', alignItems: 'center', color: (theme) => theme.palette.primary.main }}>
                                     {likeNumber}
                                     <FavoriteIcon />

@@ -29,7 +29,7 @@ function ChatProvider(props) {
                 setMessages((messages) => [...messages, { senderImage, senderName, senderId, msg }]);
             });
 
-            //Get Receiver connection Id from db
+            //Get Receiver connection Id from db and store it in localStorage
             newConn.on("GetConnectionId", (user, connectionId) => {
                 localStorage.setItem("receiverConnectionId", connectionId);
             });
@@ -47,6 +47,7 @@ function ChatProvider(props) {
         }
     }, []);
 
+    //Re-Create connection after page refresh
     useEffect(() => {
         const storedConnectionId = localStorage.getItem('senderConnectionId');
         if (authUser && authUser.id && storedConnectionId) {
@@ -59,6 +60,7 @@ function ChatProvider(props) {
     }, [authUser, createConnection]);
 
 
+    //Open Connection
     const openChatConnection = async (userId) => {
         try {
             if (!conn) {
@@ -69,6 +71,7 @@ function ChatProvider(props) {
         }
     };
 
+    //Update User's ConnectionId in database
     const updateConnID = async (userId, connectionId) => {
         try {
             await updateUserConnection(userId, connectionId);
@@ -78,6 +81,7 @@ function ChatProvider(props) {
         }
     };
 
+    //Close Connection
     const closeChatConnection = async (userId) => {
         try {
             if (conn) {
@@ -93,12 +97,18 @@ function ChatProvider(props) {
         }
     };
 
+    //Send Message to a specific User
     const sendToUser = async (requestData) => {
         try {
             if (conn) {
+                //Get receiver's connectionId by its userId
                 await conn.invoke("GetClientConnectionId", requestData.receiverId)
                 const receiverConnId = localStorage.getItem("receiverConnectionId");
+                
+                //Send the message with the retrieved connectionId
                 await conn.invoke("SendToUser", requestData, receiverConnId);
+
+                //Update messages array in ChatContext
                 setMessages((messages) => 
                 [...messages, 
                 {

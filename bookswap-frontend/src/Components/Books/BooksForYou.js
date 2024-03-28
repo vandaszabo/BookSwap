@@ -10,6 +10,7 @@ export default function BooksForYou({onView}){
     const {authUser} = useAuth();
     const [loading, setLoading] = useState(false);
 
+    // Get book posts from user's city
     useEffect(()=>{
 
         const fetchLocation = async (id, city) => {
