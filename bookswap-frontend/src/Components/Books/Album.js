@@ -2,7 +2,6 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import CardMedia from '@mui/material/CardMedia';
-import Container from '@mui/material/Container';
 import {Box} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';

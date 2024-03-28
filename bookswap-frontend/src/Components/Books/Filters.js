@@ -206,7 +206,12 @@ export default function Filters({ books, setFilteredBooks }) {
 
             {/* Clear */}
             <Button
-                onClick={() => (setSelectedGenre(""), setSelectedLanguage(""), setSelectedLocation(""), setFilteredBooks(null))}
+                onClick={() => {
+                    setSelectedGenre("");
+                    setSelectedLanguage("");
+                    setSelectedLocation("");
+                    setFilteredBooks(null);
+                }}                
                 variant="outline"
                 disabled={loading}
                 sx={{ mt: [2, 0] }}
