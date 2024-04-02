@@ -19,7 +19,7 @@ RUN npm run build
 # Install serve globally to serve the production build
 RUN npm install -g serve
 
-# Expose port 3000
+# Expose Port 3000
 EXPOSE 3000
 
 # Command to run the production build

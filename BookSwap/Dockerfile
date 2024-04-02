@@ -1,4 +1,4 @@
-﻿# Use the .NET SDK image as the base image
+﻿# Use the .NET SDK image as the base Image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 
 # Set the working directory inside the container
