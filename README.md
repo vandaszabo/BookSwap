@@ -42,15 +42,11 @@ Set up environment variables for database connection string, JWT secret key, AWS
    ```
     git clone https://github.com/vandaszabo/BookSwap
     ```
-2. Navigate to the BookSwap directory.
-   ```
-    cd BookSwap
-    ```
-3. Run Docker Compose to build and start the application containers.
+2. Run Docker Compose to build and start the application containers.
    ```
     docker-compose up -d
     ```
-4. Access the application in your web browser at [http://localhost:3000](http://localhost:3000).
+3. Access the application in your web browser at [http://localhost:3000](http://localhost:3000).
 
 ## Status
 I am currently actively working on this project. 
