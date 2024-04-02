@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  bookswap-backend:
+    image: vandaszabo/bookswap-backend:latest
+    build:
+      context: ./BookSwap
+      dockerfile: Dockerfile
+    ports:
+      - "5029:5029"
+    environment:
+      ASPNETCORE_CONNECTIONSTRING: ${DB_CONNECTION_STRING}
+      ASPNETCORE_ADMINEMAIL: ${ASPNETCORE_ADMINEMAIL}
+      ASPNETCORE_ADMINPASSWORD: ${ASPNETCORE_ADMINPASSWORD}
+      ASPNETCORE_ISSUERSIGNINGKEY: ${ASPNETCORE_ISSUERSIGNINGKEY}
+      ASPNETCORE_VALIDAUDIENCE: ${ASPNETCORE_VALIDAUDIENCE}
+      ASPNETCORE_VALIDISSUER: ${ASPNETCORE_VALIDISSUER}
+      AWS_ACCESSKEY: ${AWS_ACCESSKEY}
+      AWS_SECRETKEY: ${AWS_SECRETKEY}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
+
+  bookswap-frontend:
+    image: vandaszabo/bookswap-frontend:latest
+    build:
+      context: ./bookswap-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - bookswap-backend
