@@ -148,9 +148,9 @@ public class Program
         {
             builder.Services.AddDbContext<BookSwapDbContext>(options =>
             {
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing")
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Test")
                 {
-                    options.UseInMemoryDatabase("SolarWatchTestDb");
+                    options.UseInMemoryDatabase("TestDatabase");
                 }
                 else
                 {

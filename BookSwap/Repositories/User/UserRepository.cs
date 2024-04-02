@@ -8,18 +8,21 @@ namespace BookSwap.Repositories.User;
 public class UserRepository : IUserRepository
 {
     private readonly BookSwapDbContext _dbContext;
-    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserRepository(BookSwapDbContext dbContext, UserManager<ApplicationUser> userManager)
+    public UserRepository(BookSwapDbContext dbContext)
     {
         _dbContext = dbContext;
-        _userManager = userManager;
     }
     
     public async Task<ApplicationUser?> GetById(string userId)
     {
-        return await _userManager.FindByIdAsync(userId);
+        return await _dbContext.AppUsers.FindAsync(userId);
     }
+    
+    // public async Task<ApplicationUser?> GetById(string userId)
+    // {
+    //     return await _userManager.FindByIdAsync(userId);
+    // }
     
     // public async Task<ApplicationUser?> FindByImage(string userImage)
     // {
@@ -71,9 +74,16 @@ public class UserRepository : IUserRepository
         await _dbContext.SaveChangesAsync();
     }
     
+    // public async Task<string?> Delete(ApplicationUser user)
+    // {
+    //     await _userManager.DeleteAsync(user);
+    //     return user.Email;
+    // }
+    
     public async Task<string?> Delete(ApplicationUser user)
     {
-        await _userManager.DeleteAsync(user);
+        _dbContext.AppUsers.Remove(user);
+        await _dbContext.SaveChangesAsync();
         return user.Email;
     }
     
