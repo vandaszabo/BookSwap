@@ -5,9 +5,9 @@ import { Button } from '@mui/material';
 import { useAuth } from '../Authentication/AuthContext';
 import { useChat } from './ChatContext';
 
-const SendToUserForm = ({ sendToUser }) => {
+const SendToUserForm = () => {
   const [msg, setMessage] = useState('');
-  const { receiverId, receiverName } = useChat();
+  const { receiverId, receiverName, sendToUser } = useChat();
   const { authUser } = useAuth();
 
   const handleSend = (e) => {

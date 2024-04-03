@@ -20,7 +20,8 @@ import { chatBoxStyle, containerStyle } from './Style/Styles';
 
 function App() {
   const { authUser, isLoggedIn } = useAuth();
-  const { sendToUser, receiverName, messages } = useChat();
+  const { receiverName, messages } = useChat();
+  
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -67,7 +68,7 @@ function App() {
         {messages.length > 0 || receiverName ? (
           <Box sx={chatBoxStyle}>
             {!hideChat && isLoggedIn &&
-            <PrivateChat sendToUser={sendToUser} />}
+            <PrivateChat />}
             <Button variant='outlined' sx={{backgroundColor: (theme)=> theme.palette.primary.fair, minWidth: '100%'}} onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
           </Box>
         ) : null}

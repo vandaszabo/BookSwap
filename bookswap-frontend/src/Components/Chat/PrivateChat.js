@@ -5,7 +5,7 @@ import SendToUserForm from './SendToUserForm';
 import { useChat } from './ChatContext';
 import { useAuth } from '../Authentication/AuthContext';
 
-export default function PrivateChat({ sendToUser }) {
+export default function PrivateChat() {
     const { setReceiverId, messages, setMessages, receiverName, setReceiverName } = useChat();
     const { authUser } = useAuth();
     const clientNameRef = useRef(receiverName);
@@ -13,7 +13,9 @@ export default function PrivateChat({ sendToUser }) {
     //clientNameRef gets updated whenever receiverName changes
     useEffect(() => {
         clientNameRef.current = receiverName;
-    }, [receiverName]);
+        const newMessages = messages.filter(message => message.senderName === receiverName);
+        setMessages(newMessages);
+    }, [receiverName, setMessages]);
 
     // Handle chat with multiple users 
     // For now It is removing the previous conversation when a message comes from a different user, 
@@ -54,7 +56,7 @@ export default function PrivateChat({ sendToUser }) {
         <Container component="main" maxWidth="xs" sx={{ backgroundColor: (theme) => theme.palette.primary.fair }}>
             <Typography sx={{ display: 'flex', justifyContent: 'center' }}>Chat with {clientNameRef.current}</Typography>
             <MessageContainer />
-            <SendToUserForm sendToUser={sendToUser} />
+            <SendToUserForm />
         </Container>
     );
 }

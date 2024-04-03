@@ -43,6 +43,14 @@ export default function Matches({ userIds }) {
         setReceiverName(userName);
     };
 
+    // Open message
+    const handleMessageClick = (userId, userName) => {
+        console.log("received id ",userId);
+        setReceiverId(userId);
+        console.log("received name ",userName);
+        setReceiverName(userName);
+    };
+
     return (
         <React.Fragment>
             <Typography color='primary' variant='h6' sx={{ mt: 4, mb: 2, borderBottom: '2px solid', borderColor: (theme) => theme.palette.secondary.light }}>Arrange Swap with Them</Typography>
@@ -85,10 +93,16 @@ export default function Matches({ userIds }) {
                             <Typography variant="body2" component="div">
                                 {user.city}
                             </Typography>
-                            {user.connectionID && (
+                            {user.connectionID ? (
                                 <Box>
                                     <Button sx={{ cursor: 'pointer' }} onClick={() => handleChatClick(user.id, user.userName)}>
                                         <ChatIcon />
+                                    </Button>
+                                </Box>
+                            ):(
+                                <Box>
+                                    <Button sx={{ cursor: 'pointer' }} onClick={() => handleMessageClick(user.id, user.userName)}>
+                                        <ChatIcon sx={{color: (theme)=>theme.palette.secondary.darkGrey}}/>
                                     </Button>
                                 </Box>
                             )}
