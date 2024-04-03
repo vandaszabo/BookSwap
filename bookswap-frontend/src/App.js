@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { CssBaseline, Button, Box } from '@mui/material';
+import { CssBaseline, Button, Box, Container } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import PostEdit from './Components/Forms/PostEdit';
 import Home from './Pages/Home';
@@ -17,6 +17,7 @@ import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 import { useChat } from './Components/Chat/ChatContext';
 import { chatBoxStyle, containerStyle } from './Style/Styles';
+
 
 function App() {
   const { authUser, isLoggedIn } = useAuth();
@@ -41,11 +42,7 @@ function App() {
   // Show chat if message received
   useEffect(() => {
     setHideChat(false);
-  }, [messages]);
-
-  // Show new chat
-    useEffect(() => {
-    }, [receivers]);
+  }, [messages, receivers]);
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -70,16 +67,29 @@ function App() {
         </Routes>
 
         {messages.length > 0 || receivers.length > 0 ? (
-          receivers.map((receiver, index) => (
+          <div style={chatBoxStyle}>
+            <Container sx={{ display: 'flex' }}>
+              {receivers.map((receiver, index) => (
+                <Box key={index} sx={{ m: 1 }}>
+                  {!hideChat && isLoggedIn && 
+                    <PrivateChat client={receiver} />}
+                </Box>
+              ))}
+            </Container>
 
-            <Box key={index}>
-              {!hideChat && isLoggedIn && <PrivateChat client={receiver} />}
-              <Button variant='outlined' sx={{ backgroundColor: (theme) => theme.palette.primary.fair, minWidth: '100%' }} onClick={() => setHideChat(!hideChat)}>
+            <Container maxWidth="lg">
+              <Button variant='outlined'
+                sx={{
+                  backgroundColor: (theme) => theme.palette.primary.fair,
+                  '&:hover': {
+                    backgroundColor: (theme) => theme.palette.primary.fair,
+                  },
+                }}
+                onClick={() => setHideChat(!hideChat)}>
                 {!hideChat ? "Hide chat" : "Show chat"}
               </Button>
-            </Box>
-
-          ))
+            </Container>
+          </div>
         ) : null}
 
       </div>

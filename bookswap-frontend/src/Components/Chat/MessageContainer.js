@@ -27,7 +27,7 @@ export default function MessageContainer({client}) {
     }, [messages, setFiltered, client.userId, authUser.id]);
 
     return (
-        <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+        <div style={{ maxHeight: '200px', overflowY: 'auto'}}>
             <Grid>
                 {filtered && filtered.map((msg, index) => (
                     <Grid item key={index}>

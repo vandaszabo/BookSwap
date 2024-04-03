@@ -65,7 +65,7 @@ function ChatProvider(props) {
         } catch (error) {
             console.error(error);
         }
-    }, []);
+    }, [authUser.id, authUser.userName]);
 
     //Re-Create connection after page refresh
     useEffect(() => {
