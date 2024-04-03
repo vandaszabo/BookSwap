@@ -20,8 +20,8 @@ import { chatBoxStyle, containerStyle } from './Style/Styles';
 
 function App() {
   const { authUser, isLoggedIn } = useAuth();
-  const { receiverName, messages } = useChat();
-  
+  const { messages, receivers } = useChat();
+
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
@@ -39,9 +39,13 @@ function App() {
   }, [authUser, bookList]);
 
   // Show chat if message received
-  useEffect(()=>{
+  useEffect(() => {
     setHideChat(false);
-  },[messages]);
+  }, [messages]);
+
+  // Show new chat
+    useEffect(() => {
+    }, [receivers]);
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -65,13 +69,19 @@ function App() {
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
-        {messages.length > 0 || receiverName ? (
-          <Box sx={chatBoxStyle}>
-            {!hideChat && isLoggedIn &&
-            <PrivateChat />}
-            <Button variant='outlined' sx={{backgroundColor: (theme)=> theme.palette.primary.fair, minWidth: '100%'}} onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
-          </Box>
+        {messages.length > 0 || receivers.length > 0 ? (
+          receivers.map((receiver, index) => (
+
+            <Box key={index}>
+              {!hideChat && isLoggedIn && <PrivateChat client={receiver} />}
+              <Button variant='outlined' sx={{ backgroundColor: (theme) => theme.palette.primary.fair, minWidth: '100%' }} onClick={() => setHideChat(!hideChat)}>
+                {!hideChat ? "Hide chat" : "Show chat"}
+              </Button>
+            </Box>
+
+          ))
         ) : null}
+
       </div>
     </ThemeProvider>
   );

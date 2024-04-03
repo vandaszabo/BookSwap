@@ -18,7 +18,7 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
     const [anchorElBooks, setAnchorElBooks] = React.useState(null);
 
     const { authUser, setAuthUser, isLoggedIn, setIsLoggedIn } = useAuth();
-    const {closeChatConnection, setReceiverName} = useChat();
+    const {closeChatConnection, setReceivers} = useChat();
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ function ResponsiveNavbar({ setSelectedPost, setBookList, created }) {
         setIsLoggedIn(false);
         setAnchorElUser(null);
         setAuthUser(null);
-        setReceiverName(null);
+        setReceivers([]);
         localStorage.removeItem('authUser');
         localStorage.removeItem('book');
         navigate('/login');

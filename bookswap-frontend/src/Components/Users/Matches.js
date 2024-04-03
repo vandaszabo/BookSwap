@@ -12,7 +12,7 @@ export default function Matches({ userIds }) {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { messages, setReceiverId, setReceiverName } = useChat();
+    const { messages, setReceivers } = useChat();
 
     // Find Users to Swap with
     useEffect(() => {
@@ -37,18 +37,14 @@ export default function Matches({ userIds }) {
 
     // Open chat
     const handleChatClick = (userId, userName) => {
-        console.log("received id ",userId);
-        setReceiverId(userId);
-        console.log("received name ",userName);
-        setReceiverName(userName);
-    };
-
-    // Open message
-    const handleMessageClick = (userId, userName) => {
-        console.log("received id ",userId);
-        setReceiverId(userId);
-        console.log("received name ",userName);
-        setReceiverName(userName);
+        console.log("received id, name ",userId, userName);
+        setReceivers((prevReceivers) => {
+            const isExistingReceiver = prevReceivers.some((receiver) => receiver.userId === userId);
+            if (!isExistingReceiver) {
+              return [...prevReceivers, { userId, userName }];
+            }
+            return prevReceivers;
+          });
     };
 
     return (
@@ -101,7 +97,7 @@ export default function Matches({ userIds }) {
                                 </Box>
                             ):(
                                 <Box>
-                                    <Button sx={{ cursor: 'pointer' }} onClick={() => handleMessageClick(user.id, user.userName)}>
+                                    <Button sx={{ cursor: 'pointer' }} onClick={() => handleChatClick(user.id, user.userName)}>
                                         <ChatIcon sx={{color: (theme)=>theme.palette.secondary.darkGrey}}/>
                                     </Button>
                                 </Box>
