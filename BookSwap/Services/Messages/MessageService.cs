@@ -38,5 +38,28 @@ public class MessageService : IMessageService
     {
         return await _messageRepository.FindAllUnreceived(userId);
     }
+
+    public async Task<bool> UpdateIsDelivered(IEnumerable<Guid> messageIds)
+    {
+        try
+        {
+            foreach (var id in messageIds)
+            {
+                var message = await _messageRepository.FindById(id);
+                if (message != null)
+                {
+                    message.IsDelivered = true;
+                    await _messageRepository.Update(message);
+                }
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating message delivery status: {ex.Message}");
+            return false;
+        }
+    }
+
     
 }

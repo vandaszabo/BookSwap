@@ -10,4 +10,5 @@ public interface IMessageService
     Task<IEnumerable<Message?>> FindReceivedMessages(string userId);
     Task<IEnumerable<Message?>> FindAllMessagesForUser(string userId);
     Task<IEnumerable<Message?>> GetUndelivered(string userId);
+    Task<bool> UpdateIsDelivered(IEnumerable<Guid> messageIds);
 }

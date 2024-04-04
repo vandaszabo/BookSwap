@@ -67,4 +67,30 @@ public class MessageController : ControllerBase
         }
     }
     
+    [HttpPatch("ChangeIsDelivered")]
+    public async Task<IActionResult> ChangeBoolIsDelivered([FromBody] IEnumerable<Guid> messageIds)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var isSuccess = await _messageService.UpdateIsDelivered(messageIds);
+            
+            if (!isSuccess)
+            {
+                return NotFound("Cannot update messages!");
+            }
+            return Ok(isSuccess);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in ChangeBoolIsDelivered: {ex.Message}");
+
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
 }

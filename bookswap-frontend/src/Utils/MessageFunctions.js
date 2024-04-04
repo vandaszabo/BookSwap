@@ -49,4 +49,28 @@ async function getUnDelivered(userId){
     
 }
 
-export {sendMessageToDb, getUnDelivered}
+//*********-------API call for Update Message isDelivered to true-------*********//
+async function setDeliveryStatusInDb(messageIds){
+    try {
+        const response = await fetch(`${backendUrl}Message/ChangeIsDelivered`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(messageIds)
+        })
+    
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const isSuccess = await response.json();
+
+        return isSuccess;
+        
+    } catch (error) {
+        console.error(`Error in setDeliveryStatusInDb: ${error.message}`);
+    }
+}
+
+export {sendMessageToDb, getUnDelivered, setDeliveryStatusInDb}

@@ -3,6 +3,7 @@ import { useChat } from './ChatContext';
 import { useAuth } from '../Authentication/AuthContext';
 import { getUnDelivered } from '../../Utils/MessageFunctions';
 import { fetchUserById } from '../../Utils/UserFunctions';
+import { setDeliveryStatusInDb } from '../../Utils/MessageFunctions';
 
 const UnDelivered = () => {
     const { authUser } = useAuth();
@@ -13,10 +14,17 @@ const UnDelivered = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+
                 const messages = await getUnDelivered(authUser.id);
                 setDbMessages(messages);
                 const uniqueSenderIds = Array.from(new Set(messages.map(msg => msg.senderId)));
                 setSenderIds(uniqueSenderIds);
+                const messageIds = messages.map(message => message.messageId);
+                if(messageIds.length > 0){
+                    console.log(messageIds);
+                    await setDeliveryStatusInDb(messageIds);
+                }
+
             } catch (error) {
                 console.error("Error fetching undelivered messages:", error);
             }
