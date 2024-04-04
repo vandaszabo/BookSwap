@@ -16,7 +16,7 @@ function ChatProvider(props) {
     const [receivers, setReceivers] = useState([]);
     const { authUser } = useAuth();
 
-    const createConnection = useCallback(async (userId) => {
+    const createConnection = useCallback(async (userId, userName) => {
         try {
             const newConn = new HubConnectionBuilder()
                 .withUrl("http://localhost:5029/Chat")
@@ -41,10 +41,10 @@ function ChatProvider(props) {
                         senderId,
                         senderName,
                         senderImage,
-                        receiverId: authUser.id,
-                        receiverName: authUser.userName,
+                        receiverId: userId,
+                        receiverName: userName,
                         msg
-                    }]);
+                    }])
 
             });
 
@@ -66,13 +66,13 @@ function ChatProvider(props) {
         } catch (error) {
             console.error(error);
         }
-    }, [authUser]);
+    }, []);
 
     //Re-Create connection after page refresh
     useEffect(() => {
         if (authUser && authUser.id && !conn) {
             const initializeConnection = async () => {
-                await createConnection(authUser.id);
+                await createConnection(authUser.id, authUser.userName);
             };
 
             initializeConnection();
@@ -131,7 +131,7 @@ function ChatProvider(props) {
 
                 console.log("Client conn id:", receiverConnId);
 
-                if (receiverConnId === "null") {
+                if (receiverConnId === "null" || receiverConnId === null) {
                     console.log("Offline client connection id:", receiverConnId);
                     //Store the message in Database
                     const savedMsg = await sendMessageToDb(requestData.userId, requestData.receiverId, JSON.stringify(requestData.msg));
