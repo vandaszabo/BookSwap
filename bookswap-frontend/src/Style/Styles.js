@@ -1,7 +1,6 @@
 import { lightTheme } from "./Themes";
 
 export const chatBoxStyle = {
-    backgroundColor: lightTheme.palette.primary.main,
     borderRadius: '12px',
     position: 'fixed',
     bottom: 0,

@@ -17,6 +17,7 @@ import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 import { useChat } from './Components/Chat/ChatContext';
 import { chatBoxStyle, containerStyle } from './Style/Styles';
+import {useMediaQuery} from '@mui/material';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
   const [hideChat, setHideChat] = useState(false);
+  const isLargeScreen = useMediaQuery(lightTheme.breakpoints.up('sm'));
 
 
   //*********-------Filter out your own posts-------*********//
@@ -68,7 +70,12 @@ function App() {
 
         {messages.length > 0 || receivers.length > 0 ? (
           <div style={chatBoxStyle}>
-            <Box sx={{ display: 'flex'}}>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: isLargeScreen ? 'row' : 'column', // Change direction based on screen size
+              height: isLargeScreen ? 'auto' : 'auto', // Adjust height based on screen size
+              overflowY: isLargeScreen ? 'auto' : 'visible' // Adjust overflow based on screen size
+            }}>
               {receivers.map((receiver, index) => (
                 <Box key={index} sx={{ m: 1 }}>
                   {!hideChat && isLoggedIn &&

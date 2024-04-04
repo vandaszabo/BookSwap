@@ -1,6 +1,6 @@
 import React from 'react';
 import MessageContainer from './MessageContainer';
-import { Typography, Container, Button } from '@mui/material';
+import { Typography, Container, Button, Box } from '@mui/material';
 import SendToUserForm from './SendToUserForm';
 import { useChat } from './ChatContext';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,12 +12,14 @@ export default function PrivateChat({ client }) {
     return (
         <>
         {client && 
-        <Container component="main" maxWidth="xs" sx={{ backgroundColor: (theme) => theme.palette.primary.fair, p: 1, borderRadius: '12px' }}>
-            <Button sx={{display: 'flex', marginLeft:'auto'}} onClick={() => setReceivers(prevReceivers => prevReceivers.filter(r => r.userId !== client.userId))}><CloseIcon /></Button>
-            <Typography sx={{ display: 'flex', justifyContent: 'center', pb: 2 }}>Chat with {client.userName}</Typography>
+        <Box component="main" maxWidth="xs" sx={{ backgroundColor: (theme) => theme.palette.primary.main, p:1, borderRadius: '12px'}}>
+            <Button sx={{display: 'flex', marginLeft:'auto', color: (theme) => theme.palette.primary.light }} onClick={() => setReceivers(prevReceivers => prevReceivers.filter(r => r.userId !== client.userId))}><CloseIcon /></Button>
+            <Typography sx={{ display: 'flex', justifyContent: 'center', color: (theme) => theme.palette.primary.light }}>Chat with {client.userName}</Typography>
+            <Box sx={{backgroundColor: (theme) => theme.palette.secondary.grey, p:2, borderRadius:'12px'}}>
             <MessageContainer client={client} />
             <SendToUserForm client={client} />
-        </Container>
+            </Box>
+        </Box>
         }
         </>
     );

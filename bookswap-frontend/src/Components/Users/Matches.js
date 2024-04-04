@@ -83,7 +83,8 @@ export default function Matches({ userIds }) {
                                 />
                             </div>
                             <Typography variant="body1" component="div">
-                                {user.connectionID && <CircleIcon sx={{ color: (theme) => theme.palette.secondary.green }} />}
+                                {user.connectionID ? <CircleIcon sx={{ color: (theme) => theme.palette.secondary.green }} /> 
+                                : <CircleIcon sx={{ color: (theme) => theme.palette.secondary.darkGrey }}/> }
                                 {user.userName}
                             </Typography>
                             <Typography variant="body2" component="div">
@@ -98,7 +99,7 @@ export default function Matches({ userIds }) {
                             ):(
                                 <Box>
                                     <Button sx={{ cursor: 'pointer' }} onClick={() => handleChatClick(user.id, user.userName)}>
-                                        <ChatIcon sx={{color: (theme)=>theme.palette.secondary.darkGrey}}/>
+                                        <ChatIcon />
                                     </Button>
                                 </Box>
                             )}
