@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { CssBaseline, Button, Box } from '@mui/material';
+import { CssBaseline, Button, Box, Container } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import PostEdit from './Components/Forms/PostEdit';
 import Home from './Pages/Home';
@@ -17,16 +17,21 @@ import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 import { useChat } from './Components/Chat/ChatContext';
 import { chatBoxStyle, containerStyle } from './Style/Styles';
+import { useMediaQuery } from '@mui/material';
+import UnDelivered from './Components/Chat/UnDelivered';
+
 
 function App() {
   const { authUser, isLoggedIn } = useAuth();
-  const { sendToUser, receiverName, messages } = useChat();
+  const { messages, receivers } = useChat();
+
   const [bookList, setBookList] = useState([]);
   const [created, setCreated] = useState(false);
   const [selectedPost, setSelectedPost] = useState({});
   const [editingPost, setEditingPost] = useState({});
   const [othersList, setOthersList] = useState([]);
   const [hideChat, setHideChat] = useState(false);
+  const isLargeScreen = useMediaQuery(lightTheme.breakpoints.up('sm'));
 
 
   //*********-------Filter out your own posts-------*********//
@@ -38,9 +43,9 @@ function App() {
   }, [authUser, bookList]);
 
   // Show chat if message received
-  useEffect(()=>{
+  useEffect(() => {
     setHideChat(false);
-  },[messages]);
+  }, [messages, receivers]);
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -64,13 +69,41 @@ function App() {
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
-        {messages.length > 0 || receiverName ? (
-          <Box sx={chatBoxStyle}>
-            {!hideChat && isLoggedIn &&
-            <PrivateChat sendToUser={sendToUser} />}
-            <Button variant='outlined' sx={{backgroundColor: (theme)=> theme.palette.primary.fair, minWidth: '100%'}} onClick={() => setHideChat(!hideChat)}>{!hideChat ? "Hide chat" : "Show chat"}</Button>
-          </Box>
+        {isLoggedIn && authUser &&
+          <UnDelivered />
+        }
+        
+        {messages.length > 0 || receivers.length > 0 ? (
+          <div style={chatBoxStyle}>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: isLargeScreen ? 'row' : 'column', // Change direction based on screen size
+              height: isLargeScreen ? 'auto' : 'auto', // Adjust height based on screen size
+              overflowY: isLargeScreen ? 'auto' : 'visible' // Adjust overflow based on screen size
+            }}>
+              {receivers.map((receiver, index) => (
+                <Box key={index} sx={{ m: 1 }}>
+                  {!hideChat && isLoggedIn &&
+                    <PrivateChat client={receiver} />}
+                </Box>
+              ))}
+            </Box>
+
+            <Container>
+              <Button variant='outlined'
+                sx={{
+                  backgroundColor: (theme) => theme.palette.primary.fair,
+                  '&:hover': {
+                    backgroundColor: (theme) => theme.palette.primary.fair,
+                  },
+                }}
+                onClick={() => setHideChat(!hideChat)}>
+                {!hideChat ? "Hide chat" : "Show chat"}
+              </Button>
+            </Container>
+          </div>
         ) : null}
+
       </div>
     </ThemeProvider>
   );

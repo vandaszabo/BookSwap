@@ -1,9 +1,10 @@
 import { lightTheme } from "./Themes";
 
 export const chatBoxStyle = {
+    borderRadius: '12px',
     position: 'fixed',
     bottom: 0,
-    right: 0,
+    right:0,
     textAlign: 'center',
     zIndex: 1000,
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { updateUserConnection } from '../../Utils/UserFunctions';
 import { useAuth } from '../Authentication/AuthContext';
+import { sendMessageToDb } from '../../Utils/MessageFunctions';
 
 const ChatContext = React.createContext();
 
@@ -12,10 +13,9 @@ function useChat() {
 function ChatProvider(props) {
     const [conn, setConnection] = useState();
     const [messages, setMessages] = useState([]);
-    const [receiverId, setReceiverId] = useState('');
-    const [receiverName, setReceiverName] = useState('');
+    const [receivers, setReceivers] = useState([]);
     const { authUser } = useAuth();
-    
+
     const createConnection = useCallback(async (userId) => {
         try {
             const newConn = new HubConnectionBuilder()
@@ -26,12 +26,32 @@ function ChatProvider(props) {
             //Handle message sending-receiving
             newConn.on("ReceivePrivateMessage", (senderImage, senderName, senderId, msg) => {
                 console.log("Received message:", msg);
-                setMessages((messages) => [...messages, { senderImage, senderName, senderId, msg }]);
+                setReceivers((prevReceivers) => {
+                    const isExistingReceiver = prevReceivers.some((receiver) => receiver.userId === senderId);
+                    if (!isExistingReceiver) {
+                        return [...prevReceivers, { userId: senderId, userName: senderName }];
+                    }
+                    return prevReceivers;
+                });
+
+                setMessages((messages) =>
+                    [...messages,
+                    {
+                        isDelivered: true,
+                        senderId,
+                        senderName,
+                        senderImage,
+                        receiverId: authUser.id,
+                        receiverName: authUser.userName,
+                        msg
+                    }]);
+
             });
 
-            //Get Receiver connection Id from db and store it in localStorage
+            //Get Receiver connection Id from db
             newConn.on("GetConnectionId", (user, connectionId) => {
-                localStorage.setItem("receiverConnectionId", connectionId);
+                console.log("Receiver conn id: ", connectionId);
+                localStorage.setItem("receiverConnId", connectionId);
             });
 
             //Start connection
@@ -39,25 +59,25 @@ function ChatProvider(props) {
 
             //Get own connection Id and Update it in db
             const connId = await newConn.invoke("GetOwnConnectionId");
+            localStorage.setItem("ownConnId", connId);
+
             await updateConnID(userId, connId);
-            localStorage.setItem('senderConnectionId', connId);
             setConnection(newConn);
         } catch (error) {
             console.error(error);
         }
-    }, []);
+    }, [authUser]);
 
     //Re-Create connection after page refresh
     useEffect(() => {
-        const storedConnectionId = localStorage.getItem('senderConnectionId');
-        if (authUser && authUser.id && storedConnectionId) {
+        if (authUser && authUser.id && !conn) {
             const initializeConnection = async () => {
                 await createConnection(authUser.id);
             };
 
             initializeConnection();
         }
-    }, [authUser, createConnection]);
+    }, [authUser, createConnection, conn]);
 
 
     //Open Connection
@@ -89,8 +109,8 @@ function ChatProvider(props) {
                 setConnection(null);
                 await updateConnID(userId, null);
                 setMessages([]);
-                localStorage.removeItem('senderConnectionId');
-                localStorage.removeItem('receiverConnectionId');
+                localStorage.removeItem("receiverConnId");
+                localStorage.removeItem("ownConnId");
             }
         } catch (error) {
             console.error(error);
@@ -101,25 +121,55 @@ function ChatProvider(props) {
     const sendToUser = async (requestData) => {
         try {
             if (conn) {
-                //Get receiver's connectionId by its userId
-                await conn.invoke("GetClientConnectionId", requestData.receiverId)
-                const receiverConnId = localStorage.getItem("receiverConnectionId");
-                
-                //Send the message with the retrieved connectionId
-                await conn.invoke("SendToUser", requestData, receiverConnId);
+                // Get own connection ID
+                const ownConnId = localStorage.getItem("ownConnId");
 
-                //Update messages array in ChatContext
-                setMessages((messages) => 
-                [...messages, 
-                {
-                    senderId: requestData.userId, 
-                    senderName: requestData.userName,
-                    senderImage: requestData.userImage,
-                    receiverId: requestData.receiverId,
-                    receiverName: requestData.receiverName,
-                    msg: requestData.msg 
-                }]);
+                await conn.invoke("GetClientConnectionId", ownConnId, requestData.receiverId);
+
+                //Get receiver's connectionId by its userId
+                const receiverConnId = localStorage.getItem("receiverConnId");
+
+                console.log("Client conn id:", receiverConnId);
+
+                if (receiverConnId === "null") {
+                    console.log("Offline client connection id:", receiverConnId);
+                    //Store the message in Database
+                    const savedMsg = await sendMessageToDb(requestData.userId, requestData.receiverId, JSON.stringify(requestData.msg));
+                    console.log("Saved msg: ", savedMsg);
+
+                    //Update messages array in ChatContext
+                    setMessages((messages) =>
+                        [...messages,
+                        {
+                            isDelivered: false,
+                            senderId: requestData.userId,
+                            senderName: requestData.userName,
+                            senderImage: requestData.userImage,
+                            receiverId: requestData.receiverId,
+                            receiverName: requestData.receiverName,
+                            msg: requestData.msg
+                        }]);
+
+                } else {
+                    //Send the message with the retrieved connectionId
+                    await conn.invoke("SendToUser", requestData, receiverConnId);
+                    console.log("Online client conn id: ", receiverConnId);
+
+                    //Update messages array in ChatContext
+                    setMessages((messages) =>
+                        [...messages,
+                        {
+                            isDelivered: true,
+                            senderId: requestData.userId,
+                            senderName: requestData.userName,
+                            senderImage: requestData.userImage,
+                            receiverId: requestData.receiverId,
+                            receiverName: requestData.receiverName,
+                            msg: requestData.msg
+                        }]);
+                }
             }
+
         } catch (error) {
             console.error(error);
         }
@@ -133,10 +183,8 @@ function ChatProvider(props) {
         sendToUser,
         messages,
         setMessages,
-        receiverId,
-        setReceiverId,
-        receiverName,
-        setReceiverName
+        receivers,
+        setReceivers
     }
 
     return (

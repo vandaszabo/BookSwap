@@ -1,27 +1,35 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Grid } from '@mui/material';
 import { Typography, Avatar, Box } from '@mui/material';
 import { useChat } from './ChatContext';
 import { useAuth } from '../Authentication/AuthContext';
 
-export default function MessageContainer() {
+export default function MessageContainer({client}) {
     const { messages } = useChat();
-    const messagesEndRef = useRef(null);
     const {authUser} = useAuth();
+    const messagesEndRef = useRef(null);
+    const [filtered, setFiltered] = useState(null);
 
     // Scroll to the bottom of the container when messages change
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Select the messages between authUser and Client
     useEffect(() => {
         scrollToBottom();
-    }, [messages]);
+        if(messages.length > 0){
+            const filtered = messages.filter(m => 
+                (m.senderId === client.userId && m.receiverId === authUser.id) ||
+                (m.senderId === authUser.id && m.receiverId === client.userId))   
+            setFiltered(filtered);
+        }
+    }, [messages, setFiltered, client.userId, authUser.id]);
 
     return (
-        <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+        <div style={{ minHeight: '150px', maxHeight: '150px', overflowY: 'auto'}}>
             <Grid>
-                {messages && messages.map((msg, index) => (
+                {filtered && filtered.map((msg, index) => (
                     <Grid item key={index}>
                         
                         {/* Own messages */}
