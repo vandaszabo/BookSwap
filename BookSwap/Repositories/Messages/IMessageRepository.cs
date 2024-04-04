@@ -8,4 +8,5 @@ public interface IMessageRepository
     Task<IEnumerable<Message?>> FindBySenderId(string userId);
     Task<IEnumerable<Message?>> FindByReceiverId(string userId);
     Task<IEnumerable<Message?>> FindAllByUser(string userId);
+    Task<IEnumerable<Message?>> FindAllUnreceived(string userId);
 }

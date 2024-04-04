@@ -1,6 +1,6 @@
 import React from 'react';
 import MessageContainer from './MessageContainer';
-import { Typography, Container, Button, Box } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 import SendToUserForm from './SendToUserForm';
 import { useChat } from './ChatContext';
 import CloseIcon from '@mui/icons-material/Close';

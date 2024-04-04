@@ -40,6 +40,13 @@ public class MessageRepository : IMessageRepository
             .Where(message => message.ReceiverId == userId)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Message?>> FindAllUnreceived(string userId)
+    {
+        return await _dbContext.Messages
+            .Where(message => message.ReceiverId == userId && message.IsDelivered == false)
+            .ToListAsync();
+    }
     
     public async Task<IEnumerable<Message?>> FindAllByUser(string userId)
     {

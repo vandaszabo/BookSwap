@@ -17,7 +17,8 @@ import { lightTheme } from './Style/Themes';
 import PrivateChat from './Components/Chat/PrivateChat';
 import { useChat } from './Components/Chat/ChatContext';
 import { chatBoxStyle, containerStyle } from './Style/Styles';
-import {useMediaQuery} from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import UnDelivered from './Components/Chat/UnDelivered';
 
 
 function App() {
@@ -68,6 +69,10 @@ function App() {
           <Route path="/create" element={<CreatePost setCreated={setCreated} />} />
         </Routes>
 
+        {isLoggedIn && authUser &&
+          <UnDelivered />
+        }
+        
         {messages.length > 0 || receivers.length > 0 ? (
           <div style={chatBoxStyle}>
             <Box sx={{

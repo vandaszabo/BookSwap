@@ -44,4 +44,27 @@ public class MessageController : ControllerBase
             return CreatedAtAction(nameof(CreateMessage), new { id = createdMessage.SenderId }, createdMessage.MessageText);
         }
     }
+    
+    [HttpGet("UnDelivered/{userId}")]
+    public async Task<IActionResult> ListUndeliveredMsg(string userId)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("Invalid userId format");
+            }
+            
+            var messageList = await _messageService.GetUndelivered(userId);
+
+            return Ok(messageList);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in ListUndeliveredMsg: {ex.Message}");
+
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+    
 }

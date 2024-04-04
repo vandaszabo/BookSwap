@@ -33,6 +33,10 @@ public class MessageService : IMessageService
     {
         return await _messageRepository.FindAllByUser(userId);
     }
-    
+
+    public async Task<IEnumerable<Message?>> GetUndelivered(string userId)
+    {
+        return await _messageRepository.FindAllUnreceived(userId);
+    }
     
 }
