@@ -29,7 +29,7 @@ public class ChatHub : Hub
             .SendAsync("GetConnectionId", "admin", user?.ConnectionID);
     }
     
-    public async Task SendToUser(MessageRequest request, string receiverConnId)
+    public async Task SendToUser(MessageRequest request, string receiverConnId)  
     {
         try
         {

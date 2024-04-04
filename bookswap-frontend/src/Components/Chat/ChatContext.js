@@ -45,6 +45,7 @@ function ChatProvider(props) {
                         receiverName: authUser.userName,
                         msg
                     }]);
+
             });
 
             //Get Receiver connection Id from db
@@ -65,7 +66,7 @@ function ChatProvider(props) {
         } catch (error) {
             console.error(error);
         }
-    }, [authUser.id, authUser.userName]);
+    }, [authUser]);
 
     //Re-Create connection after page refresh
     useEffect(() => {
@@ -128,9 +129,10 @@ function ChatProvider(props) {
                 //Get receiver's connectionId by its userId
                 const receiverConnId = localStorage.getItem("receiverConnId");
 
-                console.log("Client conn id: ", receiverConnId);
+                console.log("Client conn id:", receiverConnId);
 
-                if (!receiverConnId) {
+                if (receiverConnId === "null") {
+                    console.log("Offline client connection id:", receiverConnId);
                     //Store the message in Database
                     const savedMsg = await sendMessageToDb(requestData.userId, requestData.receiverId, JSON.stringify(requestData.msg));
                     console.log("Saved msg: ", savedMsg);
@@ -151,7 +153,7 @@ function ChatProvider(props) {
                 } else {
                     //Send the message with the retrieved connectionId
                     await conn.invoke("SendToUser", requestData, receiverConnId);
-                    console.log("Client conn id: ", receiverConnId);
+                    console.log("Online client conn id: ", receiverConnId);
 
                     //Update messages array in ChatContext
                     setMessages((messages) =>

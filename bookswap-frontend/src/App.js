@@ -68,16 +68,16 @@ function App() {
 
         {messages.length > 0 || receivers.length > 0 ? (
           <div style={chatBoxStyle}>
-            <Container sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex'}}>
               {receivers.map((receiver, index) => (
                 <Box key={index} sx={{ m: 1 }}>
-                  {!hideChat && isLoggedIn && 
+                  {!hideChat && isLoggedIn &&
                     <PrivateChat client={receiver} />}
                 </Box>
               ))}
-            </Container>
+            </Box>
 
-            <Container maxWidth="lg">
+            <Container>
               <Button variant='outlined'
                 sx={{
                   backgroundColor: (theme) => theme.palette.primary.fair,
