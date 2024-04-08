@@ -16,7 +16,6 @@ import { CircularProgress } from '@mui/material';
 import Poster from '../Components/Users/Poster';
 
 
-//*********-------Main function for Review data for Creating new Post-------*********//
 export default function SelectedPost({ book, backPath }) {
 
     const [localBook, setLocalBook] = useState(null);
@@ -48,7 +47,7 @@ export default function SelectedPost({ book, backPath }) {
         fetchLikerIds();
     }, [authUser.id, isLiked, book.postId]);
 
-    //*********-------Save book for avoiding disappearing at page refresh-------*********//
+    //*********-------Save book to avoid disappearing after refresh-------*********//
     useEffect(() => {
         if (book.title) {
             localStorage.setItem('book', JSON.stringify(book));
