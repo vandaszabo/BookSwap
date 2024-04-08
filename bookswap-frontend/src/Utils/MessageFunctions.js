@@ -25,7 +25,7 @@ async function sendMessageToDb(senderId, receiverId, msg){
     
 }
 
-//*********-------API call for Creating a Message-------*********//
+//*********-------API call for Getting Undelivered messages from Db-------*********//
 async function getUnDelivered(userId){
     try {
         const response = await fetch(`${backendUrl}Message/UnDelivered/${userId}`, {
