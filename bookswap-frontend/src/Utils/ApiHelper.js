@@ -1,4 +1,4 @@
-const backendUrl = "http://localhost:5029/api/";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 async function fetchData(url, options) {
     try {
