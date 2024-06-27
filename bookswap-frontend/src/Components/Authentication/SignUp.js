@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { backendUrl } from "../../Utils/ApiHelper";
 
 //*********-------main function for Registration-------*********//
 export default function SignUp() {
@@ -31,7 +32,7 @@ export default function SignUp() {
   //*********-------Add new user to our database-------*********//
   const createUser = async (data) => {
     try {
-      const response = await fetch("http://localhost:5029/api/Auth/Register", {
+      const response = await fetch(`${backendUrl}Auth/Register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
