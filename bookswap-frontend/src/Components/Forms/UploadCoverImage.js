@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Alert } from '@mui/material';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 //*********-------main function for Upload Image file-------*********//
 export default function UploadCoverImage({ setCoverImage }) {
@@ -26,7 +27,7 @@ export default function UploadCoverImage({ setCoverImage }) {
       setLoading(true);
       setError(null);
   
-      fetch('http://localhost:5029/api/File/Upload?imageCategory=CoverImage', {
+      fetch(`${backendUrl}File/Upload?imageCategory=CoverImage`, {
         method: 'POST',
         body: formData,
       })

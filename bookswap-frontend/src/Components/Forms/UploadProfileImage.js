@@ -4,6 +4,7 @@ import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAuth } from '../Authentication/AuthContext';
 import { Alert } from '@mui/material';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 
 //*********-------main function for Upload Image file-------*********//
@@ -21,7 +22,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
   const uploadImageToS3 = (formData) => {
     setLoading(true);
 
-    fetch('http://localhost:5029/api/File/Upload?imageCategory=ProfileImage', {
+    fetch(`${backendUrl}File/Upload?imageCategory=ProfileImage`, {
       method: 'POST',
       body: formData,
     })
@@ -59,7 +60,7 @@ export default function UploadProfileImage({ setEditingPhoto }) {
       newProfileImage: updatedUser.profileImage
     }
 
-    fetch('http://localhost:5029/api/User/UpdateData', {
+    fetch(`${backendUrl}User/UpdateData`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
