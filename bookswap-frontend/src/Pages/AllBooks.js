@@ -37,8 +37,14 @@ export default function AllBooks({ books, setSelectedPost }) {
                     <Box
                         sx={{
                             display: 'flex',
-                            flexDirection: 'row',
-                            height: '40vh',
+                            display: 'flex',
+                            flexDirection: {
+                                        xs: 'column',
+                                        sm: 'column',
+                                        md: 'row',
+                                        lg: 'row'
+                            },
+                            height: 'fit-content',
                             color: (theme) => theme.palette.primary.main,
                             backgroundColor: (theme) => theme.palette.secondary.beige,
                             alignItems: 'center',
@@ -71,12 +77,8 @@ export default function AllBooks({ books, setSelectedPost }) {
                                 align="center"
                                 paragraph
                                 sx={{
-                                    fontSize: {
-                                        xs: '1rem',
-                                        sm: '1rem',
-                                        md: '1.1rem',
-                                        lg: '1.1rem',
-                                    },
+                                    fontSize: '1.2rem',
+                                    fontWeight: 600
                                 }}>
                                 Like the post that interests you and get likes from others. If there is a match, you can decide to exchange the books.
                             </Typography>
@@ -89,19 +91,7 @@ export default function AllBooks({ books, setSelectedPost }) {
                                     width: '80%',
                                     height: 'auto',
                                     display: 'block',
-                                    '@media (minWidth:0px) and (orientation: landscape)': {
-                                        maxHeight: '30vh', // Adjust as needed for xs landscape
-                                    },
-                                    '@media (minWidth:600px)': {
-                                        maxHeight: '40vh', // Increase size for sm screens
-                                    },
-                                    '@media (minWidth:960px)': {
-                                        maxHeight: '40vh',
-                                    },
-                                    '@media (minWidth:1280px)': {
-                                        maxHeight: '40vh',
-                                    },
-                                }}
+                                    margin: '0 auto'                                 }}
                             />
                         </Box>
                     </Box>
