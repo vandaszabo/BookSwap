@@ -1,4 +1,4 @@
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://bookswap-8fxt.onrender.com/api/';
 
 async function fetchData(url, options) {
     try {
