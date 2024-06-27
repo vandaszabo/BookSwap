@@ -3,6 +3,7 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { updateUserConnection } from '../../Utils/UserFunctions';
 import { useAuth } from '../Authentication/AuthContext';
 import { sendMessageToDb } from '../../Utils/MessageFunctions';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 const ChatContext = React.createContext();
 
@@ -19,7 +20,7 @@ function ChatProvider(props) {
     const createConnection = useCallback(async (userId, userName) => {
         try {
             const newConn = new HubConnectionBuilder()
-                .withUrl("http://localhost:5029/Chat")
+                .withUrl(`${backendUrl}Chat`)
                 .configureLogging(LogLevel.Information)
                 .build();
 
