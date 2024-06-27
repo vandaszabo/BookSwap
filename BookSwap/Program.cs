@@ -59,7 +59,7 @@ public class Program
         app.MapControllers();
         
         //WebSocket
-        app.MapHub<ChatHub>("/Chat");
+        app.MapHub<ChatHub>("/api/Chat");
         
         //Cors
         app.UseCors("reactApp");
