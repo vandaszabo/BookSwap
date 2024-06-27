@@ -7,7 +7,23 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: ASPNETCORE_CONNECTIONSTRING
-        sync: true  # Fetch this value from Render's environment variables settings or manually set it
+        sync: true
+      - key: ASPNETCORE_ADMINEMAIL
+        sync: true
+      - key: ASPNETCORE_ADMINPASSWORD
+        sync: true
+      - key: ASPNETCORE_ISSUERSIGNINGKEY
+        sync: true
+      - key: ASPNETCORE_VALIDISSUER
+        sync: true
+      - key: AWS_ACCESSKEY
+        sync: true
+      - key: AWS_SECRETKEY
+        sync: true
+      - key: AWS_BUCKET_NAME
+        sync: true
+      - key: FRONTEND_DOMAIN
+        sync: true
 
   - type: web
     name: BookSwap-frontend
