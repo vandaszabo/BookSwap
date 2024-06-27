@@ -17,8 +17,7 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: REACT_APP_BACKEND_URL
-        sync: false
-        value: https://bookswap-8fxt.onrender.com  # Replace with your backend service URL or use an environment variable
+        sync: true
 
   - type: postgres
     name: BookSwapWebAppDb
