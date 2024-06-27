@@ -26,6 +26,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         
         var connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_CONNECTIONSTRING");
+        var frontendDomain = Environment.GetEnvironmentVariable("FRONTEND_DOMAIN");
 
         AddServices();
         ConfigureSwagger();
@@ -68,7 +69,7 @@ public class Program
             KeepAliveInterval = TimeSpan.FromMinutes(2)
         };
 
-        webSocketOptions.AllowedOrigins.Add("http://localhost:3000");
+        webSocketOptions.AllowedOrigins.Add(frontendDomain);
         
         app.UseWebSockets(webSocketOptions);
         
@@ -86,7 +87,7 @@ public class Program
                 options.AddPolicy("reactApp",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000")
+                        builder.WithOrigins(frontendDomain)
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
