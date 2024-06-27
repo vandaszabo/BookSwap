@@ -8,6 +8,7 @@ import { Alert } from '@mui/material';
 import UploadCoverImage from './UploadCoverImage';
 import { useNavigate } from 'react-router-dom';
 import NavigateBack from '../Shared/NavigateBack';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 export default function PostEdit({ book }) {
 
@@ -48,7 +49,7 @@ export default function PostEdit({ book }) {
     const savePostData = (data) => {
         setLoading(true);
 
-        fetch("http://localhost:5029/api/BookPost/Update", {
+        fetch(`${backendUrl}BookPost/Update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

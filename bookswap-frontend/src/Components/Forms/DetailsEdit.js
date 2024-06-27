@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
 import { Alert } from '@mui/material';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 export default function DetailsEdit({ setEditingDetails }) {
 
@@ -45,7 +46,7 @@ export default function DetailsEdit({ setEditingDetails }) {
     const saveUserData = (data) => {
         setLoading(true);
 
-        fetch("http://localhost:5029/api/User/UpdateData", {
+        fetch(`${backendUrl}User/UpdateData`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

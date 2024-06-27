@@ -4,6 +4,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import { Container } from '@mui/material';
 import { Avatar } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import { backendUrl } from '../../Utils/ApiHelper';
 
 export default function Poster({ posterId }) {
 
@@ -14,7 +15,7 @@ export default function Poster({ posterId }) {
     const fetchPosterData = useCallback(async (id) => {
         try {
 
-            const response = await fetch(`http://localhost:5029/api/User/${posterId}`, {
+            const response = await fetch(`${backendUrl}User/${posterId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

@@ -16,6 +16,7 @@ import Review from '../Components/Forms/Review';
 import CreatePostForm from '../Components/Forms/CreatePostForm';
 import { useAuth } from '../Components/Authentication/AuthContext';
 import UploadCoverImage from '../Components/Forms/UploadCoverImage';
+import { backendUrl } from '../Utils/ApiHelper';
 
 const steps = ['Add information', 'Upload picture', 'Review'];
 
@@ -87,7 +88,7 @@ export default function CreatePost({ setCreated }) {
   //*********-------API call for creating BookPost-------*********//
   async function handleCreatePost(data, image, userId) {
     try {
-      const response = await fetch("http://localhost:5029/api/BookPost/Create", {
+      const response = await fetch(`${backendUrl}BookPost/Create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
