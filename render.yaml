@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: BookSwap
+    env: docker
+    repo: https://github.com/vandaszabo/BookSwap/BookSwap
+    branch: master
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_CONNECTIONSTRING
+        sync: true  # Fetch this value from Render's environment variables settings or manually set it
+
+  - type: web
+    name: BookSwap-frontend
+    env: docker
+    repo: https://github.com/vandaszabo/BookSwap/bookswap-frontend
+    branch: master
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        sync: false
+        value: https://bookswap-8fxt.onrender.com  # Replace with your backend service URL or use an environment variable
+
+  - type: postgres
+    name: BookSwapWebAppDb
+    env: managed
+    plan: standard
