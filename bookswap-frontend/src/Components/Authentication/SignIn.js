@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from './AuthContext';
 import { useChat } from '../Chat/ChatContext';
+import { backendUrl } from "../../Utils/ApiHelper";
 
 //*********-------main function for Login-------*********//
 export default function SignIn() {
@@ -38,7 +39,7 @@ export default function SignIn() {
   //*********-------Retrieve main data about the User-------*********//
   const getUserData = async (data) => {
     try {
-      const response = await fetch("http://localhost:5029/api/Auth/Login", {
+      const response = await fetch(`${backendUrl}Auth/Login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
