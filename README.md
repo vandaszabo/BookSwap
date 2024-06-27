@@ -32,21 +32,21 @@ Before running BookSwap, ensure you have the following:
 - **AWS S3 Bucket**:
   Create an AWS S3 bucket for storing profile images and book cover photos.
   Obtain the necessary AWS credentials to access the bucket from your application.
-
-## Configuration
-- **Environment Variables**: 
-Set up environment variables for database connection string, JWT secret key, AWS secret key, etc., as required in the launchSettings.json file.
+ 
 
 ## To run BookSwap locally, follow these steps:
 1. Clone this repository to your local machine. 
    ```
     git clone https://github.com/vandaszabo/BookSwap
     ```
-2. Run Docker Compose to build and start the application containers.
+2. Set up environment variables.
+   Provide the database connection string, JWT secret key, AWS secret key, etc., as required in the docker-compose.yml file.
+   
+4. Run Docker Compose to build and start the application containers.
    ```
     docker-compose up -d
     ```
-3. Access the application in your web browser at [http://localhost:3000](http://localhost:3000).
+5. Access the application in your web browser at [http://localhost:3000](http://localhost:3000).
 
 ## Status
 I am currently actively working on this project. 
